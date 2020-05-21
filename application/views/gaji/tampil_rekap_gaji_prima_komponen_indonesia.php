@@ -30,6 +30,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Nama Karyawan</th>
                         <th scope="col">Penempatan</th>
+                        <th scope="col">Jumlah Upah</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,6 +41,7 @@
                             <td><?= $no; ?></td>
                             <td><?= $row['nama_karyawan']; ?></td>
                             <td><?= $row['penempatan']; ?></td>
+                            <td><?= "Rp. ".format_angka($row['jumlah_upah_history']).",-"; ?></td>
                         </tr>
                         <?php $no++; ?>
                     <?php endforeach; ?>

@@ -40,6 +40,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Nama Karyawan</th>
                         <th scope="col">Penempatan</th>
+                        <th scope="col">Jumlah Upah</th>
                         <!-- JIka Data Pada Tanggal Tersebut Sudah Di Rekon Maka Button Action Tampil -->
                         <?php if ($mulai_tanggal == $coba) : ?>
                             <th scope="col">Action</th>
@@ -56,6 +57,7 @@
                             <td><?= $no; ?></td>
                             <td><?= $row['nama_karyawan']; ?></td>
                             <td><?= $row['penempatan']; ?></td>
+                            <td><?= "Rp. ".format_angka($row['jumlah_upah_master']).",-"; ?></td>
                             <!-- JIka Data Pada Tanggal Tersebut Sudah Di Rekon Maka Button Action Tampil -->
                             <?php if ($mulai_tanggal == $coba) : ?>
                                 <td>
