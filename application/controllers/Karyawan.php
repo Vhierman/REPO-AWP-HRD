@@ -977,32 +977,32 @@ class Karyawan extends CI_Controller
             $this->karyawan->hapusKaryawan($id);
 
             //mendelete kedalam database melalui method hapusAbsenKaryawan berdasarkan nik karyawan nya
-            $this->karyawan->hapusAbsenKaryawan();
+            $this->karyawan->hapusAbsenKaryawan($id);
 
             //mendelete kedalam database melalui method hapusInventarisKaryawan berdasarkan nik karyawan nya
-            $this->karyawan->hapusInventarisKaryawan();
+            $this->karyawan->hapusInventarisKaryawan($id);
 
             //mendelete kedalam database melalui method hapus History Kontrak berdasarkan nik karyawan nya
-            $this->keluar->hapusHistoryKontrak();
+            $this->keluar->hapusHistoryKontrak($id);
 
             //mendelete kedalam database melalui method hapus History Jabatan berdasarkan nik karyawan nya
-            $this->keluar->hapusHistoryJabatan();
+            $this->keluar->hapusHistoryJabatan($id);
 
             //mendelete kedalam database melalui method hapus History Keluarga berdasarkan nik karyawan nya
-            $this->keluar->hapusHistoryKeluarga();
+            $this->keluar->hapusHistoryKeluarga($id);
 
             //mendelete kedalam database melalui method hapus History Pendidikan Formal berdasarkan nik karyawan nya
-            $this->keluar->hapusHistoryPendidikanFormal();
+            $this->keluar->hapusHistoryPendidikanFormal($id);
 
             //mendelete kedalam database melalui method hapus History Pendidikan NOn Formal berdasarkan nik karyawan nya
-            $this->keluar->hapusHistoryPendidikanNonFormal();
+            $this->keluar->hapusHistoryPendidikanNonFormal($id);
 
             //mendelete kedalam database melalui method hapus History Training Internal berdasarkan nik karyawan nya
-            $this->keluar->hapusHistoryTrainingInternal();
+            $this->keluar->hapusHistoryTrainingInternal($id);
 
             //mendelete kedalam database melalui method hapus History Training Eksternal berdasarkan nik karyawan nya
-            $this->keluar->hapusHistoryTrainingEksternal();
-            
+            $this->keluar->hapusHistoryTrainingEksternal($id);
+
             //menampikan pesan sukses
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Success Delete Data Karyawan</div>');
             //dan mendirect kehalaman perusahaan
