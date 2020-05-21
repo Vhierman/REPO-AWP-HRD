@@ -29,11 +29,10 @@
                 <!-- JIka Data Pada Tanggal Tersebut Belum Pernah Di Rekon -->
             <?php else : ?>
                 <a href="<?= base_url('gaji/prosesdatarekonsiliasigaji/'); ?><?= $mulai_tanggal . '/' . $sampai_tanggal  ?>" class="btn btn-primary mb-2 ml-4"><i class="fas fa-check"></i> Proses Rekonsiliasi Data </a>
+                <!-- Download Data Untuk DI Cek Terlebih Dahulu -->
+                <a href="<?= base_url('gaji/downloadrekonsiliasigajiprimaexcell/'); ?><?= $mulai_tanggal . '/' . $sampai_tanggal  ?>" class="btn btn-success mb-2 ml-4"><i class="fas fa-download"></i> Download Excell PT Prima Komponen Indonesia</a>
+                <a href="<?= base_url('gaji/downloadrekonsiliasigajipetra/'); ?><?= $mulai_tanggal . '/' . $sampai_tanggal  ?>" class="btn btn-success mb-2 ml-4"><i class="fas fa-download"></i> Download Excell PT Petra Ariesca </a>
             <?php endif; ?>
-
-            <!-- Download Data Untuk DI Cek Terlebih Dahulu -->
-            <a href="<?= base_url('gaji/downloadrekonsiliasigajiprima/'); ?>" class="btn btn-success mb-2 ml-4"><i class="fas fa-download"></i> Download Excell PT Prima Komponen Indonesia</a>
-            <a href="<?= base_url('gaji/downloadrekonsiliasigajipetra/'); ?>" class="btn btn-success mb-2 ml-4"><i class="fas fa-download"></i> Download Excell PT Petra Ariesca </a>
 
             <table id="table_id" class="table table-hover table-bordered" cellspacing="0" width="100%">
                 <thead>

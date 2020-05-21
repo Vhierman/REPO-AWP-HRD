@@ -574,7 +574,253 @@ class Gaji extends CI_Controller
         }
     }
 
-    // Download Data Rekon Prima
+    // Download Data Rekonsiliasi Prima
+    public function downloadrekonsiliasigajiprimaexcell($mulai_tanggal,$sampai_tanggal)
+    {
+        //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+        $data['title'] = 'Data Rekonsiliasi Gaji';
+        //Menyimpan session dari login
+        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+        // Load plugin PHPExcel nya
+        include APPPATH . 'third_party/PHPExcel/PHPExcel.php';
+
+        // Panggil class PHPExcel nya
+        $excel = new PHPExcel();
+
+        // Settingan Description awal file excel
+        $excel->getProperties()->setCreator('Vhierman Sach')
+            ->setLastModifiedBy('Vhierman Sach')
+            ->setTitle("Data Rekonsiliasi Gaji Prima")
+            ->setSubject("Data Rekonsiliasi Gaji Prima")
+            ->setDescription("Laporan Data Rekonsiliasi Gaji Prima")
+            ->setKeywords("Data Rekonsiliasi Gaji Prima");
+
+        // Buat sebuah variabel untuk menampung pengaturan style dari header tabel
+        $style_col = array(
+            'font' => array('bold' => true), // Set font nya jadi bold
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, // Set text jadi ditengah secara horizontal (center)
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+            ),
+            'borders' => array(
+                'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+                'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+                'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+                'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+            )
+        );
+
+        // Buat sebuah variabel untuk menampung pengaturan style dari isi tabel
+        $style_row = array(
+            'alignment' => array(
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+            ),
+            'borders' => array(
+                'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+                'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+                'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+                'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+            )
+        );
+
+        $excel->setActiveSheetIndex(0)->setCellValue('B2', "DATA REKONSILIASI GAJI");
+
+        $excel->getActiveSheet()->mergeCells('B2:H2'); // Set Merge Cell 
+        $excel->getActiveSheet()->getStyle('B2')->getFont()->setBold(TRUE); // Set bold
+        $excel->getActiveSheet()->getStyle('B2')->getFont()->setSize(16); // Set font size
+        $excel->getActiveSheet()->getStyle('B2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        // Set text center 
+
+        $excel->setActiveSheetIndex(0)->setCellValue('B3', "PT PRIMA KOMPONEN INDONESIA");
+        // Set kolom B2 dengan tulisan "PT PRIMA KOMPONEN INDONESIA"
+
+        $excel->getActiveSheet()->mergeCells('B3:H3'); // Set Merge Cell 
+        $excel->getActiveSheet()->getStyle('B3')->getFont()->setBold(TRUE); // Set bold
+        $excel->getActiveSheet()->getStyle('B3')->getFont()->setSize(16); // Set font size
+        $excel->getActiveSheet()->getStyle('B3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        // Set text center
+
+        // Buat header juudl tabel nya pada baris ke 5
+        $excel->setActiveSheetIndex(0)->setCellValue('B6', "NO");
+        $excel->setActiveSheetIndex(0)->setCellValue('C6', "NAMA KARYAWAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('D6', "NIK KARYAWAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('E6', "JABATAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('F6', "PENEMPATAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('G6', "TANGGAL MULAI KERJA");
+        $excel->setActiveSheetIndex(0)->setCellValue('H6', "STATUS KERJA");
+        $excel->setActiveSheetIndex(0)->setCellValue('I6', "GAJI POKOK");
+        $excel->setActiveSheetIndex(0)->setCellValue('J6', "UANG MAKAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('K6', "UANG TRANSPORT");
+        $excel->setActiveSheetIndex(0)->setCellValue('L6', "TUNJANGAN TUGAS");
+        $excel->setActiveSheetIndex(0)->setCellValue('M6', "TUNJANGAN PULSA");
+        $excel->setActiveSheetIndex(0)->setCellValue('N6', "JUMLAH UPAH");
+        $excel->setActiveSheetIndex(0)->setCellValue('O6', "UPAH LEMBUR PERJAM");
+        $excel->setActiveSheetIndex(0)->setCellValue('P6', "JHT BEBAN KARYAWAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('Q6', "JP BEBAN KARYAWAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('R6', "JKN BEBAN KARYAWAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('S6', "JHT BEBAN PERUSAHAAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('T6', "JP BEBAN PERUSAHAAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('U6', "JKN BEBAN PERUSAHAAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('V6', "JKM BEBAN PERUSAHAAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('W6', "JKK BEBAN PERUSAHAAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('X6', "JUMLAH BPJSTK KARYAWAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('Y6', "JUMLAH BPJSTK PERUSAHAAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('Z6', "JUMLAH BPJSKS KARYAWAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('AA6', "JUMLAH BPJSKS PERUSAHAAN");
+        $excel->setActiveSheetIndex(0)->setCellValue('AB6', "TAKE HOME PAY");
+
+        // Apply style header yang telah kita buat tadi ke masing-masing kolom header
+        $excel->getActiveSheet()->getStyle('B6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('C6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('D6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('E6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('F6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('G6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('H6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('I6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('J6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('K6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('L6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('M6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('N6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('O6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('P6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('Q6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('R6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('S6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('T6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('U6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('V6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('W6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('X6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('Y6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('Z6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('AA6')->applyFromArray($style_col);
+        $excel->getActiveSheet()->getStyle('AB6')->applyFromArray($style_col);
+
+        
+        // Panggil function view yang ada di Model untuk menampilkan semua data
+        $join = $this->gaji->DownloadRekonGajiPrimaExcell($mulai_tanggal,$sampai_tanggal);
+
+        $no = 1; // Untuk penomoran tabel, di awal set dengan 1
+        $numrow = 7; // Set baris pertama untuk isi tabel adalah baris ke 4
+        foreach ($join as $data) {
+
+            $excel->setActiveSheetIndex(0)->setCellValue('B' . $numrow, $no);
+            $excel->setActiveSheetIndex(0)->setCellValue('C' . $numrow, $data->nama_karyawan);
+            $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow, "'" .$data->nik_karyawan);
+            $excel->setActiveSheetIndex(0)->setCellValue('E' . $numrow, $data->jabatan);
+            $excel->setActiveSheetIndex(0)->setCellValue('F' . $numrow, $data->penempatan);
+            $excel->setActiveSheetIndex(0)->setCellValue('G' . $numrow, "'" .$data->tanggal_mulai_kerja);
+            $excel->setActiveSheetIndex(0)->setCellValue('H' . $numrow, $data->status_kerja);
+            $excel->setActiveSheetIndex(0)->setCellValue('I' . $numrow, $data->gaji_pokok_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('J' . $numrow, $data->uang_makan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('K' . $numrow, $data->uang_transport_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('L' . $numrow, $data->tunjangan_tugas_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('M' . $numrow, $data->tunjangan_pulsa_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('N' . $numrow, $data->jumlah_upah_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('O' . $numrow, $data->upah_lembur_perjam_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('P' . $numrow, $data->potongan_jht_karyawan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('Q' . $numrow, $data->potongan_jp_karyawan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('R' . $numrow, $data->potongan_bpjsks_karyawan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('S' . $numrow, $data->potongan_jht_perusahaan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('T' . $numrow, $data->potongan_jp_perusahaan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('U' . $numrow, $data->potongan_bpjsks_perusahaan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('V' . $numrow, $data->potongan_jkm_perusahaan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('W' . $numrow, $data->potongan_jkk_perusahaan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('X' . $numrow, $data->jumlah_bpjstk_karyawan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('Y' . $numrow, $data->jumlah_bpjstk_perusahaan_master	);
+            $excel->setActiveSheetIndex(0)->setCellValue('Z' . $numrow, $data->potongan_bpjsks_karyawan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('AA' . $numrow, $data->potongan_bpjsks_perusahaan_master);
+            $excel->setActiveSheetIndex(0)->setCellValue('AB' . $numrow, $data->take_home_pay_master);
+
+            // Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
+            $excel->getActiveSheet()->getStyle('B' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('E' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('F' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('G' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('H' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('I' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('J' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('K' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('L' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('M' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('N' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('O' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('P' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('Q' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('R' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('S' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('T' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('U' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('V' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('W' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('X' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('Y' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('Z' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('AA' . $numrow)->applyFromArray($style_row);
+            $excel->getActiveSheet()->getStyle('AB' . $numrow)->applyFromArray($style_row);
+
+            $no++; // Tambah 1 setiap kali looping
+            $numrow++; // Tambah 1 setiap kali looping
+
+        }
+        
+
+        // Set width kolom di excell
+        $excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('B')->setWidth(5); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('C')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('D')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('E')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('F')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('G')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('H')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('I')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('J')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('K')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('L')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('M')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('N')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('O')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('P')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('Q')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('R')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('S')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('T')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('U')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('V')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('W')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('X')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('Y')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('Z')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('AA')->setWidth(30); // Set width kolom 
+        $excel->getActiveSheet()->getColumnDimension('AB')->setWidth(30); // Set width kolom 
+
+        // Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
+        $excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(25);
+
+        // Set orientasi kertas jadi LANDSCAPE
+        $excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+
+        // Set judul Sheet excel nya
+        $excel->getActiveSheet(0)->setTitle("Data Rekonsiliasi Gaji");
+        $excel->setActiveSheetIndex(0);
+
+        // Proses file excel
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="Data Rekap Gaji Karyawan Prima.xlsx"'); // Set nama file excel nya
+        header('Cache-Control: max-age=0');
+
+        $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+        $write->save('php://output');
+
+    }
+
+    // Download Data Rekap Prima
     public function downloadrekapgajiprimaexcell($mulai_tanggal,$sampai_tanggal)
     {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
@@ -820,7 +1066,7 @@ class Gaji extends CI_Controller
 
     }
 
-    // Download Data Rekon Petra
+    // Download Data Rekap Petra
     public function downloadrekapgajipetraexcell($mulai_tanggal,$sampai_tanggal)
     {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login

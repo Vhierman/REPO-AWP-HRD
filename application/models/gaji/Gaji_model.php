@@ -196,6 +196,21 @@ class Gaji_model extends CI_model
         return $karyawan;
     }
 
+    //Query untuk Download Rekon Gaji Karyawan Prima
+    public function DownloadRekonGajiPrimaExcell($mulai_tanggal,$sampai_tanggal)
+    {
+        $this->db->select('*');
+        $this->db->from('karyawan');
+        $this->db->join('gaji_master', 'gaji_master.karyawan_id_master=karyawan.nik_karyawan');
+        $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+        $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+        $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+        $this->db->where('perusahaan_id', 1);
+        $this->db->order_by('nama_karyawan');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     //Query untuk Download Rekap Gaji Karyawan Prima
     public function DownloadRekapGajiPrimaExcell($mulai_tanggal,$sampai_tanggal)
     {
