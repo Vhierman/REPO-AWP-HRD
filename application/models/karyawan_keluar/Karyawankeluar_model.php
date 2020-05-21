@@ -232,6 +232,13 @@ class Karyawankeluar_model extends CI_model
         $this->db->delete('history_kontrak', ['karyawan_id' => $nikkaryawan]);
     }
 
+    //melakukan query hapus History Jabatan
+    public function hapusHistoryJabatan()
+    {
+        $nikkaryawan = $this->input->post('nik_karyawan', true);
+        $this->db->delete('history_jabatan', ['karyawan_id' => $nikkaryawan]);
+    }
+
     //melakukan query hapus History Keluarga
     public function hapusHistoryKeluarga()
     {

@@ -103,6 +103,9 @@ class KaryawanKeluar extends CI_Controller
                 //mendelete kedalam database melalui method hapus History Kontrak berdasarkan nik karyawan nya
                 $this->keluar->hapusHistoryKontrak();
 
+                //mendelete kedalam database melalui method hapus History Jabatan berdasarkan nik karyawan nya
+                $this->keluar->hapusHistoryJabatan();
+
                 //mendelete kedalam database melalui method hapus History Keluarga berdasarkan nik karyawan nya
                 $this->keluar->hapusHistoryKeluarga();
 

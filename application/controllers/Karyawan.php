@@ -982,6 +982,27 @@ class Karyawan extends CI_Controller
             //mendelete kedalam database melalui method hapusInventarisKaryawan berdasarkan nik karyawan nya
             $this->karyawan->hapusInventarisKaryawan();
 
+            //mendelete kedalam database melalui method hapus History Kontrak berdasarkan nik karyawan nya
+            $this->keluar->hapusHistoryKontrak();
+
+            //mendelete kedalam database melalui method hapus History Jabatan berdasarkan nik karyawan nya
+            $this->keluar->hapusHistoryJabatan();
+
+            //mendelete kedalam database melalui method hapus History Keluarga berdasarkan nik karyawan nya
+            $this->keluar->hapusHistoryKeluarga();
+
+            //mendelete kedalam database melalui method hapus History Pendidikan Formal berdasarkan nik karyawan nya
+            $this->keluar->hapusHistoryPendidikanFormal();
+
+            //mendelete kedalam database melalui method hapus History Pendidikan NOn Formal berdasarkan nik karyawan nya
+            $this->keluar->hapusHistoryPendidikanNonFormal();
+
+            //mendelete kedalam database melalui method hapus History Training Internal berdasarkan nik karyawan nya
+            $this->keluar->hapusHistoryTrainingInternal();
+
+            //mendelete kedalam database melalui method hapus History Training Eksternal berdasarkan nik karyawan nya
+            $this->keluar->hapusHistoryTrainingEksternal();
+            
             //menampikan pesan sukses
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Success Delete Data Karyawan</div>');
             //dan mendirect kehalaman perusahaan

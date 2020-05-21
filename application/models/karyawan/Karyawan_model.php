@@ -360,20 +360,69 @@ class Karyawan_model extends CI_model
     }
 
     //melakukan query hapus absen karyawan
-    public function hapusAbsenKaryawan()
+    public function hapusAbsenKaryawan($id)
     {
-        $nikkaryawan = $this->input->post('nik_karyawan', true);
+        $nikkaryawan = $id;
         $this->db->delete('absensi_2018', ['nik_karyawan_absen' => $nikkaryawan]);
         $this->db->delete('absensi_2019', ['nik_karyawan_absen' => $nikkaryawan]);
         $this->db->delete('absensi_2020', ['nik_karyawan_absen' => $nikkaryawan]);
     }
 
     //melakukan query hapus inventaris karyawan
-    public function hapusInventarisKaryawan()
+    public function hapusInventarisKaryawan($id)
     {
-        $nikkaryawan = $this->input->post('nik_karyawan', true);
+        $nikkaryawan = $id;
         $this->db->delete('inventaris_laptop', ['karyawan_id' => $nikkaryawan]);
         $this->db->delete('inventaris_motor', ['karyawan_id' => $nikkaryawan]);
         $this->db->delete('inventaris_mobil', ['karyawan_id' => $nikkaryawan]);
+    }
+
+    //melakukan query hapus History Kontrak
+    public function hapusHistoryKontrak($id)
+    {
+        $nikkaryawan = $id;
+        $this->db->delete('history_kontrak', ['karyawan_id' => $nikkaryawan]);
+    }
+
+    //melakukan query hapus History Jabatan
+    public function hapusHistoryJabatan($id)
+    {
+        $nikkaryawan = $id;
+        $this->db->delete('history_jabatan', ['karyawan_id' => $nikkaryawan]);
+    }
+
+    //melakukan query hapus History Keluarga
+    public function hapusHistoryKeluarga($id)
+    {
+        $nikkaryawan = $id;
+        $this->db->delete('history_keluarga', ['karyawan_id' => $nikkaryawan]);
+    }
+
+    //melakukan query hapus History Pendidikan Formal
+    public function hapusHistoryPendidikanFormal($id)
+    {
+        $nikkaryawan = $id;
+        $this->db->delete('history_pendidikan_formal', ['karyawan_id' => $nikkaryawan]);
+    }
+
+    //melakukan query hapus History Pendidikan Non Formal
+    public function hapusHistoryPendidikanNonFormal($id)
+    {
+        $nikkaryawan = $id;
+        $this->db->delete('history_pendidikan_non_formal', ['karyawan_id' => $nikkaryawan]);
+    }
+
+    //melakukan query hapus History Training Internal
+    public function hapusHistoryTrainingInternal($id)
+    {
+        $nikkaryawan = $id;
+        $this->db->delete('history_training_internal', ['karyawan_id' => $nikkaryawan]);
+    }
+
+    //melakukan query hapus History Training Eksternal
+    public function hapusHistoryTrainingEksternal($id)
+    {
+        $nikkaryawan = $id;
+        $this->db->delete('history_training_eksternal', ['karyawan_id' => $nikkaryawan]);
     }
 }
