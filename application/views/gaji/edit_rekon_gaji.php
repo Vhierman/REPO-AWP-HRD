@@ -10,7 +10,8 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                 <label for="perusahaan_id" class="col-md-6 col-form-label"><b>Nama Karyawan</b></label>
-                    <input type="text" class="form-control" value="<?= $editrekongaji['nama_karyawan'] ?>" name="gaji_pokok" maxlength="10" onkeyup="angka(this);" placeholder="Masukan Gaji Pokok">
+                    <input type="text" class="form-control" readonly="readonly" value="<?= $editrekongaji['nik_karyawan'] ?>" name="nik_karyawan" maxlength="16" onkeyup="angka(this);" placeholder="Masukan Nama Karyawan">
+                    <input type="text" class="form-control" readonly="readonly" value="<?= $editrekongaji['nama_karyawan'] ?>" name="nama_karyawan" maxlength="10" onkeyup="angka(this);" placeholder="Masukan Nama Karyawan">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="perusahaan_id" class="col-md-6 col-form-label"><b>Gaji Pokok</b></label>
@@ -43,7 +44,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="perusahaan_id" class="col-md-6 col-form-label"><b>POTONGAN BPJS</b></label>
-                    <input class="form-control-input" name="jkn" type="checkbox" id="inlineCheckbox1" value="JKN">
+                    <input class="form-control-input" name="jkn" type="checkbox" id="inlineCheckbox1" value="JKN" >
                     <label class="form-control-label" for="inlineCheckbox1"><b>JKN</b></label>
                     <input class="form-control-input" name="jht" type="checkbox" id="inlineCheckbox1" value="JHT">
                     <label class="form-control-label" for="inlineCheckbox1">JHT</label>
@@ -53,6 +54,17 @@
                     <label class="form-control-label" for="inlineCheckbox1">JKK</label>
                     <input class="form-control-input" name="jkm" type="checkbox" id="inlineCheckbox1" value="JKM">
                     <label class="form-control-label" for="inlineCheckbox1">JKM</label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="perusahaan_id" class="col-md-6 col-form-label"><b>Mulai Tanggal</b></label>
+                    <input type="text" class="form-control" value="<?= $editrekongaji['periode_awal_gaji_history'] ?>" name="mulai_tanggal" maxlength="16" placeholder="YYYY-MM-DD" readonly="readonly">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="perusahaan_id" class="col-md-6 col-form-label"><b>Sampai Tanggal</b></label>
+                    <input type="text" class="form-control" value="<?= $editrekongaji['periode_akhir_gaji_history'] ?>" name="sampai_tanggal" maxlength="16" placeholder="YYYY-MM-DD" readonly="readonly">
                 </div>
             </div>
 

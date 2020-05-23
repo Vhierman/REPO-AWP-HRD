@@ -107,6 +107,36 @@ class Gaji_model extends CI_model
         $this->db->trans_complete();
     }
 
+    //mengambil data karyawan
+    public function updatedatarekongaji($nikkaryawan,$mulai_tanggal,$sampai_tanggal, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan,$jpbebankaryawan,$jpbebanperusahaan,$jkkbebanperusahaan,$jkmbebanperusahaan,$jumlahbpjstkbebankaryawan,$jumlahbpjstkbebanperusahaan,$takehomepay)
+    {
+
+            $result = [
+                'gaji_pokok_history'                     => $gajipokok,
+                'upah_lembur_perjam_history'             => round($upahlemburperjam,0),
+                'uang_makan_history'                     => $uangmakan,
+                'uang_transport_history'                 => $uangtransport,
+                'tunjangan_tugas_history'                => $tunjangantugas,
+                'tunjangan_pulsa_history'                => $tunjanganpulsa,
+                'jumlah_upah_history'                    => $jumlahupah,
+                'potongan_bpjsks_perusahaan_history'     => $jknbebanperusahaan,
+                'potongan_bpjsks_karyawan_history'       => $jknbebankaryawan,
+                'potongan_jht_karyawan_history'          => $jhtbebankaryawan,
+                'potongan_jp_karyawan_history'           => $jpbebankaryawan,
+                'jumlah_bpjstk_karyawan_history'         => $jumlahbpjstkbebankaryawan,
+                'potongan_jht_perusahaan_history'        => round($jhtbebanperusahaan,0),
+                'potongan_jp_perusahaan_history'         => $jpbebanperusahaan,
+                'potongan_jkk_perusahaan_history'        => round($jkkbebanperusahaan,0),
+                'potongan_jkm_perusahaan_history'        => round($jkmbebanperusahaan,0),
+                'jumlah_bpjstk_perusahaan_history'       => round($jumlahbpjstkbebanperusahaan,0),
+                'take_home_pay_history'                  => $takehomepay
+            ];
+            $this->db->where('karyawan_id_history', $nikkaryawan);
+            $this->db->where('periode_awal_gaji_history', $mulai_tanggal);
+            $this->db->where('periode_akhir_gaji_history', $sampai_tanggal);
+            $this->db->update('history_gaji', $result);
+    }
+
     //Query untuk onchange mencari data gaji berdasarkan nik karyawan
     function get_gaji_bynik($nik_karyawan)
     {

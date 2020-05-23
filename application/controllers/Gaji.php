@@ -1933,7 +1933,7 @@ class Gaji extends CI_Controller
     }
 
 
-    //Menampilkan halaman awal data update gaji
+    //Melakukan update gaji
     public function hasilupdategajikaryawan()
     {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
@@ -2366,5 +2366,423 @@ class Gaji extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('gaji/edit_rekon_gaji', $data);
         $this->load->view('templates/footer');
+    }
+
+    public function hasileditrekongajikaryawan()
+    {
+        //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+        $data['title'] = 'Data Edit Rekon Gaji';
+        //Menyimpan session dari login
+        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+        //Validation Form Input
+        $this->form_validation->set_rules('gaji_pokok', 'Gaji Pokok', 'required');
+        $this->form_validation->set_rules('uang_makan', 'Uang Makan', 'required');
+        $this->form_validation->set_rules('uang_transport', ' Uang Transport', 'required');
+
+        //jika validasinya salah akan menampilkan halaman lembur
+        if ($this->form_validation->run() == false) {
+            //menampilkan halaman Update Gaji
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('gaji/tampil_rekon_gaji', $data);
+            $this->load->view('templates/footer');
+        }
+        //
+        else {
+
+            //Query Untuk Mencari Rincian Potongan BPJS Kesehatan
+            $this->db->select('*');
+            $this->db->from('potongan_bpjs_kesehatan');
+            $bpjsks = $this->db->get()->row_array();
+
+            $databpjsks = [
+                'potongan_bpjs_kesehatan_karyawan'      => $bpjsks['potongan_bpjs_kesehatan_karyawan'],
+                'potongan_bpjs_kesehatan_perusahaan'    => $bpjsks['potongan_bpjs_kesehatan_perusahaan'],
+                'maksimal_iuran_bpjs_kesehatan'         => $bpjsks['maksimal_iuran_bpjs_kesehatan']
+            ];
+
+            //End Untuk Mencari Rincian Potongan BPJS Kesehatan
+
+            //Query Untuk Mencari Rincian Potongan BPJS Ketenagakerjaan
+            $this->db->select('*');
+            $this->db->from('potongan_bpjs_ketenagakerjaan');
+            $bpjstk = $this->db->get()->row_array();
+
+            $databpjstk = [
+                'potongan_jht_karyawan'         => $bpjstk['potongan_jht_karyawan'],
+                'potongan_jht_perusahaan'       => $bpjstk['potongan_jht_perusahaan'],
+                'potongan_jp_karyawan'          => $bpjstk['potongan_jp_karyawan'],
+                'potongan_jp_perusahaan'        => $bpjstk['potongan_jp_perusahaan'],
+                'potongan_jkk_perusahaan'       => $bpjstk['potongan_jkk_perusahaan'],
+                'potongan_jkm_perusahaan'       => $bpjstk['potongan_jkm_perusahaan'],
+                'jumlah_potongan_karyawan'      => $bpjstk['jumlah_potongan_karyawan'],
+                'jumlah_potongan_perusahaan'    => $bpjstk['jumlah_potongan_perusahaan'],
+                'maksimal_iuran_jp'             => $bpjstk['maksimal_iuran_jp']
+            ];
+            //End Untuk Mencari Rincian Potongan BPJS Ketenagakerjaan
+
+            //Mengambil variabel dari inputan
+            $nikkaryawan        = $this->input->post('nik_karyawan', TRUE);
+            $gajipokok          = $this->input->post('gaji_pokok', TRUE);
+            $uangmakan          = $this->input->post('uang_makan', TRUE);
+            $uangtransport      = $this->input->post('uang_transport', TRUE);
+            $tunjangantugas     = $this->input->post('tunjangan_tugas', TRUE);
+            $tunjanganpulsa     = $this->input->post('tunjangan_pulsa', TRUE);
+            $mulai_tanggal     = $this->input->post('mulai_tanggal', TRUE);
+            $sampai_tanggal     = $this->input->post('sampai_tanggal', TRUE);
+
+            //Menghitung Jumlah Upah
+            $jumlahupah         = $gajipokok + $uangmakan + $uangtransport + $tunjangantugas + $tunjanganpulsa;
+
+            //Checkbox BPJSTK Dan BPJSKS
+            $jkn        = $this->input->post('jkn', TRUE);
+            $jht        = $this->input->post('jht', TRUE);
+            $jp         = $this->input->post('jp', TRUE);
+            $jkk        = $this->input->post('jkk', TRUE);
+            $jkm        = $this->input->post('jkm', TRUE);
+            //
+
+            //Checkbox BPJS
+            //Jika Ikut Semua Kepesertaan BPJS Kesehatan Dan Ketenagakerjaan
+            if($jkn != null && $jht != null && $jp != null && $jkk != null && $jkm != null){
+                //Potongan BPJS Kesehatan
+                $potongan_bpjs_kesehatan_karyawan   = $databpjsks['potongan_bpjs_kesehatan_karyawan'];
+                $potongan_bpjs_kesehatan_perusahaan = $databpjsks['potongan_bpjs_kesehatan_perusahaan'];
+                $maksimal_iuran_bpjs_kesehatan      = $databpjsks['maksimal_iuran_bpjs_kesehatan'];
+                //Potongan BPJS Ketenagakerjaan
+                $potongan_jht_karyawan              = $databpjstk['potongan_jht_karyawan'];
+                $potongan_jht_perusahaan            = $databpjstk['potongan_jht_perusahaan'];
+                $potongan_jp_karyawan               = $databpjstk['potongan_jp_karyawan'];
+                $potongan_jp_perusahaan             = $databpjstk['potongan_jp_perusahaan'];
+                $potongan_jkk_perusahaan            = $databpjstk['potongan_jkk_perusahaan'];
+                $potongan_jkm_perusahaan            = $databpjstk['potongan_jkm_perusahaan'];
+                $jumlah_potongan_karyawan           = $databpjstk['jumlah_potongan_karyawan'];
+                $jumlah_potongan_perusahaan         = $databpjstk['jumlah_potongan_perusahaan'];
+                $maksimal_iuran_jp                  = $databpjstk['maksimal_iuran_jp'];
+
+                //Jika Gaji Di Atas Maksimal Iuran BPJS Kesehatan
+                if ($jumlahupah > $maksimal_iuran_bpjs_kesehatan) {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $maksimal_iuran_bpjs_kesehatan * 1 / 100;
+                    $jknbebanperusahaan             = $maksimal_iuran_bpjs_kesehatan * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                } 
+                //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
+                else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $jumlahupah * 1 / 100;
+                    $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                } 
+                //Jika Gaji Dibawah Iuran Maksimal BPJSTK
+                else {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $jumlahupah * 1 / 100;
+                    $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $jumlahupah * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $jumlahupah * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                }
+                //
+            }
+
+            //Jika Hanya Ikut Kepesertaan BPJS Kesehatan Saja
+            elseif($jkn != null && $jht == null && $jp == null && $jkk == null && $jkm == null){
+                //Potongan BPJS Kesehatan
+                $potongan_bpjs_kesehatan_karyawan   = $databpjsks['potongan_bpjs_kesehatan_karyawan'];
+                $potongan_bpjs_kesehatan_perusahaan = $databpjsks['potongan_bpjs_kesehatan_perusahaan'];
+                $maksimal_iuran_bpjs_kesehatan      = $databpjsks['maksimal_iuran_bpjs_kesehatan'];
+                //Potongan BPJS Ketenagakerjaan
+                $potongan_jht_karyawan              = 0;
+                $potongan_jht_perusahaan            = 0;
+                $potongan_jp_karyawan               = 0;
+                $potongan_jp_perusahaan             = 0;
+                $potongan_jkk_perusahaan            = 0;
+                $potongan_jkm_perusahaan            = 0;
+                $jumlah_potongan_karyawan           = 0;
+                $jumlah_potongan_perusahaan         = 0;
+                $maksimal_iuran_jp                  = 0;
+
+                //Jika Gaji Di Atas Maksimal Iuran BPJS Kesehatan
+                if ($jumlahupah > $maksimal_iuran_bpjs_kesehatan) {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $maksimal_iuran_bpjs_kesehatan * 1 / 100;
+                    $jknbebanperusahaan             = $maksimal_iuran_bpjs_kesehatan * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                } 
+                //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
+                else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $jumlahupah * 1 / 100;
+                    $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                } 
+                //Jika Gaji Dibawah Iuran Maksimal BPJSTK
+                else {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $jumlahupah * 1 / 100;
+                    $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $jumlahupah * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $jumlahupah * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                }
+                //
+            }
+
+            //Jika Hanya Ikut Kepesertaan BPJS Ketenagakerjaan Saja
+            elseif($jkn == null && $jht != null && $jp != null && $jkk != null && $jkm != null){
+                //Potongan BPJS Kesehatan
+                $potongan_bpjs_kesehatan_karyawan   = $databpjsks['potongan_bpjs_kesehatan_karyawan'];
+                $potongan_bpjs_kesehatan_perusahaan = $databpjsks['potongan_bpjs_kesehatan_perusahaan'];
+                $maksimal_iuran_bpjs_kesehatan      = $databpjsks['maksimal_iuran_bpjs_kesehatan'];
+                //Potongan BPJS Ketenagakerjaan
+                $potongan_jht_karyawan              = $databpjstk['potongan_jht_karyawan'];
+                $potongan_jht_perusahaan            = $databpjstk['potongan_jht_perusahaan'];
+                $potongan_jp_karyawan               = 0;
+                $potongan_jp_perusahaan             = 0;
+                $potongan_jkk_perusahaan            = $databpjstk['potongan_jkk_perusahaan'];
+                $potongan_jkm_perusahaan            = $databpjstk['potongan_jkm_perusahaan'];
+                $jumlah_potongan_karyawan           = $databpjstk['jumlah_potongan_karyawan'];
+                $jumlah_potongan_perusahaan         = $databpjstk['jumlah_potongan_perusahaan'];
+                $maksimal_iuran_jp                  = 0;
+
+                //Jika Gaji Di Atas Maksimal Iuran BPJS Kesehatan
+                if ($jumlahupah > $maksimal_iuran_bpjs_kesehatan) {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $maksimal_iuran_bpjs_kesehatan * 1 / 100;
+                    $jknbebanperusahaan             = $maksimal_iuran_bpjs_kesehatan * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                } 
+                //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
+                else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $jumlahupah * 1 / 100;
+                    $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                } 
+                //Jika Gaji Dibawah Iuran Maksimal BPJSTK
+                else {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $jumlahupah * 1 / 100;
+                    $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $jumlahupah * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $jumlahupah * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                }
+                //
+            }
+
+            //JIka tidak ikut kepsertaaan Jaminan Pensiun
+            elseif($jkn != null && $jht != null && $jp == null && $jkk != null && $jkm != null){
+                //Potongan BPJS Kesehatan
+                $potongan_bpjs_kesehatan_karyawan   = 0;
+                $potongan_bpjs_kesehatan_perusahaan = 0;
+                $maksimal_iuran_bpjs_kesehatan      = 0;
+                //Potongan BPJS Ketenagakerjaan
+                $potongan_jht_karyawan              = $databpjstk['potongan_jht_karyawan'];
+                $potongan_jht_perusahaan            = $databpjstk['potongan_jht_perusahaan'];
+                $potongan_jp_karyawan               = $databpjstk['potongan_jp_karyawan'];
+                $potongan_jp_perusahaan             = $databpjstk['potongan_jp_perusahaan'];
+                $potongan_jkk_perusahaan            = $databpjstk['potongan_jkk_perusahaan'];
+                $potongan_jkm_perusahaan            = $databpjstk['potongan_jkm_perusahaan'];
+                $jumlah_potongan_karyawan           = $databpjstk['jumlah_potongan_karyawan'];
+                $jumlah_potongan_perusahaan         = $databpjstk['jumlah_potongan_perusahaan'];
+                $maksimal_iuran_jp                  = $databpjstk['maksimal_iuran_jp'];
+
+                //Jika Gaji Di Atas Maksimal Iuran BPJS Kesehatan
+                if ($jumlahupah > $maksimal_iuran_bpjs_kesehatan) {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $maksimal_iuran_bpjs_kesehatan * 1 / 100;
+                    $jknbebanperusahaan             = $maksimal_iuran_bpjs_kesehatan * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                } 
+                //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
+                else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $jumlahupah * 1 / 100;
+                    $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                } 
+                //Jika Gaji Dibawah Iuran Maksimal BPJSTK
+                else {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $jumlahupah * 1 / 100;
+                    $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $jumlahupah * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $jumlahupah * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                }
+                //
+            }
+            //Jika tidak Ikut Semua Kepesertaan BPJS Kesehatan Dan BPJS Ketenagakerjaan
+            else{
+                //Potongan BPJS Kesehatan
+                $potongan_bpjs_kesehatan_karyawan   = 0;
+                $potongan_bpjs_kesehatan_perusahaan = 0;
+                $maksimal_iuran_bpjs_kesehatan      = 0;
+                //Potongan BPJS Ketenagakerjaan
+                $potongan_jht_karyawan              = 0;
+                $potongan_jht_perusahaan            = 0;
+                $potongan_jp_karyawan               = 0;
+                $potongan_jp_perusahaan             = 0;
+                $potongan_jkk_perusahaan            = 0;
+                $potongan_jkm_perusahaan            = 0;
+                $jumlah_potongan_karyawan           = 0;
+                $jumlah_potongan_perusahaan         = 0;
+                $maksimal_iuran_jp                  = 0;
+
+                //Jika Gaji Di Atas Maksimal Iuran BPJS Kesehatan
+                if ($jumlahupah > $maksimal_iuran_bpjs_kesehatan) {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $maksimal_iuran_bpjs_kesehatan * 1 / 100;
+                    $jknbebanperusahaan             = $maksimal_iuran_bpjs_kesehatan * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                } 
+                //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
+                else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $jumlahupah * 1 / 100;
+                    $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                } 
+                //Jika Gaji Dibawah Iuran Maksimal BPJSTK
+                else {
+                    //Potongan BPJS Kesehatan
+                    $jknbebankaryawan               = $jumlahupah * 1 / 100;
+                    $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+                    //Potongan BPJS Ketenagakerjaan
+                    $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+                    $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+                    $jpbebankaryawan                = $jumlahupah * $potongan_jp_karyawan / 100;
+                    $jpbebanperusahaan              = $jumlahupah * $potongan_jp_perusahaan / 100;
+                    $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+                    $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+                    $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                }
+                //
+            }           
+
+            
+            //Menghitung Total Gaji
+            $takehomepay            = $jumlahupah - $jumlahbpjstkbebankaryawan - $jknbebankaryawan;
+
+            //Menghitung Upah Lembur Perjam
+            $upahlemburperjam       = $jumlahupah / 173;
+
+            //Mengirimkan data ke model
+            $hasil = $this->gaji->updatedatarekongaji($nikkaryawan,$mulai_tanggal,$sampai_tanggal, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan,$jpbebankaryawan,$jpbebanperusahaan,$jkkbebanperusahaan,$jkmbebanperusahaan,$jumlahbpjstkbebankaryawan,$jumlahbpjstkbebanperusahaan,$takehomepay);
+
+            //menampikan pesan sukses
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Success Edit Data Rekon Gaji</div>');
+            //dan mendirect kehalaman tampil rekon gaji
+            redirect('gaji/rekonsiliasigaji');
+        }
     }
 }
