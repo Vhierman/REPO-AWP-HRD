@@ -61,7 +61,7 @@
                             <!-- JIka Data Pada Tanggal Tersebut Sudah Di Rekon Maka Button Action Tampil -->
                             <?php if ($mulai_tanggal == $coba) : ?>
                                 <td>
-                                    <a href="<?= base_url(); ?>gaji/editjabatan/<?= $row['id_history_gaji']; ?>" class="btn btn-success btn-sm "><i class="fas fa-pen"></i> Edit</a>
+                                    <a href="<?= base_url(); ?>gaji/editrekongaji/<?= $row['karyawan_id_master']; ?>/<?= $mulai_tanggal . '/' . $sampai_tanggal  ?>" class="btn btn-success btn-sm "><i class="fas fa-pen"></i> Edit</a>
                                 </td>
                                 <!-- JIka Data Pada Tanggal Tersebut Belum Di Rekon Maka Button Action Tidak Tampil -->
                             <?php else : ?>

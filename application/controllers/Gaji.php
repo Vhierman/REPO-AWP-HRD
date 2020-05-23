@@ -2348,4 +2348,23 @@ class Gaji extends CI_Controller
             redirect('gaji/updategaji');
         }
     }
+
+    //Menampilkan halaman awal data edit rekon gaji
+    public function editrekongaji($id_history_gaji,$mulai_tanggal,$sampai_tanggal)
+    {
+        //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+        $data['title'] = 'Data Edit Rekon Gaji';
+        //Menyimpan session dari login
+        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+        //Mengambil data edit rekon gaji
+        $data['editrekongaji']           = $this->gaji->editRekonGaji($id_history_gaji,$mulai_tanggal,$sampai_tanggal);
+
+        //menampilkan halaman Edit Rekon Gaji
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('gaji/edit_rekon_gaji', $data);
+        $this->load->view('templates/footer');
+    }
 }

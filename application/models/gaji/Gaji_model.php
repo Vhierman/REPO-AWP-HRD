@@ -348,4 +348,20 @@ class Gaji_model extends CI_model
         $query = $this->db->get();
         return $query->result();
     }
+
+    //Melakukan query untuk get data rekon gaji
+    public function editRekonGaji($id_history_gaji,$mulai_tanggal,$sampai_tanggal)
+    {
+        $this->db->select('*');
+        $this->db->from('karyawan');
+        $this->db->join('history_gaji', 'history_gaji.karyawan_id_history=karyawan.nik_karyawan');
+        $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+        $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+        $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+        $this->db->where('periode_awal_gaji_history >= ', $mulai_tanggal);
+        $this->db->where('periode_akhir_gaji_history <= ', $sampai_tanggal);
+        $this->db->where('karyawan_id_history', $id_history_gaji);
+        $query = $this->db->get()->row_array();
+        return $query;
+    }
 }
