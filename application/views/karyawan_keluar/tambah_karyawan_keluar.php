@@ -204,6 +204,7 @@
                             <option value="Berakhirnya Kontrak Kerja">Berakhirnya Kontrak Kerja</option>
                             <option value="Berakhirnya Masa Kerja">Berakhirnya Masa Kerja</option>
                             <option value="Pengunduran Diri">Pengunduran Diri</option>
+                            <option value="Meninggal Dunia">Meninggal Dunia</option>
                         </select>
                         <small class="form-text text-danger"><?php echo form_error('keterangan_keluar'); ?></small>
                     </div>

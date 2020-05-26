@@ -153,7 +153,8 @@ class KaryawanKeluar extends CI_Controller
                 '' => 'Pilih Keterangan Keluar',
                 'Berakhirnya Kontrak Kerja' => 'Berakhirnya Kontrak Kerja',
                 'Berakhirnya Masa Kerja' => 'Berakhirnya Masa Kerja',
-                'Pengunduran Diri' => 'Pengunduran Diri'
+                'Pengunduran Diri' => 'Pengunduran Diri',
+                'Meninggal Dunia' => 'Meninggal Dunia'
             ];
 
             //Validation Form EDIT
