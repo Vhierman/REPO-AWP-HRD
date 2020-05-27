@@ -29,7 +29,7 @@
         //Jika yang login HRD, Maka Data Gaji Akan Tampil
         if ($role_id == 1 || $role_id == 11) : ?>
             <li class="nav-item">
-                <a class="nav-link" id="gaji-tab" data-toggle="tab" href="#gaji" role="tab" aria-controls="gaji" aria-selected="false">Gaji</a>
+                <a class="nav-link" id="gaji-tab" data-toggle="tab" href="#gaji" role="tab" aria-controls="gaji" aria-selected="false">Rekening</a>
             </li>
         <?php
         //Jika Bukan HRD , maka tidak akan  tampil
@@ -105,7 +105,7 @@
                     <div class="form-group row">
                         <label for="jam_kerja_id" class="col-sm-3 col-form-label"><b>Jam Kerja</b></label>
                         <div class="col-sm-9">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= "( Jam Masuk " . $karyawan['jam_masuk'] . " )"." s/d "."( Jam Pulang " . $karyawan['jam_pulang'] . " )"; ?>">
+                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= "( Jam Masuk " . $karyawan['jam_masuk'] . " )" . " s/d " . "( Jam Pulang " . $karyawan['jam_pulang'] . " )"; ?>">
                         </div>
                     </div>
 
@@ -293,110 +293,6 @@
                         <div class="col-sm-3">
                             <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nomor_rekening'] ?>">
                         </div>
-
-                        <label for="gaji_pokok" class="col-sm-3 col-form-label"><b>
-                                <a class="text-white btn btn-info btn-circle btn-sm">A</a>
-                                Gaji Pokok</b>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= rupiah($karyawan['gaji_pokok'], 1) ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="uang_makan" class="col-sm-3 col-form-label"><b>
-                                <a class="text-white btn btn-info btn-circle btn-sm">B</a>
-                                Uang Makan</b>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= rupiah($karyawan['uang_makan'], 1) ?>">
-                        </div>
-
-                        <label for="uang_transport" class="col-sm-3 col-form-label"><b>
-                                <a class="text-white btn btn-info btn-circle btn-sm">C</a>
-                                Uang Transport</b>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= rupiah($karyawan['uang_transport'], 1) ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tunjangan_tugas" class="col-sm-3 col-form-label"><b>
-                                <a class="text-white btn btn-info btn-circle btn-sm">D</a>
-                                Tunjangan Tugas</b>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= rupiah($karyawan['tunjangan_tugas'], 1) ?>">
-                        </div>
-
-                        <label for="tunjangan_pulsa" class="col-sm-3 col-form-label"><b>
-                                <a class="text-white btn btn-info btn-circle btn-sm">E</a>
-                                Tunjangan Pulsa</b>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= rupiah($karyawan['tunjangan_pulsa'], 1) ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="jumlah_upah" class="col-sm-3 col-form-label"><b>
-                                <a class="text-white btn btn-info btn-circle btn-sm">F</a>
-                                Jumlah Upah</b>
-                            <span class="badge badge-primary">A + B + C + D + E</span>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= rupiah($karyawan['jumlah_upah'], 1) ?>">
-                        </div>
-
-                        <label for="potongan_jkn" class="col-sm-3 col-form-label"><b>
-                                <a class="text-white btn btn-info btn-circle btn-sm">G</a>
-                                Potongan JKN</b>
-                            <span class="badge badge-primary">1% ( F )</span>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= rupiah($karyawan['potongan_jkn'], 1) ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="potongan_jht" class="col-sm-3 col-form-label"><b>
-                                <a class="text-white btn btn-info btn-circle btn-sm">H</a>
-                                Potongan JHT</b>
-                            <span class="badge badge-primary">2% ( F )</span>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= rupiah($karyawan['potongan_jht'], 1) ?>">
-                        </div>
-
-                        <label for="potongan_jp" class="col-sm-3 col-form-label"><b>
-                                <a class="text-white btn btn-info btn-circle btn-sm">I</a>
-                                Potongan JP</b>
-                            <span class="badge badge-primary">1% ( F )</span>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= rupiah($karyawan['potongan_jp'], 1) ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="upah_lembur_perjam" class="col-sm-3 col-form-label"><b>
-                                <a class="text-white btn btn-info btn-circle btn-sm">J</a>
-                                Upah Lembur</b>
-                            <span class="badge badge-primary">( F / 173 )</span>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= rupiah($karyawan['upah_lembur_perjam'], 1) ?>">
-                        </div>
-
-                        <label for="total_gaji" class="col-sm-3 col-form-label"><b>
-                                <a class="text-white btn btn-info btn-circle btn-sm">K</a>
-                                Total Gaji</b>
-                            <span class="badge badge-primary">( F - G - H - I )</span>
-                        </label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= rupiah($karyawan['total_gaji'], 1) ?>">
-                        </div>
                     </div>
 
                 </div>
@@ -433,125 +329,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="nik_istri_suami" class="col-sm-3 col-form-label"><b>NIK Istri / Suami</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nik_istri_suami'] ?>">
-                        </div>
-
-                        <label for="nama_istri_suami" class="col-sm-3 col-form-label"><b>Nama Istri / Suami</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nama_istri_suami'] ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tempat_lahir_istri_suami" class="col-sm-3 col-form-label"><b>Tempat Lahir Istri / Suami</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['tempat_lahir_istri_suami'] ?>">
-                        </div>
-
-                        <label for="tanggal_lahir_istri_suami" class="col-sm-3 col-form-label"><b>Tanggal Lahir Istri / Suami</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['tanggal_lahir_istri_suami'] ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="nik_anak1" class="col-sm-3 col-form-label"><b>NIK Anak 1</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nik_anak1'] ?>">
-                        </div>
-
-                        <label for="nama_anak1" class="col-sm-3 col-form-label"><b>Nama Anak 1</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nama_anak1'] ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tempat_lahir_anak1" class="col-sm-3 col-form-label"><b>Tempat Lahir Anak 1</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['tempat_lahir_anak1'] ?>">
-                        </div>
-
-                        <label for="tanggal_lahir_anak1" class="col-sm-3 col-form-label"><b>Tanggal Lahir Anak 1</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['tanggal_lahir_anak1'] ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="jenis_kelamin_anak1" class="col-sm-3 col-form-label"><b>Jenis Kelamin Anak 1</b></label>
-                        <div class="col-sm-9">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['jenis_kelamin_anak1'] ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="nik_anak2" class="col-sm-3 col-form-label"><b>NIK Anak 2</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nik_anak2'] ?>">
-                        </div>
-
-                        <label for="nama_anak2" class="col-sm-3 col-form-label"><b>Nama Anak 2</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nama_anak2'] ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tempat_lahir_anak2" class="col-sm-3 col-form-label"><b>Tempat Lahir Anak 2</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['tempat_lahir_anak2'] ?>">
-                        </div>
-
-                        <label for="tanggal_lahir_anak2" class="col-sm-3 col-form-label"><b>Tanggal Lahir Anak 2</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['tanggal_lahir_anak2'] ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="jenis_kelamin_anak2" class="col-sm-3 col-form-label"><b>Jenis Kelamin Anak 2</b></label>
-                        <div class="col-sm-9">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['jenis_kelamin_anak2'] ?>">
-                        </div>
-                    </div>
-
-
-                    <div class="form-group row">
-                        <label for="nik_anak3" class="col-sm-3 col-form-label"><b>NIK Anak 3</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nik_anak3'] ?>">
-                        </div>
-
-                        <label for="nama_anak3" class="col-sm-3 col-form-label"><b>Nama Anak 3</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nama_anak3'] ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tempat_lahir_anak3" class="col-sm-3 col-form-label"><b>Tempat Lahir Anak 3</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['tempat_lahir_anak3'] ?>">
-                        </div>
-
-                        <label for="tanggal_lahir_anak3" class="col-sm-3 col-form-label"><b>Tanggal Lahir Anak 3</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['tanggal_lahir_anak3'] ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="jenis_kelamin_anak3" class="col-sm-3 col-form-label"><b>Jenis Kelamin Anak 3</b></label>
-                        <div class="col-sm-9">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['jenis_kelamin_anak3'] ?>">
-                        </div>
-                    </div>
-
-
                 </div>
             </div>
         </div>
@@ -563,46 +340,21 @@
                 <div class="card-body border-bottom-primary">
 
                     <div class="form-group row">
-                        <label for="nomor_jht" class="col-sm-3 col-form-label"><b>Nomor JHT</b></label>
-                        <div class="col-sm-3">
+                        <label for="nomor_jht" class="col-sm-2 col-form-label"><b>Nomor JHT</b></label>
+                        <div class="col-sm-2">
                             <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nomor_jht'] ?>">
                         </div>
 
-                        <label for="nomor_jp" class="col-sm-3 col-form-label"><b>Nomor JP</b></label>
-                        <div class="col-sm-3">
+                        <label for="nomor_jp" class="col-sm-2 col-form-label"><b>Nomor JP</b></label>
+                        <div class="col-sm-2">
                             <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nomor_jp'] ?>">
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label for="nomor_jkn" class="col-sm-3 col-form-label"><b>Nomor JKN</b></label>
-                        <div class="col-sm-9">
+                        <label for="nomor_jkn" class="col-sm-2 col-form-label"><b>Nomor JKN</b></label>
+                        <div class="col-sm-2">
                             <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nomor_jkn'] ?>">
                         </div>
-                    </div>
 
-                    <div class="form-group row">
-                        <label for="nomor_jkn_istri_suami" class="col-sm-3 col-form-label"><b>Nomor JKN Istri / Suami</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nomor_jkn_istri_suami'] ?>">
-                        </div>
-
-                        <label for="nomor_jkn_anak1" class="col-sm-3 col-form-label"><b>Nomor JKN Anak 1</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nomor_jkn_anak1'] ?>">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="nomor_jkn_anak2" class="col-sm-3 col-form-label"><b>Nomor JKN Anak 1</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nomor_jkn_anak2'] ?>">
-                        </div>
-
-                        <label for="nomor_jkn_anak3" class="col-sm-3 col-form-label"><b>Nomor JKN Anak 3</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<?= $karyawan['nomor_jkn_anak3'] ?>">
-                        </div>
                     </div>
 
                 </div>

@@ -397,8 +397,8 @@ class History extends CI_Controller
             $this->load->view('templates/footer');
         }
     }
-    
-        //Menampilkan halaman awal form history data kontrak
+
+    //Menampilkan halaman awal form history data kontrak
     public function tambahdetailkontrak($nik_karyawan)
     {
 
@@ -502,7 +502,7 @@ class History extends CI_Controller
 
                 if ($status_kontrak_kerja == "PKWTT") {
                     $bulan                      = 0;
-                    $hasiltanggalakhirkontrak   = 0000 - 00 - 00;
+                    $hasiltanggalakhirkontrak   = "0000-00-00";
                     $hasiljumlahkontrak         = 0;
                 } else {
                     $bulan                      = diffInMonths($awal_kontrak, $akhir_kontrak);
@@ -534,7 +534,7 @@ class History extends CI_Controller
             $this->load->view('auth/blocked');
         }
     }
-    
+
     //Menampilkan halaman awal form history data kontrak
     public function aksitambahdetailkontrak()
     {

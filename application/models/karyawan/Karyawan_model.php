@@ -203,33 +203,10 @@ class Karyawan_model extends CI_model
             "nomor_jkn"                     => htmlspecialchars($this->input->post('nomor_jkn', true)),
             "nomor_jht"                     => htmlspecialchars($this->input->post('nomor_jht', true)),
             "nomor_jp"                      => htmlspecialchars($this->input->post('nomor_jp', true)),
-            "nomor_jkn_istri_suami"         => htmlspecialchars($this->input->post('nomor_jkn_istri_suami', true)),
-            "nomor_jkn_anak1"               => htmlspecialchars($this->input->post('nomor_jkn_anak1', true)),
-            "nomor_jkn_anak2"               => htmlspecialchars($this->input->post('nomor_jkn_anak2', true)),
-            "nomor_jkn_anak3"               => htmlspecialchars($this->input->post('nomor_jkn_anak3', true)),
             "nomor_kartu_keluarga"          => htmlspecialchars($this->input->post('nomor_kartu_keluarga', true)),
             "nama_ibu"                      => htmlspecialchars($this->input->post('nama_ibu', true)),
             "nama_ayah"                     => htmlspecialchars($this->input->post('nama_ayah', true)),
-            "status_nikah"                  => $this->input->post('status_nikah', true),
-            "nik_istri_suami"               => htmlspecialchars($this->input->post('nik_istri_suami', true)),
-            "nama_istri_suami"              => htmlspecialchars($this->input->post('nama_istri_suami', true)),
-            "tempat_lahir_istri_suami"      => $this->input->post('tempat_lahir_istri_suami', true),
-            "tanggal_lahir_istri_suami"     => $this->input->post('tanggal_lahir_istri_suami', true),
-            "nik_anak1"                     => htmlspecialchars($this->input->post('nik_anak1', true)),
-            "nama_anak1"                    => htmlspecialchars($this->input->post('nama_anak1', true)),
-            "tempat_lahir_anak1"            => $this->input->post('tempat_lahir_anak1', true),
-            "tanggal_lahir_anak1"           => $this->input->post('tanggal_lahir_anak1', true),
-            "jenis_kelamin_anak1"           => $this->input->post('jenis_kelamin_anak1', true),
-            "nik_anak2"                     => htmlspecialchars($this->input->post('nik_anak2', true)),
-            "nama_anak2"                    => htmlspecialchars($this->input->post('nama_anak2', true)),
-            "tempat_lahir_anak2"            => $this->input->post('tempat_lahir_anak2', true),
-            "tanggal_lahir_anak2"           => $this->input->post('tanggal_lahir_anak2', true),
-            "jenis_kelamin_anak2"           => $this->input->post('jenis_kelamin_anak2', true),
-            "nik_anak3"                     => htmlspecialchars($this->input->post('nik_anak3', true)),
-            "nama_anak3"                    => htmlspecialchars($this->input->post('nama_anak3', true)),
-            "tempat_lahir_anak3"            => $this->input->post('tempat_lahir_anak3', true),
-            "tanggal_lahir_anak3"           => $this->input->post('tanggal_lahir_anak3', true),
-            "jenis_kelamin_anak3"           => $this->input->post('jenis_kelamin_anak3', true)
+            "status_nikah"                  => $this->input->post('status_nikah', true)
         ];
         $this->db->insert('karyawan', $datakaryawan);
     }
@@ -388,7 +365,7 @@ class Karyawan_model extends CI_model
 
         if ($status_kontrak_kerja == "PKWTT") {
             $bulan                      = 0;
-            $hasiltanggalakhirkontrak   = 0000 - 00 - 00;
+            $hasiltanggalakhirkontrak   = "0000-00-00";
             $hasiljumlahkontrak         = 0;
         } else {
             $bulan                      = diffInMonths($awal_kontrak, $akhir_kontrak);
@@ -419,42 +396,11 @@ class Karyawan_model extends CI_model
     //Melakukan query untuk tambah data karyawan
     public function editKaryawan()
     {
-        //Mengambil data gaji untuk dilakukan perhitungan rumus potongan gaji
-        $gaji_pokok             = $this->input->post('gaji_pokok');
-        $uang_makan             = $this->input->post('uang_makan');
-        $uang_transport         = $this->input->post('uang_transport');
-        $tunjangan_tugas        = $this->input->post('tunjangan_tugas');
-        $tunjangan_pulsa        = $this->input->post('tunjangan_pulsa');
 
-        //Perhitungan Rumus Gaji
-        $jumlah_upah            = $gaji_pokok + $uang_makan + $uang_transport + $tunjangan_pulsa + $tunjangan_tugas;
 
-        if ($jumlah_upah > 8000000 && $jumlah_upah < 8512400) {
-            $potongan_jkn           = 8000000 * 1 / 100;
-            $potongan_jp            = $jumlah_upah * 1 / 100;
-        } else if ($jumlah_upah > 8512400) {
-            $potongan_jkn           = 8000000 * 1 / 100;
-            $potongan_jp            = 8512400 * 1 / 100;
-        } else {
-            $potongan_jp            = $jumlah_upah * 1 / 100;
-            $potongan_jkn           = $jumlah_upah * 1 / 100;
-        }
-
-        $potongan_jht           = $jumlah_upah * 2 / 100;
-        $total_gaji             = $jumlah_upah - $potongan_jkn - $potongan_jht - $potongan_jp;
-        $upah_lembur_perjam     = $jumlah_upah / 173;
-
-        //perhitungan upah lembur perjam
-        $upah_lembur_perjam = ceil($upah_lembur_perjam);
-        if (substr($upah_lembur_perjam, -2) >= 0) {
-            $total_upah_lembur_perjam = round($upah_lembur_perjam, -2);
-        } else {
-            $total_upah_lembur_perjam = round($upah_lembur_perjam, -2) + 100;
-        }
-
-        // Jika Status Kontrak menjadi karyawan tetap, maka tanggal akhir kerja = 1111-11-11
+        // Jika Status Kontrak menjadi karyawan tetap, maka tanggal akhir kerja = 0000-00-00
         if ($this->input->post('status_kerja') == "PKWTT") {
-            $tanggalakhirkerja = "1111-11-11";
+            $tanggalakhirkerja = "0000-00-00";
         } else {
             $tanggalakhirkerja = $this->input->post('tanggal_akhir_kerja', true);
         }
@@ -486,50 +432,16 @@ class Karyawan_model extends CI_model
             "provinsi"                      => $this->input->post('provinsi', true),
             "kode_pos"                      => htmlspecialchars($this->input->post('kode_pos', true)),
             "nomor_rekening"                => htmlspecialchars($this->input->post('nomor_rekening', true)),
-            "gaji_pokok"                    => $this->input->post('gaji_pokok', true),
-            "uang_makan"                    => $this->input->post('uang_makan', true),
-            "uang_transport"                => $this->input->post('uang_transport', true),
-            "tunjangan_tugas"               => $this->input->post('tunjangan_tugas', true),
-            "tunjangan_pulsa"               => $this->input->post('tunjangan_pulsa', true),
-            "jumlah_upah"                   => $jumlah_upah,
-            "potongan_jkn"                  => $potongan_jkn,
-            "potongan_jht"                  => $potongan_jht,
-            "potongan_jp"                   => $potongan_jp,
-            "total_gaji "                   => $total_gaji,
-            "upah_lembur_perjam"            => $total_upah_lembur_perjam,
             "tanggal_mulai_kerja"           => $this->input->post('tanggal_mulai_kerja', true),
             "tanggal_akhir_kerja"           => $tanggalakhirkerja,
             "status_kerja"                  => $this->input->post('status_kerja', true),
             "nomor_jkn"                     => htmlspecialchars($this->input->post('nomor_jkn', true)),
             "nomor_jht"                     => htmlspecialchars($this->input->post('nomor_jht', true)),
             "nomor_jp"                      => htmlspecialchars($this->input->post('nomor_jp', true)),
-            "nomor_jkn_istri_suami"         => htmlspecialchars($this->input->post('nomor_jkn_istri_suami', true)),
-            "nomor_jkn_anak1"               => htmlspecialchars($this->input->post('nomor_jkn_anak1', true)),
-            "nomor_jkn_anak2"               => htmlspecialchars($this->input->post('nomor_jkn_anak2', true)),
-            "nomor_jkn_anak3"               => htmlspecialchars($this->input->post('nomor_jkn_anak3', true)),
             "nomor_kartu_keluarga"          => htmlspecialchars($this->input->post('nomor_kartu_keluarga', true)),
             "nama_ibu"                      => htmlspecialchars($this->input->post('nama_ibu', true)),
             "nama_ayah"                     => htmlspecialchars($this->input->post('nama_ayah', true)),
-            "status_nikah"                  => $this->input->post('status_nikah', true),
-            "nik_istri_suami"               => htmlspecialchars($this->input->post('nik_istri_suami', true)),
-            "nama_istri_suami"              => htmlspecialchars($this->input->post('nama_istri_suami', true)),
-            "tempat_lahir_istri_suami"      => $this->input->post('tempat_lahir_istri_suami', true),
-            "tanggal_lahir_istri_suami"     => $this->input->post('tanggal_lahir_istri_suami', true),
-            "nik_anak1"                     => htmlspecialchars($this->input->post('nik_anak1', true)),
-            "nama_anak1"                    => htmlspecialchars($this->input->post('nama_anak1', true)),
-            "tempat_lahir_anak1"            => $this->input->post('tempat_lahir_anak1', true),
-            "tanggal_lahir_anak1"           => $this->input->post('tanggal_lahir_anak1', true),
-            "jenis_kelamin_anak1"           => $this->input->post('jenis_kelamin_anak1', true),
-            "nik_anak2"                     => htmlspecialchars($this->input->post('nik_anak2', true)),
-            "nama_anak2"                    => htmlspecialchars($this->input->post('nama_anak2', true)),
-            "tempat_lahir_anak2"            => $this->input->post('tempat_lahir_anak2', true),
-            "tanggal_lahir_anak2"           => $this->input->post('tanggal_lahir_anak2', true),
-            "jenis_kelamin_anak2"           => $this->input->post('jenis_kelamin_anak2', true),
-            "nik_anak3"                     => htmlspecialchars($this->input->post('nik_anak3', true)),
-            "nama_anak3"                    => htmlspecialchars($this->input->post('nama_anak3', true)),
-            "tempat_lahir_anak3"            => $this->input->post('tempat_lahir_anak3', true),
-            "tanggal_lahir_anak3"           => $this->input->post('tanggal_lahir_anak3', true),
-            "jenis_kelamin_anak3"           => $this->input->post('jenis_kelamin_anak3', true)
+            "status_nikah"                  => $this->input->post('status_nikah', true)
         ];
         $this->db->where('id_karyawan', $this->input->post('id'));
         $this->db->update('karyawan', $data);

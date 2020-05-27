@@ -96,21 +96,9 @@ class Karyawan extends CI_Controller
             $this->form_validation->set_rules('status_nikah', 'Status Nikah', 'required');
             $this->form_validation->set_rules('nama_ayah', 'Nama Ayah', 'required|trim|min_length[2]');
             $this->form_validation->set_rules('nama_ibu', 'Nama Ibu', 'required|trim|min_length[2]');
-            $this->form_validation->set_rules('nik_istri_suami', 'NIK Istri / Suami', 'min_length[16]');
-            $this->form_validation->set_rules('nama_istri_suami', 'Nama Istri / Suami', 'trim|min_length[2]');
-            $this->form_validation->set_rules('nik_anak1', 'NIK Anak 1', 'min_length[16]');
-            $this->form_validation->set_rules('nama_anak1', 'Nama Anak 1', 'trim|min_length[2]');
-            $this->form_validation->set_rules('nik_anak2', 'NIK Anak 2', 'min_length[16]');
-            $this->form_validation->set_rules('nama_anak2', 'Nama Anak 2', 'trim|min_length[2]');
-            $this->form_validation->set_rules('nik_anak3', 'NIK Anak 3', 'min_length[16]');
-            $this->form_validation->set_rules('nama_anak3', 'Nama Anak 3', 'trim|min_length[2]');
             $this->form_validation->set_rules('nomor_jht', 'Nomor Jaminan Hari Tua', 'min_length[11]');
             $this->form_validation->set_rules('nomor_jp', 'Nomor Jaminan Pensiun', 'min_length[11]');
             $this->form_validation->set_rules('nomor_jkn', 'Nomor Jaminan Kesehatan', 'min_length[13]');
-            $this->form_validation->set_rules('nomor_jkn_istri_suami', 'Nomor Jaminan Kesehatan Istri / Suami', 'min_length[13]');
-            $this->form_validation->set_rules('nomor_jkn_anak1', 'Nomor Jaminan Kesehatan Anak 1', 'min_length[13]');
-            $this->form_validation->set_rules('nomor_jkn_anak2', 'Nomor Jaminan Kesehatan Anak 2', 'min_length[13]');
-            $this->form_validation->set_rules('nomor_jkn_anak3', 'Nomor Jaminan Kesehatan Anak 3', 'min_length[13]');
             //Akhir Validation 
 
             //Jika form input ada yang salah
@@ -186,7 +174,7 @@ class Karyawan extends CI_Controller
             $data['agama'] = ['Islam', 'Kristen Protestan', 'Kristen Katholik', 'Hindu', 'Budha'];
             $data['pendidikan_terakhir'] = ['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3'];
             $data['golongan_darah'] = ['A', 'B', 'AB', 'O'];
-            $data['status_kerja'] = ['PKWT', 'PKWTT','Outsourcing'];
+            $data['status_kerja'] = ['PKWT', 'PKWTT', 'Outsourcing'];
             $data['status_nikah'] = ['Single', 'Menikah', 'Duda', 'Janda'];
             //
 
@@ -226,21 +214,9 @@ class Karyawan extends CI_Controller
             $this->form_validation->set_rules('status_nikah', 'Status Nikah', 'required');
             $this->form_validation->set_rules('nama_ayah', 'Nama Ayah', 'required|trim|min_length[2]');
             $this->form_validation->set_rules('nama_ibu', 'Nama Ibu', 'required|trim|min_length[2]');
-            $this->form_validation->set_rules('nik_istri_suami', 'NIK Istri / Suami', 'min_length[16]');
-            $this->form_validation->set_rules('nama_istri_suami', 'Nama Istri / Suami', 'trim|min_length[2]');
-            $this->form_validation->set_rules('nik_anak1', 'NIK Anak 1', 'min_length[16]');
-            $this->form_validation->set_rules('nama_anak1', 'Nama Anak 1', 'trim|min_length[2]');
-            $this->form_validation->set_rules('nik_anak2', 'NIK Anak 2', 'min_length[16]');
-            $this->form_validation->set_rules('nama_anak2', 'Nama Anak 2', 'trim|min_length[2]');
-            $this->form_validation->set_rules('nik_anak3', 'NIK Anak 3', 'min_length[16]');
-            $this->form_validation->set_rules('nama_anak3', 'Nama Anak 3', 'trim|min_length[2]');
             $this->form_validation->set_rules('nomor_jht', 'Nomor Jaminan Hari Tua', 'min_length[11]');
             $this->form_validation->set_rules('nomor_jp', 'Nomor Jaminan Pensiun', 'min_length[11]');
             $this->form_validation->set_rules('nomor_jkn', 'Nomor Jaminan Kesehatan', 'min_length[13]');
-            $this->form_validation->set_rules('nomor_jkn_istri_suami', 'Nomor Jaminan Kesehatan Istri / Suami', 'min_length[13]');
-            $this->form_validation->set_rules('nomor_jkn_anak1', 'Nomor Jaminan Kesehatan Anak 1', 'min_length[13]');
-            $this->form_validation->set_rules('nomor_jkn_anak2', 'Nomor Jaminan Kesehatan Anak 2', 'min_length[13]');
-            $this->form_validation->set_rules('nomor_jkn_anak3', 'Nomor Jaminan Kesehatan Anak 3', 'min_length[13]');
             //Akhir Validation 
 
             //Jika form input ada yang salah
@@ -1191,50 +1167,16 @@ class Karyawan extends CI_Controller
             $excel->setActiveSheetIndex(0)->setCellValue('X3', "RT"); // Set kolom W3 dengan tulisan RT
             $excel->setActiveSheetIndex(0)->setCellValue('Y3', "RW"); // Set kolom X3 dengan tulisan RW
             $excel->setActiveSheetIndex(0)->setCellValue('Z3', "NOMOR REKENING"); // Set kolom Y3 dengan tulisan NOMOR REKENING
-            $excel->setActiveSheetIndex(0)->setCellValue('AA3', "GAJI POKOK"); // Set kolom Z3 dengan tulisan GAJI POKOK
-            $excel->setActiveSheetIndex(0)->setCellValue('AB3', "UANG MAKAN"); // Set kolom AA3 dengan tulisan UANG MAKAN
-            $excel->setActiveSheetIndex(0)->setCellValue('AC3', "UANG TRANSPORT"); // Set kolom AB3 dengan tulisan UANG TRANSPORT
-            $excel->setActiveSheetIndex(0)->setCellValue('AD3', "TUNJANGAN TUGAS"); // Set kolom AC3 dengan tulisan TUNJANGAN TUGAS
-            $excel->setActiveSheetIndex(0)->setCellValue('AE3', "TUNJANGAN PULSA"); // Set kolom AD3 dengan tulisan TUNJANGAN PULSA
-            $excel->setActiveSheetIndex(0)->setCellValue('AF3', "JUMLAH UPAH"); // Set kolom AE3 dengan tulisan JUMLAH UPAH
-            $excel->setActiveSheetIndex(0)->setCellValue('AG3', "POTONGAN JKN"); // Set kolom AE3 dengan tulisan POTONGAN JKN
-            $excel->setActiveSheetIndex(0)->setCellValue('AH3', "POTONGAN JHT"); // Set kolom AG3 dengan tulisan POTONGAN JHT
-            $excel->setActiveSheetIndex(0)->setCellValue('AI3', "POTONGAN JP"); // Set kolom AH3 dengan tulisan POTONGAN JP
-            $excel->setActiveSheetIndex(0)->setCellValue('AJ3', "TOTAL GAJI"); // Set kolom AI3 dengan tulisan TOTAL GAJI 
-            $excel->setActiveSheetIndex(0)->setCellValue('AK3', "UPAH LEMBUR PERJAM"); // Set kolom AJ3 dengan tulisan UPAH LEMBUR PERJAM
-            $excel->setActiveSheetIndex(0)->setCellValue('AL3', "TANGGAL MULAI KERJA"); // Set kolom AK3 dengan tulisan TANGGAL MULAI KERJA
-            $excel->setActiveSheetIndex(0)->setCellValue('AM3', "TANGGAL AKHIR KERJA"); // Set kolom AL3 dengan tulisan TANGGAL AKHIR KERJA
-            $excel->setActiveSheetIndex(0)->setCellValue('AN3', "STATUS KERJA"); // Set kolom AM3 dengan tulisan STATUS KERJA
-            $excel->setActiveSheetIndex(0)->setCellValue('AO3', "NOMOR JKN"); // Set kolom AN3 dengan tulisan NOMOR JKN
-            $excel->setActiveSheetIndex(0)->setCellValue('AP3', "NOMOR JHT"); // Set kolom AO3 dengan tulisan NOMOR JHT
-            $excel->setActiveSheetIndex(0)->setCellValue('AQ3', "NOMOR JP"); // Set kolom AP3 dengan tulisan NOMOR JP
-            $excel->setActiveSheetIndex(0)->setCellValue('AR3', "NOMOR JKN ISTRI / SUAMI"); // Set kolom AQ3 dengan tulisan NOMOR JKN ISTRI / SUAMI
-            $excel->setActiveSheetIndex(0)->setCellValue('AS3', "NOMOR JKN ANAK 1"); // Set kolom AR3 dengan tulisan NOMOR JKN ANAK1
-            $excel->setActiveSheetIndex(0)->setCellValue('AT3', "NOMOR JKN ANAK 2"); // Set kolom AS3 dengan tulisan NOMOR JKN ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('AU3', "NOMOR JKN ANAK 3"); // Set kolom AT3 dengan tulisan NOMOR JKN ANAK 3
-            $excel->setActiveSheetIndex(0)->setCellValue('AV3', "NOMOR KARTU KELUARGA"); // Set kolom AU3 dengan tulisan NOMOR KARTU KELUARGA
-            $excel->setActiveSheetIndex(0)->setCellValue('AW3', "NAMA AYAH"); // Set kolom AV3 dengan tulisan NAMA AYAH
-            $excel->setActiveSheetIndex(0)->setCellValue('AX3', "NAMA IBU"); // Set kolom AW3 dengan tulisan NAMA IBU
-            $excel->setActiveSheetIndex(0)->setCellValue('AY3', "STATUS NIKAH"); // Set kolom AX3 dengan tulisaN STATUS NIKAH
-            $excel->setActiveSheetIndex(0)->setCellValue('AZ3', "NIK ISTRI / SUAMI"); // Set kolom AY3 dengan tulisan NIK ISTRI / SUAMI
-            $excel->setActiveSheetIndex(0)->setCellValue('BA3', "NAMA ISTRI / SUAMI"); // Set kolom AZ3 dengan tulisan NAMA ISTRI / SUAMI
-            $excel->setActiveSheetIndex(0)->setCellValue('BB3', "TEMPAT LAHIR ISTRI / SUAMI"); // Set kolom BA3 dengan tulisan TEMPAT LAHIR ISTRI / SUAMI
-            $excel->setActiveSheetIndex(0)->setCellValue('BC3', "TANGGAL LAHIR ISTRI / SUAMI"); // Set kolom BB3 dengan tulisan TANGGAL LAHIR ISTRI / SUAMI
-            $excel->setActiveSheetIndex(0)->setCellValue('BD3', "NIK ANAK 1"); // Set kolom BC3 dengan tulisan NIK ANAK 1
-            $excel->setActiveSheetIndex(0)->setCellValue('BE3', "NAMA ANAK 1"); // Set kolom BD3 dengan tulisan NAMA ANAK 1
-            $excel->setActiveSheetIndex(0)->setCellValue('BF3', "TEMPAT LAHIR ANAK 1"); // Set kolom BE3 dengan tulisan TEMPAT LAHIR ANAK 1
-            $excel->setActiveSheetIndex(0)->setCellValue('BG3', "TANGGAL LAHIR ANAK 1"); // Set kolom BF3 dengan tulisan TANGGAL LAHIR ANAK 1
-            $excel->setActiveSheetIndex(0)->setCellValue('BH3', "JENIS KELAMIN ANAK 1"); // Set kolom BG3 dengan tulisan JENIS KELAMIN ANAK 1
-            $excel->setActiveSheetIndex(0)->setCellValue('BI3', "NIK ANAK 2"); // Set kolom BH3 dengan tulisan NIK ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('BJ3', "NAMA ANAK 2"); // Set kolom BI3 dengan tulisan NAMA ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('BK3', "TEMPAT LAHIR ANAK 2"); // Set kolom BJ3 dengan tulisan TEMPAT LAHIR ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('BL3', "TANGGAL LAHIR ANAK 2"); // Set kolom BK3 dengan tulisan TANGGAL LAHIR ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('BM3', "JENIS KELAMIN ANAK 2"); // Set kolom BL3 dengan tulisan JENIS KELAMIN ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('BN3', "NIK ANAK 3"); // Set kolom BM3 dengan tulisan NIK ANAK 3
-            $excel->setActiveSheetIndex(0)->setCellValue('BO3', "NAMA ANAK 3"); // Set kolom BN3 dengan tulisan NAMA ANAK 3
-            $excel->setActiveSheetIndex(0)->setCellValue('BP3', "TEMPAT LAHIR ANAK 3"); // Set kolom BO3 dengan tulisan TEMPAT LAHIR ANAK 3
-            $excel->setActiveSheetIndex(0)->setCellValue('BQ3', "TANGGAL LAHIR ANAK 3"); // Set kolom BP3 dengan tulisan TANGGAL LAHIR ANAK 3
-            $excel->setActiveSheetIndex(0)->setCellValue('BR3', "JENIS KELAMIN ANAK 3"); // Set kolom BQ3 dengan tulisan JENIS KELAMIN ANAK 3
+            $excel->setActiveSheetIndex(0)->setCellValue('AA3', "TANGGAL MULAI KERJA"); // Set kolom AK3 dengan tulisan TANGGAL MULAI KERJA
+            $excel->setActiveSheetIndex(0)->setCellValue('AB3', "TANGGAL AKHIR KERJA"); // Set kolom AL3 dengan tulisan TANGGAL AKHIR KERJA
+            $excel->setActiveSheetIndex(0)->setCellValue('AC3', "STATUS KERJA"); // Set kolom AM3 dengan tulisan STATUS KERJA
+            $excel->setActiveSheetIndex(0)->setCellValue('AD3', "NOMOR JKN"); // Set kolom AN3 dengan tulisan NOMOR JKN
+            $excel->setActiveSheetIndex(0)->setCellValue('AE3', "NOMOR JHT"); // Set kolom AO3 dengan tulisan NOMOR JHT
+            $excel->setActiveSheetIndex(0)->setCellValue('AF3', "NOMOR JP"); // Set kolom AP3 dengan tulisan NOMOR JP
+            $excel->setActiveSheetIndex(0)->setCellValue('AG3', "NOMOR KARTU KELUARGA"); // Set kolom AU3 dengan tulisan NOMOR KARTU KELUARGA
+            $excel->setActiveSheetIndex(0)->setCellValue('AH3', "NAMA AYAH"); // Set kolom AV3 dengan tulisan NAMA AYAH
+            $excel->setActiveSheetIndex(0)->setCellValue('AI3', "NAMA IBU"); // Set kolom AW3 dengan tulisan NAMA IBU
+            $excel->setActiveSheetIndex(0)->setCellValue('AJ3', "STATUS NIKAH"); // Set kolom AX3 dengan tulisaN STATUS NIKAH
 
             // Apply style header yang telah kita buat tadi ke masing-masing kolom header
             $excel->getActiveSheet()->getStyle('A3')->applyFromArray($style_col);
@@ -1273,44 +1215,9 @@ class Karyawan extends CI_Controller
             $excel->getActiveSheet()->getStyle('AH3')->applyFromArray($style_col);
             $excel->getActiveSheet()->getStyle('AI3')->applyFromArray($style_col);
             $excel->getActiveSheet()->getStyle('AJ3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AK3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AL3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AM3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AN3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AO3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AP3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AQ3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AR3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AS3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AT3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AU3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AV3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AW3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AX3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AY3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AZ3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BA3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BB3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BC3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BD3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BE3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BF3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BG3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BH3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BI3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BJ3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BK3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BL3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BM3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BN3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BO3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BP3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BQ3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BR3')->applyFromArray($style_col);
 
             // Panggil function view yang ada di Model untuk menampilkan semua data
             $join = $this->karyawan->getJoinDownloadDataKaryawan($id);
-
 
             $no = 1; // Untuk penomoran tabel, di awal set dengan 1
             $numrow = 4; // Set baris pertama untuk isi tabel adalah baris ke 4
@@ -1342,50 +1249,16 @@ class Karyawan extends CI_Controller
                 $excel->setActiveSheetIndex(0)->setCellValue('X' . $numrow, "'" . $data->rt);
                 $excel->setActiveSheetIndex(0)->setCellValue('Y' . $numrow, "'" . $data->rw);
                 $excel->setActiveSheetIndex(0)->setCellValue('Z' . $numrow, "'" . $data->nomor_rekening);
-                $excel->setActiveSheetIndex(0)->setCellValue('AA' . $numrow, "'" . $data->gaji_pokok);
-                $excel->setActiveSheetIndex(0)->setCellValue('AB' . $numrow, "'" . $data->uang_makan);
-                $excel->setActiveSheetIndex(0)->setCellValue('AC' . $numrow, "'" . $data->uang_transport);
-                $excel->setActiveSheetIndex(0)->setCellValue('AD' . $numrow, "'" . $data->tunjangan_tugas);
-                $excel->setActiveSheetIndex(0)->setCellValue('AE' . $numrow, "'" . $data->tunjangan_pulsa);
-                $excel->setActiveSheetIndex(0)->setCellValue('AF' . $numrow, "'" . $data->jumlah_upah);
-                $excel->setActiveSheetIndex(0)->setCellValue('AG' . $numrow, "'" . $data->potongan_jkn);
-                $excel->setActiveSheetIndex(0)->setCellValue('AH' . $numrow, "'" . $data->potongan_jht);
-                $excel->setActiveSheetIndex(0)->setCellValue('AI' . $numrow, "'" . $data->potongan_jp);
-                $excel->setActiveSheetIndex(0)->setCellValue('AJ' . $numrow, "'" . $data->total_gaji);
-                $excel->setActiveSheetIndex(0)->setCellValue('AK' . $numrow, "'" . $data->upah_lembur_perjam);
-                $excel->setActiveSheetIndex(0)->setCellValue('AL' . $numrow, "'" . $data->tanggal_mulai_kerja);
-                $excel->setActiveSheetIndex(0)->setCellValue('AM' . $numrow, "'" . $data->tanggal_akhir_kerja);
-                $excel->setActiveSheetIndex(0)->setCellValue('AN' . $numrow, $data->status_kerja);
-                $excel->setActiveSheetIndex(0)->setCellValue('AO' . $numrow, "'" . $data->nomor_jkn);
-                $excel->setActiveSheetIndex(0)->setCellValue('AP' . $numrow, "'" . $data->nomor_jht);
-                $excel->setActiveSheetIndex(0)->setCellValue('AQ' . $numrow, "'" . $data->nomor_jp);
-                $excel->setActiveSheetIndex(0)->setCellValue('AR' . $numrow, "'" . $data->nomor_jkn_istri_suami);
-                $excel->setActiveSheetIndex(0)->setCellValue('AS' . $numrow, "'" . $data->nomor_jkn_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('AT' . $numrow, "'" . $data->nomor_jkn_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('AU' . $numrow, "'" . $data->nomor_jkn_anak3);
-                $excel->setActiveSheetIndex(0)->setCellValue('AV' . $numrow, "'" . $data->nomor_kartu_keluarga);
-                $excel->setActiveSheetIndex(0)->setCellValue('AW' . $numrow, $data->nama_ayah);
-                $excel->setActiveSheetIndex(0)->setCellValue('AX' . $numrow, $data->nama_ibu);
-                $excel->setActiveSheetIndex(0)->setCellValue('AY' . $numrow, $data->status_nikah);
-                $excel->setActiveSheetIndex(0)->setCellValue('AZ' . $numrow, "'" . $data->nik_istri_suami);
-                $excel->setActiveSheetIndex(0)->setCellValue('BA' . $numrow, $data->nama_istri_suami);
-                $excel->setActiveSheetIndex(0)->setCellValue('BB' . $numrow, $data->tempat_lahir_istri_suami);
-                $excel->setActiveSheetIndex(0)->setCellValue('BC' . $numrow, "'" . $data->tanggal_lahir_istri_suami);
-                $excel->setActiveSheetIndex(0)->setCellValue('BD' . $numrow, "'" . $data->nik_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('BE' . $numrow, $data->nama_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('BF' . $numrow, $data->tempat_lahir_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('BG' . $numrow, "'" . $data->tanggal_lahir_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('BH' . $numrow, $data->jenis_kelamin_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('BI' . $numrow, "'" . $data->nik_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('BJ' . $numrow, $data->nama_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('BK' . $numrow, $data->tempat_lahir_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('BL' . $numrow, "'" . $data->tanggal_lahir_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('BM' . $numrow, $data->jenis_kelamin_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('BN' . $numrow, "'" . $data->nik_anak3);
-                $excel->setActiveSheetIndex(0)->setCellValue('BO' . $numrow, $data->nama_anak3);
-                $excel->setActiveSheetIndex(0)->setCellValue('BP' . $numrow, $data->tempat_lahir_anak3);
-                $excel->setActiveSheetIndex(0)->setCellValue('BQ' . $numrow, "'" . $data->tanggal_lahir_anak3);
-                $excel->setActiveSheetIndex(0)->setCellValue('BR' . $numrow, $data->jenis_kelamin_anak3);
+                $excel->setActiveSheetIndex(0)->setCellValue('AA' . $numrow, "'" . $data->tanggal_mulai_kerja);
+                $excel->setActiveSheetIndex(0)->setCellValue('AB' . $numrow, "'" . $data->tanggal_akhir_kerja);
+                $excel->setActiveSheetIndex(0)->setCellValue('AC' . $numrow, $data->status_kerja);
+                $excel->setActiveSheetIndex(0)->setCellValue('AD' . $numrow, "'" . $data->nomor_jkn);
+                $excel->setActiveSheetIndex(0)->setCellValue('AE' . $numrow, "'" . $data->nomor_jht);
+                $excel->setActiveSheetIndex(0)->setCellValue('AF' . $numrow, "'" . $data->nomor_jp);
+                $excel->setActiveSheetIndex(0)->setCellValue('AG' . $numrow, "'" . $data->nomor_kartu_keluarga);
+                $excel->setActiveSheetIndex(0)->setCellValue('AH' . $numrow, $data->nama_ayah);
+                $excel->setActiveSheetIndex(0)->setCellValue('AI' . $numrow, $data->nama_ibu);
+                $excel->setActiveSheetIndex(0)->setCellValue('AJ' . $numrow, $data->status_nikah);
 
                 // Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
                 $excel->getActiveSheet()->getStyle('A' . $numrow)->applyFromArray($style_row);
@@ -1424,40 +1297,6 @@ class Karyawan extends CI_Controller
                 $excel->getActiveSheet()->getStyle('AH' . $numrow)->applyFromArray($style_row);
                 $excel->getActiveSheet()->getStyle('AI' . $numrow)->applyFromArray($style_row);
                 $excel->getActiveSheet()->getStyle('AJ' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AK' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AL' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AM' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AN' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AO' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AP' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AQ' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AR' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AS' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AT' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AU' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AV' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AW' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AX' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AY' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AZ' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BA' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BB' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BC' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BD' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BE' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BF' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BG' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BH' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BI' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BJ' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BK' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BL' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BM' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BN' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BO' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BP' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BQ' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BR' . $numrow)->applyFromArray($style_row);
 
                 $no++; // Tambah 1 setiap kali looping
                 $numrow++; // Tambah 1 setiap kali looping
@@ -1500,40 +1339,6 @@ class Karyawan extends CI_Controller
             $excel->getActiveSheet()->getColumnDimension('AH')->setWidth(30); // Set width kolom 
             $excel->getActiveSheet()->getColumnDimension('AI')->setWidth(30); // Set width kolom 
             $excel->getActiveSheet()->getColumnDimension('AJ')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AK')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AL')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AM')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AN')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AO')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AP')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AQ')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AR')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AS')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AT')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AU')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AV')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AW')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AX')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AY')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AZ')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BA')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BB')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BC')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BD')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BE')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BF')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BG')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BH')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BI')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BJ')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BK')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BL')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BM')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BN')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BO')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BP')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BQ')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BR')->setWidth(30); // Set width kolom 
 
             // Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
             $excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
@@ -1644,50 +1449,19 @@ class Karyawan extends CI_Controller
             $excel->setActiveSheetIndex(0)->setCellValue('X3', "RT"); // Set kolom W3 dengan tulisan RT
             $excel->setActiveSheetIndex(0)->setCellValue('Y3', "RW"); // Set kolom X3 dengan tulisan RW
             $excel->setActiveSheetIndex(0)->setCellValue('Z3', "NOMOR REKENING"); // Set kolom Y3 dengan tulisan NOMOR REKENING
-            $excel->setActiveSheetIndex(0)->setCellValue('AA3', "GAJI POKOK"); // Set kolom Z3 dengan tulisan GAJI POKOK
-            $excel->setActiveSheetIndex(0)->setCellValue('AB3', "UANG MAKAN"); // Set kolom AA3 dengan tulisan UANG MAKAN
-            $excel->setActiveSheetIndex(0)->setCellValue('AC3', "UANG TRANSPORT"); // Set kolom AB3 dengan tulisan UANG TRANSPORT
-            $excel->setActiveSheetIndex(0)->setCellValue('AD3', "TUNJANGAN TUGAS"); // Set kolom AC3 dengan tulisan TUNJANGAN TUGAS
-            $excel->setActiveSheetIndex(0)->setCellValue('AE3', "TUNJANGAN PULSA"); // Set kolom AD3 dengan tulisan TUNJANGAN PULSA
-            $excel->setActiveSheetIndex(0)->setCellValue('AF3', "JUMLAH UPAH"); // Set kolom AE3 dengan tulisan JUMLAH UPAH
-            $excel->setActiveSheetIndex(0)->setCellValue('AG3', "POTONGAN JKN"); // Set kolom AE3 dengan tulisan POTONGAN JKN
-            $excel->setActiveSheetIndex(0)->setCellValue('AH3', "POTONGAN JHT"); // Set kolom AG3 dengan tulisan POTONGAN JHT
-            $excel->setActiveSheetIndex(0)->setCellValue('AI3', "POTONGAN JP"); // Set kolom AH3 dengan tulisan POTONGAN JP
-            $excel->setActiveSheetIndex(0)->setCellValue('AJ3', "TOTAL GAJI"); // Set kolom AI3 dengan tulisan TOTAL GAJI 
-            $excel->setActiveSheetIndex(0)->setCellValue('AK3', "UPAH LEMBUR PERJAM"); // Set kolom AJ3 dengan tulisan UPAH LEMBUR PERJAM
-            $excel->setActiveSheetIndex(0)->setCellValue('AL3', "TANGGAL MULAI KERJA"); // Set kolom AK3 dengan tulisan TANGGAL MULAI KERJA
-            $excel->setActiveSheetIndex(0)->setCellValue('AM3', "TANGGAL AKHIR KERJA"); // Set kolom AL3 dengan tulisan TANGGAL AKHIR KERJA
-            $excel->setActiveSheetIndex(0)->setCellValue('AN3', "STATUS KERJA"); // Set kolom AM3 dengan tulisan STATUS KERJA
-            $excel->setActiveSheetIndex(0)->setCellValue('AO3', "NOMOR JKN"); // Set kolom AN3 dengan tulisan NOMOR JKN
-            $excel->setActiveSheetIndex(0)->setCellValue('AP3', "NOMOR JHT"); // Set kolom AO3 dengan tulisan NOMOR JHT
-            $excel->setActiveSheetIndex(0)->setCellValue('AQ3', "NOMOR JP"); // Set kolom AP3 dengan tulisan NOMOR JP
-            $excel->setActiveSheetIndex(0)->setCellValue('AR3', "NOMOR JKN ISTRI / SUAMI"); // Set kolom AQ3 dengan tulisan NOMOR JKN ISTRI / SUAMI
-            $excel->setActiveSheetIndex(0)->setCellValue('AS3', "NOMOR JKN ANAK 1"); // Set kolom AR3 dengan tulisan NOMOR JKN ANAK1
-            $excel->setActiveSheetIndex(0)->setCellValue('AT3', "NOMOR JKN ANAK 2"); // Set kolom AS3 dengan tulisan NOMOR JKN ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('AU3', "NOMOR JKN ANAK 3"); // Set kolom AT3 dengan tulisan NOMOR JKN ANAK 3
-            $excel->setActiveSheetIndex(0)->setCellValue('AV3', "NOMOR KARTU KELUARGA"); // Set kolom AU3 dengan tulisan NOMOR KARTU KELUARGA
-            $excel->setActiveSheetIndex(0)->setCellValue('AW3', "NAMA AYAH"); // Set kolom AV3 dengan tulisan NAMA AYAH
-            $excel->setActiveSheetIndex(0)->setCellValue('AX3', "NAMA IBU"); // Set kolom AW3 dengan tulisan NAMA IBU
-            $excel->setActiveSheetIndex(0)->setCellValue('AY3', "STATUS NIKAH"); // Set kolom AX3 dengan tulisaN STATUS NIKAH
-            $excel->setActiveSheetIndex(0)->setCellValue('AZ3', "NIK ISTRI / SUAMI"); // Set kolom AY3 dengan tulisan NIK ISTRI / SUAMI
-            $excel->setActiveSheetIndex(0)->setCellValue('BA3', "NAMA ISTRI / SUAMI"); // Set kolom AZ3 dengan tulisan NAMA ISTRI / SUAMI
-            $excel->setActiveSheetIndex(0)->setCellValue('BB3', "TEMPAT LAHIR ISTRI / SUAMI"); // Set kolom BA3 dengan tulisan TEMPAT LAHIR ISTRI / SUAMI
-            $excel->setActiveSheetIndex(0)->setCellValue('BC3', "TANGGAL LAHIR ISTRI / SUAMI"); // Set kolom BB3 dengan tulisan TANGGAL LAHIR ISTRI / SUAMI
-            $excel->setActiveSheetIndex(0)->setCellValue('BD3', "NIK ANAK 1"); // Set kolom BC3 dengan tulisan NIK ANAK 1
-            $excel->setActiveSheetIndex(0)->setCellValue('BE3', "NAMA ANAK 1"); // Set kolom BD3 dengan tulisan NAMA ANAK 1
-            $excel->setActiveSheetIndex(0)->setCellValue('BF3', "TEMPAT LAHIR ANAK 1"); // Set kolom BE3 dengan tulisan TEMPAT LAHIR ANAK 1
-            $excel->setActiveSheetIndex(0)->setCellValue('BG3', "TANGGAL LAHIR ANAK 1"); // Set kolom BF3 dengan tulisan TANGGAL LAHIR ANAK 1
-            $excel->setActiveSheetIndex(0)->setCellValue('BH3', "JENIS KELAMIN ANAK 1"); // Set kolom BG3 dengan tulisan JENIS KELAMIN ANAK 1
-            $excel->setActiveSheetIndex(0)->setCellValue('BI3', "NIK ANAK 2"); // Set kolom BH3 dengan tulisan NIK ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('BJ3', "NAMA ANAK 2"); // Set kolom BI3 dengan tulisan NAMA ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('BK3', "TEMPAT LAHIR ANAK 2"); // Set kolom BJ3 dengan tulisan TEMPAT LAHIR ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('BL3', "TANGGAL LAHIR ANAK 2"); // Set kolom BK3 dengan tulisan TANGGAL LAHIR ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('BM3', "JENIS KELAMIN ANAK 2"); // Set kolom BL3 dengan tulisan JENIS KELAMIN ANAK 2
-            $excel->setActiveSheetIndex(0)->setCellValue('BN3', "NIK ANAK 3"); // Set kolom BM3 dengan tulisan NIK ANAK 3
-            $excel->setActiveSheetIndex(0)->setCellValue('BO3', "NAMA ANAK 3"); // Set kolom BN3 dengan tulisan NAMA ANAK 3
-            $excel->setActiveSheetIndex(0)->setCellValue('BP3', "TEMPAT LAHIR ANAK 3"); // Set kolom BO3 dengan tulisan TEMPAT LAHIR ANAK 3
-            $excel->setActiveSheetIndex(0)->setCellValue('BQ3', "TANGGAL LAHIR ANAK 3"); // Set kolom BP3 dengan tulisan TANGGAL LAHIR ANAK 3
-            $excel->setActiveSheetIndex(0)->setCellValue('BR3', "JENIS KELAMIN ANAK 3"); // Set kolom BQ3 dengan tulisan JENIS KELAMIN ANAK 3
+
+            $excel->setActiveSheetIndex(0)->setCellValue('AA3', "TANGGAL MULAI KERJA"); // Set kolom AK3 dengan tulisan TANGGAL MULAI KERJA
+            $excel->setActiveSheetIndex(0)->setCellValue('AB3', "TANGGAL AKHIR KERJA"); // Set kolom AL3 dengan tulisan TANGGAL AKHIR KERJA
+            $excel->setActiveSheetIndex(0)->setCellValue('AC3', "STATUS KERJA"); // Set kolom AM3 dengan tulisan STATUS KERJA
+            $excel->setActiveSheetIndex(0)->setCellValue('AD3', "NOMOR JKN"); // Set kolom AN3 dengan tulisan NOMOR JKN
+            $excel->setActiveSheetIndex(0)->setCellValue('AE3', "NOMOR JHT"); // Set kolom AO3 dengan tulisan NOMOR JHT
+            $excel->setActiveSheetIndex(0)->setCellValue('AF3', "NOMOR JP"); // Set kolom AP3 dengan tulisan NOMOR JP
+
+            $excel->setActiveSheetIndex(0)->setCellValue('AG3', "NOMOR KARTU KELUARGA"); // Set kolom AU3 dengan tulisan NOMOR KARTU KELUARGA
+            $excel->setActiveSheetIndex(0)->setCellValue('AH3', "NAMA AYAH"); // Set kolom AV3 dengan tulisan NAMA AYAH
+            $excel->setActiveSheetIndex(0)->setCellValue('AI3', "NAMA IBU"); // Set kolom AW3 dengan tulisan NAMA IBU
+            $excel->setActiveSheetIndex(0)->setCellValue('AJ3', "STATUS NIKAH"); // Set kolom AX3 dengan tulisaN STATUS NIKAH
+
 
             // Apply style header yang telah kita buat tadi ke masing-masing kolom header
             $excel->getActiveSheet()->getStyle('A3')->applyFromArray($style_col);
@@ -1726,44 +1500,9 @@ class Karyawan extends CI_Controller
             $excel->getActiveSheet()->getStyle('AH3')->applyFromArray($style_col);
             $excel->getActiveSheet()->getStyle('AI3')->applyFromArray($style_col);
             $excel->getActiveSheet()->getStyle('AJ3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AK3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AL3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AM3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AN3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AO3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AP3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AQ3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AR3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AS3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AT3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AU3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AV3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AW3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AX3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AY3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('AZ3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BA3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BB3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BC3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BD3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BE3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BF3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BG3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BH3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BI3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BJ3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BK3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BL3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BM3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BN3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BO3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BP3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BQ3')->applyFromArray($style_col);
-            $excel->getActiveSheet()->getStyle('BR3')->applyFromArray($style_col);
 
             // Panggil function view yang ada di Model untuk menampilkan semua data
             $join = $this->karyawan->getJoinDownloadDataKaryawanALL();
-
 
             $no = 1; // Untuk penomoran tabel, di awal set dengan 1
             $numrow = 4; // Set baris pertama untuk isi tabel adalah baris ke 4
@@ -1795,50 +1534,17 @@ class Karyawan extends CI_Controller
                 $excel->setActiveSheetIndex(0)->setCellValue('X' . $numrow, "'" . $data->rt);
                 $excel->setActiveSheetIndex(0)->setCellValue('Y' . $numrow, "'" . $data->rw);
                 $excel->setActiveSheetIndex(0)->setCellValue('Z' . $numrow, "'" . $data->nomor_rekening);
-                $excel->setActiveSheetIndex(0)->setCellValue('AA' . $numrow, "'" . $data->gaji_pokok);
-                $excel->setActiveSheetIndex(0)->setCellValue('AB' . $numrow, "'" . $data->uang_makan);
-                $excel->setActiveSheetIndex(0)->setCellValue('AC' . $numrow, "'" . $data->uang_transport);
-                $excel->setActiveSheetIndex(0)->setCellValue('AD' . $numrow, "'" . $data->tunjangan_tugas);
-                $excel->setActiveSheetIndex(0)->setCellValue('AE' . $numrow, "'" . $data->tunjangan_pulsa);
-                $excel->setActiveSheetIndex(0)->setCellValue('AF' . $numrow, "'" . $data->jumlah_upah);
-                $excel->setActiveSheetIndex(0)->setCellValue('AG' . $numrow, "'" . $data->potongan_jkn);
-                $excel->setActiveSheetIndex(0)->setCellValue('AH' . $numrow, "'" . $data->potongan_jht);
-                $excel->setActiveSheetIndex(0)->setCellValue('AI' . $numrow, "'" . $data->potongan_jp);
-                $excel->setActiveSheetIndex(0)->setCellValue('AJ' . $numrow, "'" . $data->total_gaji);
-                $excel->setActiveSheetIndex(0)->setCellValue('AK' . $numrow, "'" . $data->upah_lembur_perjam);
-                $excel->setActiveSheetIndex(0)->setCellValue('AL' . $numrow, "'" . $data->tanggal_mulai_kerja);
-                $excel->setActiveSheetIndex(0)->setCellValue('AM' . $numrow, "'" . $data->tanggal_akhir_kerja);
-                $excel->setActiveSheetIndex(0)->setCellValue('AN' . $numrow, $data->status_kerja);
-                $excel->setActiveSheetIndex(0)->setCellValue('AO' . $numrow, "'" . $data->nomor_jkn);
-                $excel->setActiveSheetIndex(0)->setCellValue('AP' . $numrow, "'" . $data->nomor_jht);
-                $excel->setActiveSheetIndex(0)->setCellValue('AQ' . $numrow, "'" . $data->nomor_jp);
-                $excel->setActiveSheetIndex(0)->setCellValue('AR' . $numrow, "'" . $data->nomor_jkn_istri_suami);
-                $excel->setActiveSheetIndex(0)->setCellValue('AS' . $numrow, "'" . $data->nomor_jkn_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('AT' . $numrow, "'" . $data->nomor_jkn_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('AU' . $numrow, "'" . $data->nomor_jkn_anak3);
-                $excel->setActiveSheetIndex(0)->setCellValue('AV' . $numrow, "'" . $data->nomor_kartu_keluarga);
-                $excel->setActiveSheetIndex(0)->setCellValue('AW' . $numrow, $data->nama_ayah);
-                $excel->setActiveSheetIndex(0)->setCellValue('AX' . $numrow, $data->nama_ibu);
-                $excel->setActiveSheetIndex(0)->setCellValue('AY' . $numrow, $data->status_nikah);
-                $excel->setActiveSheetIndex(0)->setCellValue('AZ' . $numrow, "'" . $data->nik_istri_suami);
-                $excel->setActiveSheetIndex(0)->setCellValue('BA' . $numrow, $data->nama_istri_suami);
-                $excel->setActiveSheetIndex(0)->setCellValue('BB' . $numrow, $data->tempat_lahir_istri_suami);
-                $excel->setActiveSheetIndex(0)->setCellValue('BC' . $numrow, "'" . $data->tanggal_lahir_istri_suami);
-                $excel->setActiveSheetIndex(0)->setCellValue('BD' . $numrow, "'" . $data->nik_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('BE' . $numrow, $data->nama_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('BF' . $numrow, $data->tempat_lahir_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('BG' . $numrow, "'" . $data->tanggal_lahir_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('BH' . $numrow, $data->jenis_kelamin_anak1);
-                $excel->setActiveSheetIndex(0)->setCellValue('BI' . $numrow, "'" . $data->nik_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('BJ' . $numrow, $data->nama_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('BK' . $numrow, $data->tempat_lahir_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('BL' . $numrow, "'" . $data->tanggal_lahir_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('BM' . $numrow, $data->jenis_kelamin_anak2);
-                $excel->setActiveSheetIndex(0)->setCellValue('BN' . $numrow, "'" . $data->nik_anak3);
-                $excel->setActiveSheetIndex(0)->setCellValue('BO' . $numrow, $data->nama_anak3);
-                $excel->setActiveSheetIndex(0)->setCellValue('BP' . $numrow, $data->tempat_lahir_anak3);
-                $excel->setActiveSheetIndex(0)->setCellValue('BQ' . $numrow, "'" . $data->tanggal_lahir_anak3);
-                $excel->setActiveSheetIndex(0)->setCellValue('BR' . $numrow, $data->jenis_kelamin_anak3);
+                $excel->setActiveSheetIndex(0)->setCellValue('AA' . $numrow, "'" . $data->tanggal_mulai_kerja);
+                $excel->setActiveSheetIndex(0)->setCellValue('AB' . $numrow, "'" . $data->tanggal_akhir_kerja);
+                $excel->setActiveSheetIndex(0)->setCellValue('AC' . $numrow, $data->status_kerja);
+                $excel->setActiveSheetIndex(0)->setCellValue('AD' . $numrow, "'" . $data->nomor_jkn);
+                $excel->setActiveSheetIndex(0)->setCellValue('AE' . $numrow, "'" . $data->nomor_jht);
+                $excel->setActiveSheetIndex(0)->setCellValue('AF' . $numrow, "'" . $data->nomor_jp);
+                $excel->setActiveSheetIndex(0)->setCellValue('AG' . $numrow, "'" . $data->nomor_kartu_keluarga);
+                $excel->setActiveSheetIndex(0)->setCellValue('AH' . $numrow, $data->nama_ayah);
+                $excel->setActiveSheetIndex(0)->setCellValue('AI' . $numrow, $data->nama_ibu);
+                $excel->setActiveSheetIndex(0)->setCellValue('AJ' . $numrow, $data->status_nikah);
+
 
                 // Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
                 $excel->getActiveSheet()->getStyle('A' . $numrow)->applyFromArray($style_row);
@@ -1877,40 +1583,6 @@ class Karyawan extends CI_Controller
                 $excel->getActiveSheet()->getStyle('AH' . $numrow)->applyFromArray($style_row);
                 $excel->getActiveSheet()->getStyle('AI' . $numrow)->applyFromArray($style_row);
                 $excel->getActiveSheet()->getStyle('AJ' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AK' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AL' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AM' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AN' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AO' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AP' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AQ' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AR' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AS' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AT' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AU' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AV' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AW' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AX' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AY' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('AZ' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BA' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BB' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BC' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BD' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BE' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BF' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BG' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BH' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BI' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BJ' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BK' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BL' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BM' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BN' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BO' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BP' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BQ' . $numrow)->applyFromArray($style_row);
-                $excel->getActiveSheet()->getStyle('BR' . $numrow)->applyFromArray($style_row);
 
                 $no++; // Tambah 1 setiap kali looping
                 $numrow++; // Tambah 1 setiap kali looping
@@ -1953,40 +1625,6 @@ class Karyawan extends CI_Controller
             $excel->getActiveSheet()->getColumnDimension('AH')->setWidth(30); // Set width kolom 
             $excel->getActiveSheet()->getColumnDimension('AI')->setWidth(30); // Set width kolom 
             $excel->getActiveSheet()->getColumnDimension('AJ')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AK')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AL')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AM')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AN')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AO')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AP')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AQ')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AR')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AS')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AT')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AU')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AV')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AW')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AX')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AY')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('AZ')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BA')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BB')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BC')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BD')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BE')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BF')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BG')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BH')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BI')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BJ')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BK')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BL')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BM')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BN')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BO')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BP')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BQ')->setWidth(30); // Set width kolom 
-            $excel->getActiveSheet()->getColumnDimension('BR')->setWidth(30); // Set width kolom 
 
             // Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
             $excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);

@@ -19,7 +19,7 @@
             <a class="nav-link" id="alamat-tab" data-toggle="tab" href="#alamat" role="tab" aria-controls="alamat" aria-selected="false">Alamat</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="gaji-tab" data-toggle="tab" href="#gaji" role="tab" aria-controls="gaji" aria-selected="false">Gaji</a>
+            <a class="nav-link" id="gaji-tab" data-toggle="tab" href="#gaji" role="tab" aria-controls="gaji" aria-selected="false">Rekening</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="keluarga-tab" data-toggle="tab" href="#keluarga" role="tab" aria-controls="keluarga" aria-selected="false">Keluarga</a>
@@ -446,44 +446,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="gaji_pokok" class="col-sm-3 col-form-label"><b>Gaji Pokok</b></label>
-                        <div class="col-sm-9">
-                            <input type="text" value="<?= $joinkaryawanid['gaji_pokok'] ?>" class="form-control" maxlength="8" id="gaji_pokok" onkeyup="angka(this);" name="gaji_pokok" placeholder="Masukan Gaji Pokok">
-                            <small class="form-text text-danger"><?php echo form_error('gaji_pokok'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="uang_makan" class="col-sm-3 col-form-label"><b>Uang Makan</b></label>
-                        <div class="col-sm-9">
-                            <input type="text" value="<?= $joinkaryawanid['uang_makan'] ?>" class="form-control" maxlength="8" id="uang_makan" onkeyup="angka(this);" name="uang_makan" placeholder="Masukan Uang Makan">
-                            <small class="form-text text-danger"><?php echo form_error('uang_makan'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="uang_transport" class="col-sm-3 col-form-label"><b>Uang Transport</b></label>
-                        <div class="col-sm-9">
-                            <input type="text" value="<?= $joinkaryawanid['uang_transport'] ?>" class="form-control" maxlength="8" id="uang_transport" onkeyup="angka(this);" name="uang_transport" placeholder="Masukan Uang Transport">
-                            <small class="form-text text-danger"><?php echo form_error('uang_transport'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tunjangan_tugas" class="col-sm-3 col-form-label"><b>Tunjangan Tugas</b></label>
-                        <div class="col-sm-9">
-                            <input type="text" value="<?= $joinkaryawanid['tunjangan_tugas'] ?>" class="form-control" maxlength="8" id="tunjangan_tugas" onkeyup="angka(this);" name="tunjangan_tugas" placeholder="Masukan Tunjangan Tugas">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tunjangan_pulsa" class="col-sm-3 col-form-label"><b>Tunjangan Pulsa</b></label>
-                        <div class="col-sm-9">
-                            <input type="text" value="<?= $joinkaryawanid['tunjangan_pulsa'] ?>" class="form-control" maxlength="8" id="tunjangan_pulsa" onkeyup="angka(this);" name="tunjangan_pulsa" placeholder="Masukan Tunjangan Pulsa">
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -533,163 +495,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="nik_istri_suami" class="col-sm-3 col-form-label"><b>NIK Istri / Suami</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nik_istri_suami'] ?>" onkeyup="angka(this);" class="form-control" id="nik_istri_suami" name="nik_istri_suami" placeholder="NIK Istri / Suami">
-                            <small class="form-text text-danger"><?php echo form_error('nik_istri_suami'); ?></small>
-                        </div>
-                        <label for="nama_istri_suami" class="col-sm-3 col-form-label"><b>Nama Istri / Suami</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nama_istri_suami'] ?>" onkeyup="huruf(this);" class="form-control" id="nama_istri_suami" name="nama_istri_suami" placeholder="Nama Istri / Suami">
-                            <small class="form-text text-danger"><?php echo form_error('nama_istri_suami'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tempat_lahir_istri_suami" class="col-sm-3 col-form-label"><b>Tempat Lahir Istri / Suami</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['tempat_lahir_istri_suami'] ?>" class="form-control" id="tempat_lahir_istri_suami" name="tempat_lahir_istri_suami" placeholder="Tempat Lahir Istri / Suami">
-                            <small class="form-text text-danger"><?php echo form_error('tempat_lahir_istri_suami'); ?></small>
-                        </div>
-                        <label for="tanggal_lahir_istri_suami" class="col-sm-3 col-form-label"><b>Tanggal Lahir Istri / Suami</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['tanggal_lahir_istri_suami'] ?>" class="form-control" id="tanggal_lahir_istri_suami" name="tanggal_lahir_istri_suami" placeholder="Tanggal Lahir Istri / Suami">
-                            <small class="form-text text-danger"><?php echo form_error('tanggal_lahir_istri_suami'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="nik_anak1" class="col-sm-3 col-form-label"><b>NIK Anak 1</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nik_anak1'] ?>" onkeyup="angka(this);" class="form-control" id="nik_anak1" name="nik_anak1" placeholder="NIK Anak 1">
-                            <small class="form-text text-danger"><?php echo form_error('nik_anak1'); ?></small>
-                        </div>
-                        <label for="nama_anak1" class="col-sm-3 col-form-label"><b>Nama Anak 1</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nama_anak1'] ?>" onkeyup="huruf(this);" class="form-control" id="nama_anak1" name="nama_anak1" placeholder="Nama Anak 1">
-                            <small class="form-text text-danger"><?php echo form_error('nama_anak1'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tempat_lahir_anak1" class="col-sm-3 col-form-label"><b>Tempat Lahir Anak 1</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['tempat_lahir_anak1'] ?>" class="form-control" id="tempat_lahir_anak1" name="tempat_lahir_anak1" placeholder="Tempat Lahir Anak 1">
-                            <small class="form-text text-danger"><?php echo form_error('tempat_lahir_anak1'); ?></small>
-                        </div>
-                        <label for="tanggal_lahir_anak1" class="col-sm-3 col-form-label"><b>Tanggal Lahir Anak 1</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['tanggal_lahir_anak1'] ?>" class="form-control" id="tanggal_lahir_anak1" name="tanggal_lahir_anak1" placeholder="Tanggal Lahir Anak 1">
-                            <small class="form-text text-danger"><?php echo form_error('tanggal_lahir_anak1'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="jenis_kelamin_anak1" class="col-sm-3 col-form-label"><b>Jenis Kelamin Anak 1</b></label>
-                        <div class="col-sm-9">
-                            <select name="jenis_kelamin_anak1" id="jenis_kelamin_anak1" class="form-control">
-                                <?php foreach ($jenis_kelamin_anak1 as $jk) : ?>
-
-                                    <?php if ($jk == $joinkaryawanid['jenis_kelamin_anak1']) : ?>
-                                        <option value="<?= $jk ?>" selected><?= $jk ?></option>
-                                    <?php else : ?>
-                                        <option value="<?= $jk ?>"><?= $jk ?></option>
-                                    <?php endif; ?>
-
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="nik_anak2" class="col-sm-3 col-form-label"><b>NIK Anak 2</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nik_anak2'] ?>" onkeyup="angka(this);" class="form-control" id="nik_anak2" name="nik_anak2" placeholder="NIK Anak 2">
-                            <small class="form-text text-danger"><?php echo form_error('nik_anak2'); ?></small>
-                        </div>
-                        <label for="nama_anak2" class="col-sm-3 col-form-label"><b>Nama Anak 2</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nama_anak2'] ?>" onkeyup="huruf(this);" class="form-control" id="nama_anak2" name="nama_anak2" placeholder="Nama Anak 2">
-                            <small class="form-text text-danger"><?php echo form_error('nama_anak2'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tempat_lahir_anak2" class="col-sm-3 col-form-label"><b>Tempat Lahir Anak 2</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['tempat_lahir_anak2'] ?>" class="form-control" id="tempat_lahir_anak2" name="tempat_lahir_anak2" placeholder="Tempat Lahir Anak 2">
-                            <small class="form-text text-danger"><?php echo form_error('tempat_lahir_anak2'); ?></small>
-                        </div>
-                        <label for="tanggal_lahir_anak2" class="col-sm-3 col-form-label"><b>Tanggal Lahir Anak 2</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['tanggal_lahir_anak2'] ?>" class="form-control" id="tanggal_lahir_anak2" name="tanggal_lahir_anak2" placeholder="Tanggal Lahir Anak 2">
-                            <small class="form-text text-danger"><?php echo form_error('tanggal_lahir_anak2'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="jenis_kelamin_anak2" class="col-sm-3 col-form-label"><b>Jenis Kelamin Anak 2</b></label>
-                        <div class="col-sm-9">
-                            <select name="jenis_kelamin_anak2" id="jenis_kelamin_anak2" class="form-control">
-                                <?php foreach ($jenis_kelamin_anak2 as $jk) : ?>
-
-                                    <?php if ($jk == $joinkaryawanid['jenis_kelamin_anak2']) : ?>
-                                        <option value="<?= $jk ?>" selected><?= $jk ?></option>
-                                    <?php else : ?>
-                                        <option value="<?= $jk ?>"><?= $jk ?></option>
-                                    <?php endif; ?>
-
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group row">
-                        <label for="nik_anak3" class="col-sm-3 col-form-label"><b>NIK Anak 3</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nik_anak3'] ?>" onkeyup="angka(this);" class="form-control" id="nik_anak3" name="nik_anak3" placeholder="NIK Anak 3">
-                            <small class="form-text text-danger"><?php echo form_error('nik_anak3'); ?></small>
-                        </div>
-                        <label for="nama_anak3" class="col-sm-3 col-form-label"><b>Nama Anak 3</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nama_anak3'] ?> " onkeyup="huruf(this);" class="form-control" id="nama_anak3" name="nama_anak3" placeholder="Nama Anak 3">
-                            <small class="form-text text-danger"><?php echo form_error('nama_anak3'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tempat_lahir_anak3" class="col-sm-3 col-form-label"><b>Tempat Lahir Anak 3</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['tempat_lahir_anak3'] ?>" class="form-control" id="tempat_lahir_anak3" name="tempat_lahir_anak3" placeholder="Tempat Lahir Anak 3">
-                            <small class="form-text text-danger"><?php echo form_error('tempat_lahir_anak3'); ?></small>
-                        </div>
-                        <label for="tanggal_lahir_anak3" class="col-sm-3 col-form-label"><b>Tanggal Lahir Anak 3</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['tanggal_lahir_anak3'] ?>" class="form-control" id="tanggal_lahir_anak3" name="tanggal_lahir_anak3" placeholder="Tanggal Lahir Anak 3">
-                            <small class="form-text text-danger"><?php echo form_error('tanggal_lahir_anak3'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="jenis_kelamin_anak3" class="col-sm-3 col-form-label"><b>Jenis Kelamin Anak 3</b></label>
-                        <div class="col-sm-9">
-                            <select name="jenis_kelamin_anak3" id="jenis_kelamin_anak3" class="form-control">
-                                <?php foreach ($jenis_kelamin_anak3 as $jk) : ?>
-
-                                    <?php if ($jk == $joinkaryawanid['jenis_kelamin_anak3']) : ?>
-                                        <option value="<?= $jk ?>" selected><?= $jk ?></option>
-                                    <?php else : ?>
-                                        <option value="<?= $jk ?>"><?= $jk ?></option>
-                                    <?php endif; ?>
-
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-
-
                 </div>
             </div>
         </div>
@@ -718,32 +523,6 @@
                         <div class="col-sm-9">
                             <input type="text" value="<?= $joinkaryawanid['nomor_jkn'] ?>" class="form-control" maxlength="13" id="nomor_jkn" onkeyup="angka(this);" name="nomor_jkn" placeholder="Masukan Nomor BPJSKES Jaminan Kesehatan Nasional">
                             <small class="form-text text-danger"><?php echo form_error('nomor_jkn'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="nomor_jkn_istri_suami" class="col-sm-3 col-form-label"><b>Nomor JKN Istri / Suami</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nomor_jkn_istri_suami'] ?>" onkeyup="angka(this);" class="form-control" id="nomor_jkn_istri_suami" name="nomor_jkn_istri_suami" placeholder="Nomor JKN Istri / Suami">
-                            <small class="form-text text-danger"><?php echo form_error('nomor_jkn_istri_suami'); ?></small>
-                        </div>
-                        <label for="nomor_jkn_anak1" class="col-sm-3 col-form-label"><b>Nomor JKN Anak 1</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nomor_jkn_anak1'] ?>" onkeyup="angka(this);" class="form-control" id="nomor_jkn_anak1" name="nomor_jkn_anak1" placeholder="Nomor JKN Anak 1">
-                            <small class="form-text text-danger"><?php echo form_error('nomor_jkn_anak1'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="nomor_jkn_anak2" class="col-sm-3 col-form-label"><b>Nomor JKN Anak 2</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nomor_jkn_anak2'] ?>" onkeyup="angka(this);" class="form-control" id="nomor_jkn_anak2" name="nomor_jkn_anak2" placeholder="Nomor JKN Anak 2">
-                            <small class="form-text text-danger"><?php echo form_error('nomor_jkn_anak2'); ?></small>
-                        </div>
-                        <label for="nomor_jkn_anak3" class="col-sm-3 col-form-label"><b>Nomor JKN Anak 3</b></label>
-                        <div class="col-sm-3">
-                            <input type="text" value="<?= $joinkaryawanid['nomor_jkn_anak3'] ?>" onkeyup="angka(this);" class="form-control" id="nomor_jkn_anak3" name="nomor_jkn_anak3" placeholder="Nomor JKN Anak 3">
-                            <small class="form-text text-danger"><?php echo form_error('nomor_jkn_anak3'); ?></small>
                         </div>
                     </div>
 

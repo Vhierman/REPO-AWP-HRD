@@ -328,112 +328,6 @@
                         </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nik_istri_suami'); ?>" class="form-control" maxlength="16" onkeyup="angka(this);" id="nik_istri_suami" name="nik_istri_suami" placeholder="Masukan Nomor NIK Istri / Suami">
-                            <small class="form-text text-danger"><?php echo form_error('nik_istri_suami'); ?></small>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nama_istri_suami'); ?>" class="form-control" maxlength="50" id="nama_istri_suami" onkeyup="huruf(this);" name="nama_istri_suami" placeholder="Masukan Nama Istri / Suami">
-                            <small class="form-text text-danger"><?php echo form_error('nama_istri_suami'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('tempat_lahir_istri_suami'); ?>" class="form-control" maxlength="50" id="tempat_lahir_istri_suami" name="tempat_lahir_istri_suami" placeholder="Masukan tempat Lahir Istri / Suami">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="text" class="form-control" maxlength="50" id="tanggal_lahir_istri_suami" readonly="readonly" name="tanggal_lahir_istri_suami" placeholder="Tanggal Lahir Istri / Suami ( yyyy-mm-dd )">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nik_anak1'); ?>" class="form-control" maxlength="16" id="nik_anak1" onkeyup="angka(this);" name="nik_anak1" placeholder="Masukan Nomor NIK Anak 1">
-                            <small class="form-text text-danger"><?php echo form_error('nik_anak1'); ?></small>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nama_anak1'); ?>" class="form-control" maxlength="50" id="nama_anak1" onkeyup="huruf(this);" name="nama_anak1" placeholder="Masukan Nama Anak 1">
-                            <small class="form-text text-danger"><?php echo form_error('nama_anak1'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('tempat_lahir_anak1'); ?>" class="form-control" maxlength="50" id="tempat_lahir_anak1" name="tempat_lahir_anak1" placeholder="Masukan tempat Lahir Anak 1">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="text" class="form-control" maxlength="50" id="tanggal_lahir_anak1" readonly="readonly" name="tanggal_lahir_anak1" placeholder="Tanggal Lahir Anak 1 ( yyyy-mm-dd )">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <select name="jenis_kelamin_anak1" id="jenis_kelamin_anak1" class="form-control">
-                            <option value="">Pilih Jenis Kelamin Anak 1</option>
-                            <option value="Pria">Pria</option>
-                            <option value="Wanita">Wanita</option>
-                        </select>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nik_anak2'); ?>" class="form-control" maxlength="16" id="nik_anak2" onkeyup="angka(this);" name="nik_anak2" placeholder="Masukan Nomor NIK Anak 2">
-                            <small class="form-text text-danger"><?php echo form_error('nik_anak2'); ?></small>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nama_anak2'); ?>" class="form-control" maxlength="50" id="nama_anak2" onkeyup="huruf(this);" name="nama_anak2" placeholder="Masukan Nama Anak 2">
-                            <small class="form-text text-danger"><?php echo form_error('nama_anak2'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('tempat_lahir_anak2'); ?>" class="form-control" maxlength="50" id="tempat_lahir_anak2" name="tempat_lahir_anak2" placeholder="Masukan tempat Lahir Anak 2">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="text" class="form-control" maxlength="50" id="tanggal_lahir_anak2" readonly="readonly" name="tanggal_lahir_anak2" placeholder="Tanggal Lahir Anak 2 ( yyyy-mm-dd )">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <select name="jenis_kelamin_anak2" id="jenis_kelamin_anak2" class="form-control">
-                            <option value="">Pilih Jenis Kelamin Anak 2</option>
-                            <option value="Pria">Pria</option>
-                            <option value="Wanita">Wanita</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nik_anak3'); ?>" class="form-control" maxlength="16" id="nik_anak3" onkeyup="angka(this);" name="nik_anak3" placeholder="Masukan Nomor NIK Anak 3">
-                            <small class="form-text text-danger"><?php echo form_error('nik_anak3'); ?></small>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nama_anak3'); ?>" class="form-control" maxlength="50" id="nama_anak3" onkeyup="huruf(this);" name="nama_anak3" placeholder="Masukan Nama Anak 3">
-                            <small class="form-text text-danger"><?php echo form_error('nama_anak3'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('tempat_lahir_anak3'); ?>" class="form-control" maxlength="50" id="tempat_lahir_anak3" name="tempat_lahir_anak3" placeholder="Masukan tempat Lahir Anak 3">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="text" class="form-control" maxlength="50" id="tanggal_lahir_anak3" readonly="readonly" name="tanggal_lahir_anak3" placeholder="Tanggal Lahir Anak 3 ( yyyy-mm-dd )">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <select name="jenis_kelamin_anak3" id="jenis_kelamin_anak3" class="form-control">
-                            <option value="">Pilih Jenis Kelamin Anak 3</option>
-                            <option value="Pria">Pria</option>
-                            <option value="Wanita">Wanita</option>
-                        </select>
-                    </div>
-
-
                 </div>
             </div>
         </div>
@@ -445,40 +339,17 @@
                 <div class="card-body border-bottom-danger ">
 
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <input type="text" value="<?= set_value('nomor_jht'); ?>" class="form-control" maxlength="11" id="nomor_jht" name="nomor_jht" placeholder="Masukan Nomor BPJSTK Jaminan Hari Tua">
                             <small class="form-text text-danger"><?php echo form_error('nomor_jht'); ?></small>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                             <input type="text" value="<?= set_value('nomor_jp'); ?>" class="form-control" maxlength="11" id="nomor_jp" onkeyup="angka(this);" name="nomor_jp" placeholder="Masukan Nomor BPJSTK Jaminan Pensiun">
                             <small class="form-text text-danger"><?php echo form_error('nomor_jp'); ?></small>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" value="<?= set_value('nomor_jkn'); ?>" class="form-control" maxlength="13" id="nomor_jkn" onkeyup="angka(this);" name="nomor_jkn" placeholder="Masukan Nomor BPJSKES Jaminan Kesehatan Nasional">
-                        <small class="form-text text-danger"><?php echo form_error('nomor_jkn'); ?></small>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nomor_jkn_istri_suami'); ?>" class="form-control" maxlength="13" id="nomor_jkn_istri_suami" onkeyup="angka(this);" name="nomor_jkn_istri_suami" placeholder="Masukan Nomor BPJSKES Jaminan Kesehatan Istri / Suami">
-                            <small class="form-text text-danger"><?php echo form_error('nomor_jkn_istri_suami'); ?></small>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nomor_jkn_anak1'); ?>" class="form-control" maxlength="13" id="nomor_jkn_anak1" onkeyup="angka(this);" name="nomor_jkn_anak1" placeholder="Masukan Nomor BPJSKES Jaminan Kesehatan Anak 1">
-                            <small class="form-text text-danger"><?php echo form_error('nomor_jkn_anak1'); ?></small>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nomor_jkn_anak2'); ?>" class="form-control" maxlength="13" id="nomor_jkn_anak2" onkeyup="angka(this);" name="nomor_jkn_anak2" placeholder="Masukan Nomor BPJSKES Jaminan Kesehatan Anak 2">
-                            <small class="form-text text-danger"><?php echo form_error('nomor_jkn_anak2'); ?></small>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <input type="text" value="<?= set_value('nomor_jkn_anak3'); ?>" class="form-control" maxlength="13" id="nomor_jkn_anak3" onkeyup="angka(this);" name="nomor_jkn_anak3" placeholder="Masukan Nomor BPJSKES Jaminan Kesehatan Anak 3">
-                            <small class="form-text text-danger"><?php echo form_error('nomor_jkn_anak3'); ?></small>
+                        <div class="form-group col-md-4">
+                            <input type="text" value="<?= set_value('nomor_jkn'); ?>" class="form-control" maxlength="13" id="nomor_jkn" onkeyup="angka(this);" name="nomor_jkn" placeholder="Masukan Nomor BPJSKES Jaminan Kesehatan Nasional">
+                            <small class="form-text text-danger"><?php echo form_error('nomor_jkn'); ?></small>
                         </div>
                     </div>
 
