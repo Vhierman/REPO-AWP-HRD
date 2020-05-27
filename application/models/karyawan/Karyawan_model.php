@@ -234,6 +234,188 @@ class Karyawan_model extends CI_model
         $this->db->insert('karyawan', $datakaryawan);
     }
 
+    //Melakukan query untuk tambah Master Gaji
+    public function tambahMasterGaji()
+    {
+        //Query Untuk Mencari Rincian Potongan BPJS Kesehatan
+        $this->db->select('*');
+        $this->db->from('potongan_bpjs_kesehatan');
+        $bpjsks = $this->db->get()->row_array();
+
+        $databpjsks = [
+            'potongan_bpjs_kesehatan_karyawan'      => $bpjsks['potongan_bpjs_kesehatan_karyawan'],
+            'potongan_bpjs_kesehatan_perusahaan'    => $bpjsks['potongan_bpjs_kesehatan_perusahaan'],
+            'maksimal_iuran_bpjs_kesehatan'         => $bpjsks['maksimal_iuran_bpjs_kesehatan']
+        ];
+        //End Untuk Mencari Rincian Potongan BPJS Kesehatan
+
+        //Query Untuk Mencari Rincian Potongan BPJS Ketenagakerjaan
+        $this->db->select('*');
+        $this->db->from('potongan_bpjs_ketenagakerjaan');
+        $bpjstk = $this->db->get()->row_array();
+
+        $databpjstk = [
+            'potongan_jht_karyawan'         => $bpjstk['potongan_jht_karyawan'],
+            'potongan_jht_perusahaan'       => $bpjstk['potongan_jht_perusahaan'],
+            'potongan_jp_karyawan'          => $bpjstk['potongan_jp_karyawan'],
+            'potongan_jp_perusahaan'        => $bpjstk['potongan_jp_perusahaan'],
+            'potongan_jkk_perusahaan'       => $bpjstk['potongan_jkk_perusahaan'],
+            'potongan_jkm_perusahaan'       => $bpjstk['potongan_jkm_perusahaan'],
+            'jumlah_potongan_karyawan'      => $bpjstk['jumlah_potongan_karyawan'],
+            'jumlah_potongan_perusahaan'    => $bpjstk['jumlah_potongan_perusahaan'],
+            'maksimal_iuran_jp'             => $bpjstk['maksimal_iuran_jp']
+        ];
+        //End Untuk Mencari Rincian Potongan BPJS Ketenagakerjaan
+
+        //Mengambil variabel dari inputan
+        $nikkaryawan        = $this->input->post('nik_karyawan', TRUE);
+        $gajipokok          = $this->input->post('gaji_pokok', TRUE);
+        $uangmakan          = $this->input->post('uang_makan', TRUE);
+        $uangtransport      = $this->input->post('uang_transport', TRUE);
+        $tunjangantugas     = $this->input->post('tunjangan_tugas', TRUE);
+        $tunjanganpulsa     = $this->input->post('tunjangan_pulsa', TRUE);
+
+        //Menghitung Jumlah Upah
+        $jumlahupah         = $gajipokok + $uangmakan + $uangtransport + $tunjangantugas + $tunjanganpulsa;
+        //
+
+        //Potongan BPJS Kesehatan
+        $potongan_bpjs_kesehatan_karyawan   = 0;
+        $potongan_bpjs_kesehatan_perusahaan = 0;
+        $maksimal_iuran_bpjs_kesehatan      = 0;
+        //Potongan BPJS Ketenagakerjaan
+        $potongan_jht_karyawan              = 0;
+        $potongan_jht_perusahaan            = 0;
+        $potongan_jp_karyawan               = 0;
+        $potongan_jp_perusahaan             = 0;
+        $potongan_jkk_perusahaan            = 0;
+        $potongan_jkm_perusahaan            = 0;
+        $jumlah_potongan_karyawan           = 0;
+        $jumlah_potongan_perusahaan         = 0;
+        $maksimal_iuran_jp                  = 0;
+
+        //Jika Gaji Di Atas Maksimal Iuran BPJS Kesehatan
+        if ($jumlahupah > $maksimal_iuran_bpjs_kesehatan) {
+            //Potongan BPJS Kesehatan
+            $jknbebankaryawan               = $maksimal_iuran_bpjs_kesehatan * 1 / 100;
+            $jknbebanperusahaan             = $maksimal_iuran_bpjs_kesehatan * 4 / 100;
+            //Potongan BPJS Ketenagakerjaan
+            $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+            $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+            $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+            $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+            $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+            $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+            $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+            $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+        }
+        //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
+        else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
+            //Potongan BPJS Kesehatan
+            $jknbebankaryawan               = $jumlahupah * 1 / 100;
+            $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+            //Potongan BPJS Ketenagakerjaan
+            $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+            $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+            $jpbebankaryawan                = $maksimal_iuran_jp * $potongan_jp_karyawan / 100;
+            $jpbebanperusahaan              = $maksimal_iuran_jp * $potongan_jp_perusahaan / 100;
+            $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+            $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+            $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+            $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+        }
+        //Jika Gaji Dibawah Iuran Maksimal BPJSTK
+        else {
+            //Potongan BPJS Kesehatan
+            $jknbebankaryawan               = $jumlahupah * 1 / 100;
+            $jknbebanperusahaan             = $jumlahupah * 4 / 100;
+            //Potongan BPJS Ketenagakerjaan
+            $jhtbebankaryawan               = $jumlahupah * $potongan_jht_karyawan / 100;
+            $jhtbebanperusahaan             = $jumlahupah * $potongan_jht_perusahaan / 100;
+            $jpbebankaryawan                = $jumlahupah * $potongan_jp_karyawan / 100;
+            $jpbebanperusahaan              = $jumlahupah * $potongan_jp_perusahaan / 100;
+            $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
+            $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
+            $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
+            $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+        }
+        //
+
+        //Menghitung Total Gaji
+        $takehomepay            = $jumlahupah - $jumlahbpjstkbebankaryawan - $jknbebankaryawan;
+
+        //Menghitung Upah Lembur Perjam
+        $upahlemburperjam       = $jumlahupah / 173;
+
+        //Input Database
+        $datamastergaji = [
+            "karyawan_id_master"                    => $nikkaryawan,
+            "gaji_pokok_master"                     => $gajipokok,
+            "upah_lembur_perjam_master"             => $upahlemburperjam,
+            "uang_makan_master"                     => $uangmakan,
+            "uang_transport_master"                 => $uangtransport,
+            "tunjangan_tugas_master"                => $tunjangantugas,
+            "tunjangan_pulsa_master"                => $tunjanganpulsa,
+            "jumlah_upah_master"                    => $jumlahupah,
+            "potongan_bpjsks_perusahaan_master"     => $jknbebanperusahaan,
+            "potongan_bpjsks_karyawan_master"       => $jknbebankaryawan,
+            "potongan_jht_karyawan_master"          => $jhtbebankaryawan,
+            "potongan_jp_karyawan_master"           => $jpbebankaryawan,
+            "jumlah_bpjstk_karyawan_master"         => $jumlahbpjstkbebankaryawan,
+            "potongan_jht_perusahaan_master"        => $jhtbebanperusahaan,
+            "potongan_jp_perusahaan_master"         => $jpbebanperusahaan,
+            "potongan_jkk_perusahaan_master"        => $jkkbebanperusahaan,
+            "potongan_jkm_perusahaan_master"        => $jkmbebanperusahaan,
+            "jumlah_bpjstk_perusahaan_master"       => $jumlahbpjstkbebanperusahaan,
+            "take_home_pay_master"                  => $takehomepay
+        ];
+        $this->db->insert('gaji_master', $datamastergaji);
+    }
+
+    //Melakukan query untuk tambah History Kontrak
+    public function tambahHistoryKontrak()
+    {
+
+        //Mengambil variabel dari inputan
+        $nikkaryawan                    = $this->input->post('nik_karyawan', TRUE);
+        $tanggal_awal_kontrak           = $this->input->post('tanggal_mulai_kerja', TRUE);
+        $tanggal_akhir_kontrak          = $this->input->post('tanggal_akhir_kerja', TRUE);
+        $status_kontrak_kerja           = $this->input->post('status_kerja', TRUE);
+
+        //Menghitung Jumlah Tahun Dan Bulan
+        $awal_kontrak               = date_create($tanggal_awal_kontrak);
+        $akhir_kontrak              = date_create($tanggal_akhir_kontrak);
+
+        if ($status_kontrak_kerja == "PKWTT") {
+            $bulan                      = 0;
+            $hasiltanggalakhirkontrak   = 0000 - 00 - 00;
+            $hasiljumlahkontrak         = 0;
+        } else {
+            $bulan                      = diffInMonths($awal_kontrak, $akhir_kontrak);
+            $hasiltanggalakhirkontrak   = $tanggal_akhir_kontrak;
+            $hasiljumlahkontrak         = 1;
+        }
+
+        $masakontrak                = $bulan;
+
+        if ($masakontrak == 12) {
+            $hasilmasakontrak = "1 Tahun";
+        } else {
+            $hasilmasakontrak = $masakontrak . " Bulan";
+        }
+
+        //Input Database
+        $datahistorykontrak = [
+            "karyawan_id"               => $nikkaryawan,
+            "tanggal_awal_kontrak"      => $tanggal_awal_kontrak,
+            "tanggal_akhir_kontrak"     => $tanggal_akhir_kontrak,
+            "status_kontrak_kerja"      => $status_kontrak_kerja,
+            "masa_kontrak"              => $hasilmasakontrak,
+            "jumlah_kontrak"            => $hasiljumlahkontrak
+        ];
+        $this->db->insert('history_kontrak', $datahistorykontrak);
+    }
+
     //Melakukan query untuk tambah data karyawan
     public function editKaryawan()
     {

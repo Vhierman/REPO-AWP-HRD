@@ -497,14 +497,14 @@ class Gaji extends CI_Controller
         $data['title'] = 'Rekap Gaji Prima';
         //Menyimpan session dari login
         $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
-        
+
         //Mengambil data dari model Gaji
         $data['rekap'] = $this->gaji->getRekapGajiPrimaKomponenIndonesia();
 
         //Validation Form Input
         $this->form_validation->set_rules('mulai_tanggal', 'Tanggal Mulai', 'required');
         $this->form_validation->set_rules('sampai_tanggal', 'Tanggal Akhir', 'required');
-        
+
         //jika validasinya salah akan menampilkan halaman rekap gaji
         if ($this->form_validation->run() == false) {
             //menampilkan halaman Cetak Rekap Gaji
@@ -513,21 +513,19 @@ class Gaji extends CI_Controller
             $this->load->view('templates/topbar', $data);
             $this->load->view('gaji/rekap_gaji_prima_komponen_indonesia', $data);
             $this->load->view('templates/footer');
-        }
-        else{
+        } else {
 
-            if($data['rekap']==NULL){
+            if ($data['rekap'] == NULL) {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data Tersebut Belum Di Rekon ( Harap Di Rekonsiliasi Terlebih Dahulu )</div>');
                 //dan mendirect kehalaman rekon
                 redirect('gaji/rekap_gaji_prima_komponen_indonesia/');
-            }
-            else{
-            //menampilkan halaman Cetak Rekap Gaji
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('gaji/tampil_rekap_gaji_prima_komponen_indonesia', $data);
-            $this->load->view('templates/footer');
+            } else {
+                //menampilkan halaman Cetak Rekap Gaji
+                $this->load->view('templates/header', $data);
+                $this->load->view('templates/sidebar', $data);
+                $this->load->view('templates/topbar', $data);
+                $this->load->view('gaji/tampil_rekap_gaji_prima_komponen_indonesia', $data);
+                $this->load->view('templates/footer');
             }
         }
     }
@@ -539,14 +537,14 @@ class Gaji extends CI_Controller
         $data['title'] = 'Rekap Gaji Petra';
         //Menyimpan session dari login
         $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
-        
+
         //Mengambil data dari model Gaji
         $data['rekap'] = $this->gaji->getRekapGajiPetraAriesca();
 
         //Validation Form Input
         $this->form_validation->set_rules('mulai_tanggal', 'Tanggal Mulai', 'required');
         $this->form_validation->set_rules('sampai_tanggal', 'Tanggal Akhir', 'required');
-        
+
         //jika validasinya salah akan menampilkan halaman rekap gaji
         if ($this->form_validation->run() == false) {
             //menampilkan halaman Cetak Rekap Gaji
@@ -555,27 +553,25 @@ class Gaji extends CI_Controller
             $this->load->view('templates/topbar', $data);
             $this->load->view('gaji/rekap_gaji_petra_ariesca', $data);
             $this->load->view('templates/footer');
-        }
-        else{
+        } else {
 
-            if($data['rekap']==NULL){
+            if ($data['rekap'] == NULL) {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data Tersebut Belum Di Rekon ( Harap Di Rekonsiliasi Terlebih Dahulu )</div>');
                 //dan mendirect kehalaman rekon
                 redirect('gaji/rekap_gaji_petra_ariesca/');
-            }
-            else{
-            //menampilkan halaman Cetak Rekap Gaji
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('gaji/tampil_rekap_gaji_petra_ariesca', $data);
-            $this->load->view('templates/footer');
+            } else {
+                //menampilkan halaman Cetak Rekap Gaji
+                $this->load->view('templates/header', $data);
+                $this->load->view('templates/sidebar', $data);
+                $this->load->view('templates/topbar', $data);
+                $this->load->view('gaji/tampil_rekap_gaji_petra_ariesca', $data);
+                $this->load->view('templates/footer');
             }
         }
     }
 
     // Download Data Rekonsiliasi Prima
-    public function downloadrekonsiliasigajiprimaexcell($mulai_tanggal,$sampai_tanggal)
+    public function downloadrekonsiliasigajiprimaexcell($mulai_tanggal, $sampai_tanggal)
     {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Rekonsiliasi Gaji';
@@ -699,9 +695,9 @@ class Gaji extends CI_Controller
         $excel->getActiveSheet()->getStyle('AA6')->applyFromArray($style_col);
         $excel->getActiveSheet()->getStyle('AB6')->applyFromArray($style_col);
 
-        
+
         // Panggil function view yang ada di Model untuk menampilkan semua data
-        $join = $this->gaji->DownloadRekonGajiPrimaExcell($mulai_tanggal,$sampai_tanggal);
+        $join = $this->gaji->DownloadRekonGajiPrimaExcell($mulai_tanggal, $sampai_tanggal);
 
         $no = 1; // Untuk penomoran tabel, di awal set dengan 1
         $numrow = 7; // Set baris pertama untuk isi tabel adalah baris ke 4
@@ -709,10 +705,10 @@ class Gaji extends CI_Controller
 
             $excel->setActiveSheetIndex(0)->setCellValue('B' . $numrow, $no);
             $excel->setActiveSheetIndex(0)->setCellValue('C' . $numrow, $data->nama_karyawan);
-            $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow, "'" .$data->nik_karyawan);
+            $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow, "'" . $data->nik_karyawan);
             $excel->setActiveSheetIndex(0)->setCellValue('E' . $numrow, $data->jabatan);
             $excel->setActiveSheetIndex(0)->setCellValue('F' . $numrow, $data->penempatan);
-            $excel->setActiveSheetIndex(0)->setCellValue('G' . $numrow, "'" .$data->tanggal_mulai_kerja);
+            $excel->setActiveSheetIndex(0)->setCellValue('G' . $numrow, "'" . $data->tanggal_mulai_kerja);
             $excel->setActiveSheetIndex(0)->setCellValue('H' . $numrow, $data->status_kerja);
             $excel->setActiveSheetIndex(0)->setCellValue('I' . $numrow, $data->gaji_pokok_master);
             $excel->setActiveSheetIndex(0)->setCellValue('J' . $numrow, $data->uang_makan_master);
@@ -730,7 +726,7 @@ class Gaji extends CI_Controller
             $excel->setActiveSheetIndex(0)->setCellValue('V' . $numrow, $data->potongan_jkm_perusahaan_master);
             $excel->setActiveSheetIndex(0)->setCellValue('W' . $numrow, $data->potongan_jkk_perusahaan_master);
             $excel->setActiveSheetIndex(0)->setCellValue('X' . $numrow, $data->jumlah_bpjstk_karyawan_master);
-            $excel->setActiveSheetIndex(0)->setCellValue('Y' . $numrow, $data->jumlah_bpjstk_perusahaan_master	);
+            $excel->setActiveSheetIndex(0)->setCellValue('Y' . $numrow, $data->jumlah_bpjstk_perusahaan_master);
             $excel->setActiveSheetIndex(0)->setCellValue('Z' . $numrow, $data->potongan_bpjsks_karyawan_master);
             $excel->setActiveSheetIndex(0)->setCellValue('AA' . $numrow, $data->potongan_bpjsks_perusahaan_master);
             $excel->setActiveSheetIndex(0)->setCellValue('AB' . $numrow, $data->take_home_pay_master);
@@ -768,7 +764,7 @@ class Gaji extends CI_Controller
             $numrow++; // Tambah 1 setiap kali looping
 
         }
-        
+
 
         // Set width kolom di excell
         $excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); // Set width kolom 
@@ -817,11 +813,10 @@ class Gaji extends CI_Controller
 
         $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
         $write->save('php://output');
-
     }
 
     // Download Data Rekonsiliasi Petra
-    public function downloadrekonsiliasigajipetraexcell($mulai_tanggal,$sampai_tanggal)
+    public function downloadrekonsiliasigajipetraexcell($mulai_tanggal, $sampai_tanggal)
     {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Rekonsiliasi Gaji';
@@ -945,9 +940,9 @@ class Gaji extends CI_Controller
         $excel->getActiveSheet()->getStyle('AA6')->applyFromArray($style_col);
         $excel->getActiveSheet()->getStyle('AB6')->applyFromArray($style_col);
 
-        
+
         // Panggil function view yang ada di Model untuk menampilkan semua data
-        $join = $this->gaji->DownloadRekonGajiPetraExcell($mulai_tanggal,$sampai_tanggal);
+        $join = $this->gaji->DownloadRekonGajiPetraExcell($mulai_tanggal, $sampai_tanggal);
 
         $no = 1; // Untuk penomoran tabel, di awal set dengan 1
         $numrow = 7; // Set baris pertama untuk isi tabel adalah baris ke 4
@@ -955,10 +950,10 @@ class Gaji extends CI_Controller
 
             $excel->setActiveSheetIndex(0)->setCellValue('B' . $numrow, $no);
             $excel->setActiveSheetIndex(0)->setCellValue('C' . $numrow, $data->nama_karyawan);
-            $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow, "'" .$data->nik_karyawan);
+            $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow, "'" . $data->nik_karyawan);
             $excel->setActiveSheetIndex(0)->setCellValue('E' . $numrow, $data->jabatan);
             $excel->setActiveSheetIndex(0)->setCellValue('F' . $numrow, $data->penempatan);
-            $excel->setActiveSheetIndex(0)->setCellValue('G' . $numrow, "'" .$data->tanggal_mulai_kerja);
+            $excel->setActiveSheetIndex(0)->setCellValue('G' . $numrow, "'" . $data->tanggal_mulai_kerja);
             $excel->setActiveSheetIndex(0)->setCellValue('H' . $numrow, $data->status_kerja);
             $excel->setActiveSheetIndex(0)->setCellValue('I' . $numrow, $data->gaji_pokok_master);
             $excel->setActiveSheetIndex(0)->setCellValue('J' . $numrow, $data->uang_makan_master);
@@ -976,7 +971,7 @@ class Gaji extends CI_Controller
             $excel->setActiveSheetIndex(0)->setCellValue('V' . $numrow, $data->potongan_jkm_perusahaan_master);
             $excel->setActiveSheetIndex(0)->setCellValue('W' . $numrow, $data->potongan_jkk_perusahaan_master);
             $excel->setActiveSheetIndex(0)->setCellValue('X' . $numrow, $data->jumlah_bpjstk_karyawan_master);
-            $excel->setActiveSheetIndex(0)->setCellValue('Y' . $numrow, $data->jumlah_bpjstk_perusahaan_master	);
+            $excel->setActiveSheetIndex(0)->setCellValue('Y' . $numrow, $data->jumlah_bpjstk_perusahaan_master);
             $excel->setActiveSheetIndex(0)->setCellValue('Z' . $numrow, $data->potongan_bpjsks_karyawan_master);
             $excel->setActiveSheetIndex(0)->setCellValue('AA' . $numrow, $data->potongan_bpjsks_perusahaan_master);
             $excel->setActiveSheetIndex(0)->setCellValue('AB' . $numrow, $data->take_home_pay_master);
@@ -1014,7 +1009,7 @@ class Gaji extends CI_Controller
             $numrow++; // Tambah 1 setiap kali looping
 
         }
-        
+
 
         // Set width kolom di excell
         $excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); // Set width kolom 
@@ -1063,11 +1058,10 @@ class Gaji extends CI_Controller
 
         $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
         $write->save('php://output');
-
     }
 
     // Download Data Rekap Prima
-    public function downloadrekapgajiprimaexcell($mulai_tanggal,$sampai_tanggal)
+    public function downloadrekapgajiprimaexcell($mulai_tanggal, $sampai_tanggal)
     {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Rekap Gaji';
@@ -1191,9 +1185,9 @@ class Gaji extends CI_Controller
         $excel->getActiveSheet()->getStyle('AA6')->applyFromArray($style_col);
         $excel->getActiveSheet()->getStyle('AB6')->applyFromArray($style_col);
 
-        
+
         // Panggil function view yang ada di Model untuk menampilkan semua data
-        $join = $this->gaji->DownloadRekapGajiPrimaExcell($mulai_tanggal,$sampai_tanggal);
+        $join = $this->gaji->DownloadRekapGajiPrimaExcell($mulai_tanggal, $sampai_tanggal);
 
         $no = 1; // Untuk penomoran tabel, di awal set dengan 1
         $numrow = 7; // Set baris pertama untuk isi tabel adalah baris ke 4
@@ -1201,10 +1195,10 @@ class Gaji extends CI_Controller
 
             $excel->setActiveSheetIndex(0)->setCellValue('B' . $numrow, $no);
             $excel->setActiveSheetIndex(0)->setCellValue('C' . $numrow, $data->nama_karyawan);
-            $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow, "'" .$data->nik_karyawan);
+            $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow, "'" . $data->nik_karyawan);
             $excel->setActiveSheetIndex(0)->setCellValue('E' . $numrow, $data->jabatan);
             $excel->setActiveSheetIndex(0)->setCellValue('F' . $numrow, $data->penempatan);
-            $excel->setActiveSheetIndex(0)->setCellValue('G' . $numrow, "'" .$data->tanggal_mulai_kerja);
+            $excel->setActiveSheetIndex(0)->setCellValue('G' . $numrow, "'" . $data->tanggal_mulai_kerja);
             $excel->setActiveSheetIndex(0)->setCellValue('H' . $numrow, $data->status_kerja);
             $excel->setActiveSheetIndex(0)->setCellValue('I' . $numrow, $data->gaji_pokok_history);
             $excel->setActiveSheetIndex(0)->setCellValue('J' . $numrow, $data->uang_makan_history);
@@ -1222,7 +1216,7 @@ class Gaji extends CI_Controller
             $excel->setActiveSheetIndex(0)->setCellValue('V' . $numrow, $data->potongan_jkm_perusahaan_history);
             $excel->setActiveSheetIndex(0)->setCellValue('W' . $numrow, $data->potongan_jkk_perusahaan_history);
             $excel->setActiveSheetIndex(0)->setCellValue('X' . $numrow, $data->jumlah_bpjstk_karyawan_history);
-            $excel->setActiveSheetIndex(0)->setCellValue('Y' . $numrow, $data->jumlah_bpjstk_perusahaan_history	);
+            $excel->setActiveSheetIndex(0)->setCellValue('Y' . $numrow, $data->jumlah_bpjstk_perusahaan_history);
             $excel->setActiveSheetIndex(0)->setCellValue('Z' . $numrow, $data->potongan_bpjsks_karyawan_history);
             $excel->setActiveSheetIndex(0)->setCellValue('AA' . $numrow, $data->potongan_bpjsks_perusahaan_history);
             $excel->setActiveSheetIndex(0)->setCellValue('AB' . $numrow, $data->take_home_pay_history);
@@ -1260,7 +1254,7 @@ class Gaji extends CI_Controller
             $numrow++; // Tambah 1 setiap kali looping
 
         }
-        
+
 
         // Set width kolom di excell
         $excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); // Set width kolom 
@@ -1309,11 +1303,10 @@ class Gaji extends CI_Controller
 
         $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
         $write->save('php://output');
-
     }
 
     // Download Data Rekap Petra
-    public function downloadrekapgajipetraexcell($mulai_tanggal,$sampai_tanggal)
+    public function downloadrekapgajipetraexcell($mulai_tanggal, $sampai_tanggal)
     {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Rekap Gaji';
@@ -1437,9 +1430,9 @@ class Gaji extends CI_Controller
         $excel->getActiveSheet()->getStyle('AA6')->applyFromArray($style_col);
         $excel->getActiveSheet()->getStyle('AB6')->applyFromArray($style_col);
 
-        
+
         // Panggil function view yang ada di Model untuk menampilkan semua data
-        $join = $this->gaji->DownloadRekapGajiPetraExcell($mulai_tanggal,$sampai_tanggal);
+        $join = $this->gaji->DownloadRekapGajiPetraExcell($mulai_tanggal, $sampai_tanggal);
 
         $no = 1; // Untuk penomoran tabel, di awal set dengan 1
         $numrow = 7; // Set baris pertama untuk isi tabel adalah baris ke 4
@@ -1447,10 +1440,10 @@ class Gaji extends CI_Controller
 
             $excel->setActiveSheetIndex(0)->setCellValue('B' . $numrow, $no);
             $excel->setActiveSheetIndex(0)->setCellValue('C' . $numrow, $data->nama_karyawan);
-            $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow, "'" .$data->nik_karyawan);
+            $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow, "'" . $data->nik_karyawan);
             $excel->setActiveSheetIndex(0)->setCellValue('E' . $numrow, $data->jabatan);
             $excel->setActiveSheetIndex(0)->setCellValue('F' . $numrow, $data->penempatan);
-            $excel->setActiveSheetIndex(0)->setCellValue('G' . $numrow, "'" .$data->tanggal_mulai_kerja);
+            $excel->setActiveSheetIndex(0)->setCellValue('G' . $numrow, "'" . $data->tanggal_mulai_kerja);
             $excel->setActiveSheetIndex(0)->setCellValue('H' . $numrow, $data->status_kerja);
             $excel->setActiveSheetIndex(0)->setCellValue('I' . $numrow, $data->gaji_pokok_history);
             $excel->setActiveSheetIndex(0)->setCellValue('J' . $numrow, $data->uang_makan_history);
@@ -1468,7 +1461,7 @@ class Gaji extends CI_Controller
             $excel->setActiveSheetIndex(0)->setCellValue('V' . $numrow, $data->potongan_jkm_perusahaan_history);
             $excel->setActiveSheetIndex(0)->setCellValue('W' . $numrow, $data->potongan_jkk_perusahaan_history);
             $excel->setActiveSheetIndex(0)->setCellValue('X' . $numrow, $data->jumlah_bpjstk_karyawan_history);
-            $excel->setActiveSheetIndex(0)->setCellValue('Y' . $numrow, $data->jumlah_bpjstk_perusahaan_history	);
+            $excel->setActiveSheetIndex(0)->setCellValue('Y' . $numrow, $data->jumlah_bpjstk_perusahaan_history);
             $excel->setActiveSheetIndex(0)->setCellValue('Z' . $numrow, $data->potongan_bpjsks_karyawan_history);
             $excel->setActiveSheetIndex(0)->setCellValue('AA' . $numrow, $data->potongan_bpjsks_perusahaan_history);
             $excel->setActiveSheetIndex(0)->setCellValue('AB' . $numrow, $data->take_home_pay_history);
@@ -1506,7 +1499,7 @@ class Gaji extends CI_Controller
             $numrow++; // Tambah 1 setiap kali looping
 
         }
-        
+
 
         // Set width kolom di excell
         $excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); // Set width kolom 
@@ -1555,11 +1548,10 @@ class Gaji extends CI_Controller
 
         $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
         $write->save('php://output');
-
     }
 
     //Menampilkan halaman awal cetak REKAP gaji Prima Komponen Indonesia
-    public function downloadrekapgajiprimapdf($mulai_tanggal,$sampai_tanggal)
+    public function downloadrekapgajiprimapdf($mulai_tanggal, $sampai_tanggal)
     {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Cetak Rekap Gaji';
@@ -1567,7 +1559,7 @@ class Gaji extends CI_Controller
         $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
 
         //Mengambil data dari model Gaji
-        $rekap = $this->gaji->DownloadRekapGajiPrimaPDF($mulai_tanggal,$sampai_tanggal);
+        $rekap = $this->gaji->DownloadRekapGajiPrimaPDF($mulai_tanggal, $sampai_tanggal);
 
         //Mengambil data Tanggal Bulan Dan Tahun Sekarang
         date_default_timezone_set("Asia/Jakarta");
@@ -1697,7 +1689,7 @@ class Gaji extends CI_Controller
         $pdf->SetFont('Arial', '', '12');
         $pdf->Ln(20);
         $pdf->Cell(10);
-        $pdf->Cell(70, 0, 'Tangerang Selatan, '.$tanggal." ".bulan($bulan)." ".$tahun, 0, 0, 'C');
+        $pdf->Cell(70, 0, 'Tangerang Selatan, ' . $tanggal . " " . bulan($bulan) . " " . $tahun, 0, 0, 'C');
         $pdf->Ln();
 
         $pdf->Cell(6);
@@ -1728,7 +1720,7 @@ class Gaji extends CI_Controller
     }
 
     //Menampilkan halaman awal cetak REKAP gaji Prima Komponen Indonesia
-    public function downloadrekapgajipetrapdf($mulai_tanggal,$sampai_tanggal)
+    public function downloadrekapgajipetrapdf($mulai_tanggal, $sampai_tanggal)
     {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Cetak Rekap Gaji';
@@ -1736,7 +1728,7 @@ class Gaji extends CI_Controller
         $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
 
         //Mengambil data dari model Gaji
-        $rekap = $this->gaji->DownloadRekapGajiPetraPDF($mulai_tanggal,$sampai_tanggal);
+        $rekap = $this->gaji->DownloadRekapGajiPetraPDF($mulai_tanggal, $sampai_tanggal);
 
         //Mengambil data Tanggal Bulan Dan Tahun Sekarang
         date_default_timezone_set("Asia/Jakarta");
@@ -1866,7 +1858,7 @@ class Gaji extends CI_Controller
         $pdf->SetFont('Arial', '', '12');
         $pdf->Ln(20);
         $pdf->Cell(10);
-        $pdf->Cell(70, 0, 'Tangerang Selatan, '.$tanggal." ".bulan($bulan)." ".$tahun, 0, 0, 'C');
+        $pdf->Cell(70, 0, 'Tangerang Selatan, ' . $tanggal . " " . bulan($bulan) . " " . $tahun, 0, 0, 'C');
         $pdf->Ln();
 
         $pdf->Cell(6);
@@ -1968,7 +1960,6 @@ class Gaji extends CI_Controller
                 'potongan_bpjs_kesehatan_perusahaan'    => $bpjsks['potongan_bpjs_kesehatan_perusahaan'],
                 'maksimal_iuran_bpjs_kesehatan'         => $bpjsks['maksimal_iuran_bpjs_kesehatan']
             ];
-
             //End Untuk Mencari Rincian Potongan BPJS Kesehatan
 
             //Query Untuk Mencari Rincian Potongan BPJS Ketenagakerjaan
@@ -2009,7 +2000,7 @@ class Gaji extends CI_Controller
 
             //Checkbox BPJS
             //Jika Ikut Semua Kepesertaan BPJS Kesehatan Dan Ketenagakerjaan
-            if($jkn != null && $jht != null && $jp != null && $jkk != null && $jkm != null){
+            if ($jkn != null && $jht != null && $jp != null && $jkk != null && $jkm != null) {
                 //Potongan BPJS Kesehatan
                 $potongan_bpjs_kesehatan_karyawan   = $databpjsks['potongan_bpjs_kesehatan_karyawan'];
                 $potongan_bpjs_kesehatan_perusahaan = $databpjsks['potongan_bpjs_kesehatan_perusahaan'];
@@ -2038,8 +2029,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
                 else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
                     //Potongan BPJS Kesehatan
@@ -2053,8 +2044,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Dibawah Iuran Maksimal BPJSTK
                 else {
                     //Potongan BPJS Kesehatan
@@ -2068,13 +2059,13 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
                 }
                 //
             }
 
             //Jika Hanya Ikut Kepesertaan BPJS Kesehatan Saja
-            elseif($jkn != null && $jht == null && $jp == null && $jkk == null && $jkm == null){
+            elseif ($jkn != null && $jht == null && $jp == null && $jkk == null && $jkm == null) {
                 //Potongan BPJS Kesehatan
                 $potongan_bpjs_kesehatan_karyawan   = $databpjsks['potongan_bpjs_kesehatan_karyawan'];
                 $potongan_bpjs_kesehatan_perusahaan = $databpjsks['potongan_bpjs_kesehatan_perusahaan'];
@@ -2103,8 +2094,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
                 else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
                     //Potongan BPJS Kesehatan
@@ -2118,8 +2109,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Dibawah Iuran Maksimal BPJSTK
                 else {
                     //Potongan BPJS Kesehatan
@@ -2133,13 +2124,13 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
                 }
                 //
             }
 
             //Jika Hanya Ikut Kepesertaan BPJS Ketenagakerjaan Saja
-            elseif($jkn == null && $jht != null && $jp != null && $jkk != null && $jkm != null){
+            elseif ($jkn == null && $jht != null && $jp != null && $jkk != null && $jkm != null) {
                 //Potongan BPJS Kesehatan
                 $potongan_bpjs_kesehatan_karyawan   = $databpjsks['potongan_bpjs_kesehatan_karyawan'];
                 $potongan_bpjs_kesehatan_perusahaan = $databpjsks['potongan_bpjs_kesehatan_perusahaan'];
@@ -2168,8 +2159,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
                 else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
                     //Potongan BPJS Kesehatan
@@ -2183,8 +2174,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Dibawah Iuran Maksimal BPJSTK
                 else {
                     //Potongan BPJS Kesehatan
@@ -2198,13 +2189,13 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
                 }
                 //
             }
 
             //JIka tidak ikut kepsertaaan Jaminan Pensiun
-            elseif($jkn != null && $jht != null && $jp == null && $jkk != null && $jkm != null){
+            elseif ($jkn != null && $jht != null && $jp == null && $jkk != null && $jkm != null) {
                 //Potongan BPJS Kesehatan
                 $potongan_bpjs_kesehatan_karyawan   = 0;
                 $potongan_bpjs_kesehatan_perusahaan = 0;
@@ -2233,8 +2224,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
                 else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
                     //Potongan BPJS Kesehatan
@@ -2248,8 +2239,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Dibawah Iuran Maksimal BPJSTK
                 else {
                     //Potongan BPJS Kesehatan
@@ -2263,12 +2254,13 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
                 }
                 //
             }
+
             //Jika tidak Ikut Semua Kepesertaan BPJS Kesehatan Dan BPJS Ketenagakerjaan
-            else{
+            else {
                 //Potongan BPJS Kesehatan
                 $potongan_bpjs_kesehatan_karyawan   = 0;
                 $potongan_bpjs_kesehatan_perusahaan = 0;
@@ -2297,8 +2289,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
                 else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
                     //Potongan BPJS Kesehatan
@@ -2312,8 +2304,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Dibawah Iuran Maksimal BPJSTK
                 else {
                     //Potongan BPJS Kesehatan
@@ -2327,12 +2319,12 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
                 }
                 //
-            }           
+            }
 
-            
+
             //Menghitung Total Gaji
             $takehomepay            = $jumlahupah - $jumlahbpjstkbebankaryawan - $jknbebankaryawan;
 
@@ -2340,7 +2332,7 @@ class Gaji extends CI_Controller
             $upahlemburperjam       = $jumlahupah / 173;
 
             //Mengirimkan data ke model
-            $hasil = $this->gaji->updatedatagaji($nikkaryawan, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan,$jpbebankaryawan,$jpbebanperusahaan,$jkkbebanperusahaan,$jkmbebanperusahaan,$jumlahbpjstkbebankaryawan,$jumlahbpjstkbebanperusahaan,$takehomepay);
+            $hasil = $this->gaji->updatedatagaji($nikkaryawan, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan, $jpbebankaryawan, $jpbebanperusahaan, $jkkbebanperusahaan, $jkmbebanperusahaan, $jumlahbpjstkbebankaryawan, $jumlahbpjstkbebanperusahaan, $takehomepay);
 
             //menampikan pesan sukses
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Success Edit Data Gaji</div>');
@@ -2350,7 +2342,7 @@ class Gaji extends CI_Controller
     }
 
     //Menampilkan halaman awal data edit rekon gaji
-    public function editrekongaji($id_history_gaji,$mulai_tanggal,$sampai_tanggal)
+    public function editrekongaji($id_history_gaji, $mulai_tanggal, $sampai_tanggal)
     {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Edit Rekon Gaji';
@@ -2358,7 +2350,7 @@ class Gaji extends CI_Controller
         $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
 
         //Mengambil data edit rekon gaji
-        $data['editrekongaji']           = $this->gaji->editRekonGaji($id_history_gaji,$mulai_tanggal,$sampai_tanggal);
+        $data['editrekongaji']           = $this->gaji->editRekonGaji($id_history_gaji, $mulai_tanggal, $sampai_tanggal);
 
         //menampilkan halaman Edit Rekon Gaji
         $this->load->view('templates/header', $data);
@@ -2446,7 +2438,7 @@ class Gaji extends CI_Controller
 
             //Checkbox BPJS
             //Jika Ikut Semua Kepesertaan BPJS Kesehatan Dan Ketenagakerjaan
-            if($jkn != null && $jht != null && $jp != null && $jkk != null && $jkm != null){
+            if ($jkn != null && $jht != null && $jp != null && $jkk != null && $jkm != null) {
                 //Potongan BPJS Kesehatan
                 $potongan_bpjs_kesehatan_karyawan   = $databpjsks['potongan_bpjs_kesehatan_karyawan'];
                 $potongan_bpjs_kesehatan_perusahaan = $databpjsks['potongan_bpjs_kesehatan_perusahaan'];
@@ -2475,8 +2467,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
                 else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
                     //Potongan BPJS Kesehatan
@@ -2490,8 +2482,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Dibawah Iuran Maksimal BPJSTK
                 else {
                     //Potongan BPJS Kesehatan
@@ -2505,13 +2497,13 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
                 }
                 //
             }
 
             //Jika Hanya Ikut Kepesertaan BPJS Kesehatan Saja
-            elseif($jkn != null && $jht == null && $jp == null && $jkk == null && $jkm == null){
+            elseif ($jkn != null && $jht == null && $jp == null && $jkk == null && $jkm == null) {
                 //Potongan BPJS Kesehatan
                 $potongan_bpjs_kesehatan_karyawan   = $databpjsks['potongan_bpjs_kesehatan_karyawan'];
                 $potongan_bpjs_kesehatan_perusahaan = $databpjsks['potongan_bpjs_kesehatan_perusahaan'];
@@ -2540,8 +2532,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
                 else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
                     //Potongan BPJS Kesehatan
@@ -2555,8 +2547,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Dibawah Iuran Maksimal BPJSTK
                 else {
                     //Potongan BPJS Kesehatan
@@ -2570,13 +2562,13 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
                 }
                 //
             }
 
             //Jika Hanya Ikut Kepesertaan BPJS Ketenagakerjaan Saja
-            elseif($jkn == null && $jht != null && $jp != null && $jkk != null && $jkm != null){
+            elseif ($jkn == null && $jht != null && $jp != null && $jkk != null && $jkm != null) {
                 //Potongan BPJS Kesehatan
                 $potongan_bpjs_kesehatan_karyawan   = $databpjsks['potongan_bpjs_kesehatan_karyawan'];
                 $potongan_bpjs_kesehatan_perusahaan = $databpjsks['potongan_bpjs_kesehatan_perusahaan'];
@@ -2605,8 +2597,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
                 else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
                     //Potongan BPJS Kesehatan
@@ -2620,8 +2612,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Dibawah Iuran Maksimal BPJSTK
                 else {
                     //Potongan BPJS Kesehatan
@@ -2635,13 +2627,13 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
                 }
                 //
             }
 
             //JIka tidak ikut kepsertaaan Jaminan Pensiun
-            elseif($jkn != null && $jht != null && $jp == null && $jkk != null && $jkm != null){
+            elseif ($jkn != null && $jht != null && $jp == null && $jkk != null && $jkm != null) {
                 //Potongan BPJS Kesehatan
                 $potongan_bpjs_kesehatan_karyawan   = 0;
                 $potongan_bpjs_kesehatan_perusahaan = 0;
@@ -2670,8 +2662,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
                 else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
                     //Potongan BPJS Kesehatan
@@ -2685,8 +2677,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Dibawah Iuran Maksimal BPJSTK
                 else {
                     //Potongan BPJS Kesehatan
@@ -2700,12 +2692,12 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
                 }
                 //
             }
             //Jika tidak Ikut Semua Kepesertaan BPJS Kesehatan Dan BPJS Ketenagakerjaan
-            else{
+            else {
                 //Potongan BPJS Kesehatan
                 $potongan_bpjs_kesehatan_karyawan   = 0;
                 $potongan_bpjs_kesehatan_perusahaan = 0;
@@ -2734,8 +2726,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Diatas Iuran Maksimal BPJSTK Dan Dibawah Iuran Maksimal BPJS Kesehatan
                 else if ($jumlahupah < $maksimal_iuran_bpjs_kesehatan && $jumlahupah > $maksimal_iuran_jp) {
                     //Potongan BPJS Kesehatan
@@ -2749,8 +2741,8 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
-                } 
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
+                }
                 //Jika Gaji Dibawah Iuran Maksimal BPJSTK
                 else {
                     //Potongan BPJS Kesehatan
@@ -2764,12 +2756,12 @@ class Gaji extends CI_Controller
                     $jkkbebanperusahaan             = $jumlahupah * $potongan_jkk_perusahaan / 100;
                     $jkmbebanperusahaan             = $jumlahupah * $potongan_jkm_perusahaan / 100;
                     $jumlahbpjstkbebankaryawan      = $jhtbebankaryawan + $jpbebankaryawan;
-                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan+$jkkbebanperusahaan+$jkmbebanperusahaan;
+                    $jumlahbpjstkbebanperusahaan    = $jhtbebanperusahaan + $jpbebanperusahaan + $jkkbebanperusahaan + $jkmbebanperusahaan;
                 }
                 //
-            }           
+            }
 
-            
+
             //Menghitung Total Gaji
             $takehomepay            = $jumlahupah - $jumlahbpjstkbebankaryawan - $jknbebankaryawan;
 
@@ -2777,7 +2769,7 @@ class Gaji extends CI_Controller
             $upahlemburperjam       = $jumlahupah / 173;
 
             //Mengirimkan data ke model
-            $hasil = $this->gaji->updatedatarekongaji($nikkaryawan,$mulai_tanggal,$sampai_tanggal, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan,$jpbebankaryawan,$jpbebanperusahaan,$jkkbebanperusahaan,$jkmbebanperusahaan,$jumlahbpjstkbebankaryawan,$jumlahbpjstkbebanperusahaan,$takehomepay);
+            $hasil = $this->gaji->updatedatarekongaji($nikkaryawan, $mulai_tanggal, $sampai_tanggal, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan, $jpbebankaryawan, $jpbebanperusahaan, $jkkbebanperusahaan, $jkmbebanperusahaan, $jumlahbpjstkbebankaryawan, $jumlahbpjstkbebanperusahaan, $takehomepay);
 
             //menampikan pesan sukses
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Success Edit Data Rekon Gaji</div>');
