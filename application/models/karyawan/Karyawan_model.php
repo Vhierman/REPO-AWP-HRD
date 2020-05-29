@@ -289,7 +289,7 @@ class Karyawan_model extends CI_model
         $datamastergaji = [
             "karyawan_id_master"                    => $nikkaryawan,
             "gaji_pokok_master"                     => $gajipokok,
-            "upah_lembur_perjam_master"             => $upahlemburperjam,
+            "upah_lembur_perjam_master"             => round($upahlemburperjam, 0),
             "uang_makan_master"                     => $uangmakan,
             "uang_transport_master"                 => $uangtransport,
             "tunjangan_tugas_master"                => $tunjangantugas,
@@ -300,11 +300,11 @@ class Karyawan_model extends CI_model
             "potongan_jht_karyawan_master"          => $jhtbebankaryawan,
             "potongan_jp_karyawan_master"           => $jpbebankaryawan,
             "jumlah_bpjstk_karyawan_master"         => $jumlahbpjstkbebankaryawan,
-            "potongan_jht_perusahaan_master"        => $jhtbebanperusahaan,
+            "potongan_jht_perusahaan_master"        => round($jhtbebanperusahaan, 0),
             "potongan_jp_perusahaan_master"         => $jpbebanperusahaan,
-            "potongan_jkk_perusahaan_master"        => $jkkbebanperusahaan,
-            "potongan_jkm_perusahaan_master"        => $jkmbebanperusahaan,
-            "jumlah_bpjstk_perusahaan_master"       => $jumlahbpjstkbebanperusahaan,
+            "potongan_jkk_perusahaan_master"        => round($jkkbebanperusahaan, 0),
+            "potongan_jkm_perusahaan_master"        => round($jkmbebanperusahaan, 0),
+            "jumlah_bpjstk_perusahaan_master"       => round($jumlahbpjstkbebanperusahaan, 0),
             "take_home_pay_master"                  => $takehomepay
         ];
         $this->db->insert('gaji_master', $datamastergaji);
