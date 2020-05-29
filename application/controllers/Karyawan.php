@@ -114,7 +114,13 @@ class Karyawan extends CI_Controller
             else {
                 //Memanggil model karyawan dengan method tambahKaryawan
                 $this->karyawan->tambahKaryawan();
-                //Menampilkan pesan berhasil
+                //Memanggil model karyawan dengan method tambahMasterGaji
+                $this->karyawan->tambahMasterGaji();
+                //Memanggil model karyawan dengan method tambahHistoryKontrak
+                $this->karyawan->tambahHistoryKontrak();
+                //Memanggil model karyawan dengan method tambahHistoryJabatan
+                $this->karyawan->tambahHistoryJabatan();
+
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Success Tambah Data Karyawan</div>');
                 //redirect ke halaman data karyawan
                 redirect('karyawan/karyawan');

@@ -406,7 +406,7 @@ class Surat extends CI_Controller
         //Jika Data Kosong
         if ($karyawan == NULL) {
             redirect('surat/penilaiankaryawan');
-        } 
+        }
         //Jika Tidak
         else {
 
@@ -782,7 +782,7 @@ class Surat extends CI_Controller
         //Jika Tidak Ada Data
         if ($karyawan == NULL) {
             redirect('surat/pkwt');
-        } 
+        }
         //Jika ada
         else {
 
@@ -1276,7 +1276,7 @@ class Surat extends CI_Controller
                 $pdf->SetFont('Arial', '', '9');
                 $pdf->Cell(170, 5, '    musyawarah dan mufakat.', 0, 0, 'L');
 
-                $pdf->Ln(25);
+                $pdf->Ln(15);
                 $pdf->Cell(60);
                 $pdf->SetFont('Arial', 'B', '9');
                 $pdf->Cell(70, 5, 'Tangerang Selatan, ' . $tanggal . ' ' . bulan($bulan) . ' ' . $tahun . '.', 0, 0, 'C');
@@ -1299,10 +1299,10 @@ class Surat extends CI_Controller
                 $pdf->SetFont('Arial', 'B', '9');
                 $pdf->Ln(40);
                 $pdf->Cell(20);
-                $pdf->Cell(70, 5, '' . $karyawan['nama_karyawan'] . '', 0, 0, 'C');
+                $pdf->Cell(70, 5, '( ' . $karyawan['nama_karyawan'] . ' )', 0, 0, 'C');
 
                 $pdf->Cell(30);
-                $pdf->Cell(70, 5, ' RUDIYANTO ', 0, 0, 'C');
+                $pdf->Cell(70, 5, '( RUDIYANTO )', 0, 0, 'C');
 
                 $pdf->Output();
                 //Akhir Fpdf
@@ -1350,7 +1350,7 @@ class Surat extends CI_Controller
         //Jika tidak ada data yang dicetak
         if ($karyawan == NULL) {
             redirect('surat/pkwtt');
-        } 
+        }
         //Jika ada
         else {
 
@@ -1586,7 +1586,7 @@ class Surat extends CI_Controller
         //Jika tidak ada data yang dicetak
         if ($karyawan == NULL) {
             redirect('surat/inventarislaptop');
-        } 
+        }
         //Jika ada
         else {
 
@@ -1832,7 +1832,7 @@ class Surat extends CI_Controller
         //Jika tidak ada data yang dicetak
         if ($karyawan == NULL) {
             redirect('surat/inventarismotor');
-        } 
+        }
         //Jika ada
         else {
 
@@ -2085,7 +2085,7 @@ class Surat extends CI_Controller
         //Jika tidak ada data yang dicetak
         if ($karyawan == NULL) {
             redirect('surat/inventarismobil');
-        } 
+        }
         //Jika ada
         else {
 

@@ -122,38 +122,10 @@ class Karyawan_model extends CI_model
     //Melakukan query untuk tambah data karyawan
     public function tambahKaryawan()
     {
-        //Mengambil data gaji untuk dilakukan perhitungan rumus potongan gaji
-        $gaji_pokok             = $this->input->post('gaji_pokok');
-        $uang_makan             = $this->input->post('uang_makan');
-        $uang_transport         = $this->input->post('uang_transport');
-        $tunjangan_tugas        = $this->input->post('tunjangan_tugas');
-        $tunjangan_pulsa        = $this->input->post('tunjangan_pulsa');
 
-        //Perhitungan Rumus Gaji
-        $jumlah_upah            = $gaji_pokok + $uang_makan + $uang_transport + $tunjangan_pulsa + $tunjangan_tugas;
 
-        if ($jumlah_upah > 8000000 && $jumlah_upah < 8512400) {
-            $potongan_jkn           = 8000000 * 1 / 100;
-            $potongan_jp            = $jumlah_upah * 1 / 100;
-        } else if ($jumlah_upah > 8512400) {
-            $potongan_jkn           = 8000000 * 1 / 100;
-            $potongan_jp            = 8512400 * 1 / 100;
-        } else {
-            $potongan_jp            = $jumlah_upah * 1 / 100;
-            $potongan_jkn           = $jumlah_upah * 1 / 100;
-        }
 
-        $potongan_jht           = $jumlah_upah * 2 / 100;
-        $total_gaji             = $jumlah_upah - $potongan_jkn - $potongan_jht - $potongan_jp;
-        $upah_lembur_perjam     = $jumlah_upah / 173;
 
-        //Rumus Mencari Upah Lembur Perjam
-        $upah_lembur_perjam = ceil($upah_lembur_perjam);
-        if (substr($upah_lembur_perjam, -2) >= 0) {
-            $total_upah_lembur_perjam = round($upah_lembur_perjam, -2);
-        } else {
-            $total_upah_lembur_perjam = round($upah_lembur_perjam, -2) + 100;
-        }
 
         //Input Database
         $datakaryawan = [
@@ -186,17 +158,6 @@ class Karyawan_model extends CI_model
             "provinsi"                      => $this->input->post('provinsi', true),
             "kode_pos"                      => htmlspecialchars($this->input->post('kode_pos', true)),
             "nomor_rekening"                => htmlspecialchars($this->input->post('nomor_rekening', true)),
-            "gaji_pokok"                    => $this->input->post('gaji_pokok', true),
-            "uang_makan"                    => $this->input->post('uang_makan', true),
-            "uang_transport"                => $this->input->post('uang_transport', true),
-            "tunjangan_tugas"               => $this->input->post('tunjangan_tugas', true),
-            "tunjangan_pulsa"               => $this->input->post('tunjangan_pulsa', true),
-            "jumlah_upah"                   => $jumlah_upah,
-            "potongan_jkn"                  => $potongan_jkn,
-            "potongan_jht"                  => $potongan_jht,
-            "potongan_jp"                   => $potongan_jp,
-            "total_gaji "                   => $total_gaji,
-            "upah_lembur_perjam"            => $total_upah_lembur_perjam,
             "tanggal_mulai_kerja"           => $this->input->post('tanggal_mulai_kerja', true),
             "tanggal_akhir_kerja"           => $this->input->post('tanggal_akhir_kerja', true),
             "status_kerja"                  => $this->input->post('status_kerja', true),
@@ -391,6 +352,25 @@ class Karyawan_model extends CI_model
             "jumlah_kontrak"            => $hasiljumlahkontrak
         ];
         $this->db->insert('history_kontrak', $datahistorykontrak);
+    }
+
+    //Melakukan query untuk tambah History Jabatan
+    public function tambahHistoryJabatan()
+    {
+        //Mengambil variabel dari inputan
+        $nikkaryawan                    = $this->input->post('nik_karyawan', TRUE);
+        $penempatan_id                  = $this->input->post('penempatan_id', TRUE);
+        $jabatan_id                     = $this->input->post('jabatan_id', TRUE);
+        $tanggal_mulai_kerja            = $this->input->post('tanggal_mulai_kerja', TRUE);
+
+        //Input Database
+        $datahistoryjabatan = [
+            "karyawan_id"                       => $nikkaryawan,
+            "penempatan_id_history_jabatan"     => $penempatan_id,
+            "jabatan_id_history_jabatan"        => $jabatan_id,
+            "tanggal_mutasi"                    => $tanggal_mulai_kerja
+        ];
+        $this->db->insert('history_jabatan', $datahistoryjabatan);
     }
 
     //Melakukan query untuk tambah data karyawan
