@@ -75,7 +75,7 @@ class Gaji_model extends CI_model
     }
 
     //mengambil data karyawan
-    public function updatedatagaji($nikkaryawan, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan,$jpbebankaryawan,$jpbebanperusahaan,$jkkbebanperusahaan,$jkmbebanperusahaan,$jumlahbpjstkbebankaryawan,$jumlahbpjstkbebanperusahaan,$takehomepay)
+    public function updatedatagaji($nikkaryawan, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan, $jpbebankaryawan, $jpbebanperusahaan, $jkkbebanperusahaan, $jkmbebanperusahaan, $jumlahbpjstkbebankaryawan, $jumlahbpjstkbebanperusahaan, $takehomepay)
     {
         $this->db->trans_start();
 
@@ -83,7 +83,7 @@ class Gaji_model extends CI_model
         foreach ($nikkaryawan as $key => $val) {
             $result = [
                 'gaji_pokok_master'                     => $gajipokok,
-                'upah_lembur_perjam_master'             => round($upahlemburperjam,0),
+                'upah_lembur_perjam_master'             => round($upahlemburperjam, 0),
                 'uang_makan_master'                     => $uangmakan,
                 'uang_transport_master'                 => $uangtransport,
                 'tunjangan_tugas_master'                => $tunjangantugas,
@@ -94,11 +94,11 @@ class Gaji_model extends CI_model
                 'potongan_jht_karyawan_master'          => $jhtbebankaryawan,
                 'potongan_jp_karyawan_master'           => $jpbebankaryawan,
                 'jumlah_bpjstk_karyawan_master'         => $jumlahbpjstkbebankaryawan,
-                'potongan_jht_perusahaan_master'        => round($jhtbebanperusahaan,0),
+                'potongan_jht_perusahaan_master'        => round($jhtbebanperusahaan, 0),
                 'potongan_jp_perusahaan_master'         => $jpbebanperusahaan,
-                'potongan_jkk_perusahaan_master'        => round($jkkbebanperusahaan,0),
-                'potongan_jkm_perusahaan_master'        => round($jkmbebanperusahaan,0),
-                'jumlah_bpjstk_perusahaan_master'       => round($jumlahbpjstkbebanperusahaan,0),
+                'potongan_jkk_perusahaan_master'        => round($jkkbebanperusahaan, 0),
+                'potongan_jkm_perusahaan_master'        => round($jkmbebanperusahaan, 0),
+                'jumlah_bpjstk_perusahaan_master'       => round($jumlahbpjstkbebanperusahaan, 0),
                 'take_home_pay_master'                  => $takehomepay
             ];
             $this->db->where('karyawan_id_master', $_POST['nik_karyawan'][$key]);
@@ -108,33 +108,33 @@ class Gaji_model extends CI_model
     }
 
     //mengambil data karyawan
-    public function updatedatarekongaji($nikkaryawan,$mulai_tanggal,$sampai_tanggal, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan,$jpbebankaryawan,$jpbebanperusahaan,$jkkbebanperusahaan,$jkmbebanperusahaan,$jumlahbpjstkbebankaryawan,$jumlahbpjstkbebanperusahaan,$takehomepay)
+    public function updatedatarekongaji($nikkaryawan, $mulai_tanggal, $sampai_tanggal, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan, $jpbebankaryawan, $jpbebanperusahaan, $jkkbebanperusahaan, $jkmbebanperusahaan, $jumlahbpjstkbebankaryawan, $jumlahbpjstkbebanperusahaan, $takehomepay)
     {
 
-            $result = [
-                'gaji_pokok_history'                     => $gajipokok,
-                'upah_lembur_perjam_history'             => round($upahlemburperjam,0),
-                'uang_makan_history'                     => $uangmakan,
-                'uang_transport_history'                 => $uangtransport,
-                'tunjangan_tugas_history'                => $tunjangantugas,
-                'tunjangan_pulsa_history'                => $tunjanganpulsa,
-                'jumlah_upah_history'                    => $jumlahupah,
-                'potongan_bpjsks_perusahaan_history'     => $jknbebanperusahaan,
-                'potongan_bpjsks_karyawan_history'       => $jknbebankaryawan,
-                'potongan_jht_karyawan_history'          => $jhtbebankaryawan,
-                'potongan_jp_karyawan_history'           => $jpbebankaryawan,
-                'jumlah_bpjstk_karyawan_history'         => $jumlahbpjstkbebankaryawan,
-                'potongan_jht_perusahaan_history'        => round($jhtbebanperusahaan,0),
-                'potongan_jp_perusahaan_history'         => $jpbebanperusahaan,
-                'potongan_jkk_perusahaan_history'        => round($jkkbebanperusahaan,0),
-                'potongan_jkm_perusahaan_history'        => round($jkmbebanperusahaan,0),
-                'jumlah_bpjstk_perusahaan_history'       => round($jumlahbpjstkbebanperusahaan,0),
-                'take_home_pay_history'                  => $takehomepay
-            ];
-            $this->db->where('karyawan_id_history', $nikkaryawan);
-            $this->db->where('periode_awal_gaji_history', $mulai_tanggal);
-            $this->db->where('periode_akhir_gaji_history', $sampai_tanggal);
-            $this->db->update('history_gaji', $result);
+        $result = [
+            'gaji_pokok_history'                     => $gajipokok,
+            'upah_lembur_perjam_history'             => round($upahlemburperjam, 0),
+            'uang_makan_history'                     => $uangmakan,
+            'uang_transport_history'                 => $uangtransport,
+            'tunjangan_tugas_history'                => $tunjangantugas,
+            'tunjangan_pulsa_history'                => $tunjanganpulsa,
+            'jumlah_upah_history'                    => $jumlahupah,
+            'potongan_bpjsks_perusahaan_history'     => $jknbebanperusahaan,
+            'potongan_bpjsks_karyawan_history'       => $jknbebankaryawan,
+            'potongan_jht_karyawan_history'          => $jhtbebankaryawan,
+            'potongan_jp_karyawan_history'           => $jpbebankaryawan,
+            'jumlah_bpjstk_karyawan_history'         => $jumlahbpjstkbebankaryawan,
+            'potongan_jht_perusahaan_history'        => round($jhtbebanperusahaan, 0),
+            'potongan_jp_perusahaan_history'         => $jpbebanperusahaan,
+            'potongan_jkk_perusahaan_history'        => round($jkkbebanperusahaan, 0),
+            'potongan_jkm_perusahaan_history'        => round($jkmbebanperusahaan, 0),
+            'jumlah_bpjstk_perusahaan_history'       => round($jumlahbpjstkbebanperusahaan, 0),
+            'take_home_pay_history'                  => $takehomepay
+        ];
+        $this->db->where('karyawan_id_history', $nikkaryawan);
+        $this->db->where('periode_awal_gaji_history', $mulai_tanggal);
+        $this->db->where('periode_akhir_gaji_history', $sampai_tanggal);
+        $this->db->update('history_gaji', $result);
     }
 
     //Query untuk onchange mencari data gaji berdasarkan nik karyawan
@@ -164,7 +164,7 @@ class Gaji_model extends CI_model
         return $hasil;
     }
 
-    
+
 
     //mengambil data berdasarkan NIK Karyawan untuk form cetak slip gaji
     public function getKaryawanByNIK()
@@ -227,7 +227,7 @@ class Gaji_model extends CI_model
     }
 
     //Query untuk Download Rekon Gaji Karyawan Prima
-    public function DownloadRekonGajiPrimaExcell($mulai_tanggal,$sampai_tanggal)
+    public function DownloadRekonGajiPrimaExcell($mulai_tanggal, $sampai_tanggal)
     {
         $this->db->select('*');
         $this->db->from('karyawan');
@@ -242,7 +242,7 @@ class Gaji_model extends CI_model
     }
 
     //Query untuk Download Rekon Gaji Karyawan Petra
-    public function DownloadRekonGajiPetraExcell($mulai_tanggal,$sampai_tanggal)
+    public function DownloadRekonGajiPetraExcell($mulai_tanggal, $sampai_tanggal)
     {
         $this->db->select('*');
         $this->db->from('karyawan');
@@ -257,7 +257,7 @@ class Gaji_model extends CI_model
     }
 
     //Query untuk Download Rekap Gaji Karyawan Prima
-    public function DownloadRekapGajiPrimaExcell($mulai_tanggal,$sampai_tanggal)
+    public function DownloadRekapGajiPrimaExcell($mulai_tanggal, $sampai_tanggal)
     {
         $this->db->select('*');
         $this->db->from('karyawan');
@@ -274,7 +274,7 @@ class Gaji_model extends CI_model
     }
 
     //Query untuk Download Rekap Gaji Karyawan Petra
-    public function DownloadRekapGajiPetraExcell($mulai_tanggal,$sampai_tanggal)
+    public function DownloadRekapGajiPetraExcell($mulai_tanggal, $sampai_tanggal)
     {
         $this->db->select('*');
         $this->db->from('karyawan');
@@ -289,9 +289,9 @@ class Gaji_model extends CI_model
         $query = $this->db->get();
         return $query->result();
     }
-    
+
     //Query untuk Download Rekap Gaji Prima
-    public function DownloadRekapGajiPrimaPDF($mulai_tanggal,$sampai_tanggal)
+    public function DownloadRekapGajiPrimaPDF($mulai_tanggal, $sampai_tanggal)
     {
         $this->db->select('*');
         $this->db->from('karyawan');
@@ -308,7 +308,7 @@ class Gaji_model extends CI_model
     }
 
     //Query untuk Download Rekap Gaji Petra
-    public function DownloadRekapGajiPetraPDF($mulai_tanggal,$sampai_tanggal)
+    public function DownloadRekapGajiPetraPDF($mulai_tanggal, $sampai_tanggal)
     {
         $this->db->select('*');
         $this->db->from('karyawan');
@@ -380,7 +380,7 @@ class Gaji_model extends CI_model
     }
 
     //Melakukan query untuk get data rekon gaji
-    public function editRekonGaji($id_history_gaji,$mulai_tanggal,$sampai_tanggal)
+    public function editRekonGaji($id_history_gaji, $mulai_tanggal, $sampai_tanggal)
     {
         $this->db->select('*');
         $this->db->from('karyawan');
