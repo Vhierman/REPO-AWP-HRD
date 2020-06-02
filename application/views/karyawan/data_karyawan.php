@@ -53,18 +53,17 @@
                     <?php
                     $i = 1;
                     ?>
-                    <?php foreach ($joinkaryawan as $pm) : 
-                    $tanggalmulaikerja         = date('d-m-Y', strtotime($pm['tanggal_mulai_kerja']));
-                    
-                    $tanggallahir               = date('d-m-Y', strtotime($pm['tanggal_lahir']));
-                    
-                    if($pm['status_kerja']!='PKWT'){
-                        $tanggalakhirkerja         = $pm['status_kerja'];
-                    }
-                    else{
-                        $tanggalakhirkerja         = date('d-m-Y', strtotime($pm['tanggal_akhir_kerja']));
-                    }
-                    
+                    <?php foreach ($joinkaryawan as $pm) :
+                        $tanggalmulaikerja         = date('d-m-Y', strtotime($pm['tanggal_mulai_kerja']));
+
+                        $tanggallahir               = date('d-m-Y', strtotime($pm['tanggal_lahir']));
+
+                        if ($pm['status_kerja'] != 'PKWT') {
+                            $tanggalakhirkerja         = $pm['status_kerja'];
+                        } else {
+                            $tanggalakhirkerja         = date('d-m-Y', strtotime($pm['tanggal_akhir_kerja']));
+                        }
+
                     ?>
 
                         <tr>
@@ -78,14 +77,16 @@
                             <td>
                                 <a href="<?= base_url(); ?>karyawan/lihatkaryawan/<?= $pm['id_karyawan']; ?>" class="btn btn-sm btn-primary" title="Lihat"><i class="fas fa-eye"></i></a>
 
+                                <a href="<?= base_url(); ?>karyawan/resumekaryawan/<?= $pm['nik_karyawan']; ?>" class="btn btn-sm btn-info" title="Resume" target="_blank"><i class="fas fa-address-card"></i></a>
+
                                 <!-- Jika yang login HRD, Maka Button EDIT, Lihat, Dan Hapus Akan Tampil Semua-->
                                 <?php if ($role_id == 1 || $role_id == 11) : ?>
                                     <a href="<?= base_url(); ?>karyawan/editkaryawan/<?= $pm['id_karyawan']; ?>" class="btn btn-sm btn-success" title="Edit"><i class="fas fa-pen"></i></a>
                                     <a href="<?= base_url(); ?>karyawan/hapuskaryawan/<?= $pm['id_karyawan']; ?>" class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Apakah anda yakin akan menghapus data ini'); "><i class="fas fa-trash"></i></a>
 
                                 <?php
-                                    //Jika Yang Login Bukan HRD, Maka Button Lihat Doank yang tampil
-                                    else : ?>
+                                //Jika Yang Login Bukan HRD, Maka Button Lihat Doank yang tampil
+                                else : ?>
                                 <?php endif; ?>
                             </td>
                         </tr>

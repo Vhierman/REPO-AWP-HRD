@@ -10,6 +10,8 @@ class Karyawan extends CI_Controller
         $this->load->model('karyawan/Karyawan_model', 'karyawan');
         //Memanggil library validation
         $this->load->library('form_validation');
+        //Memanggil library fpdf
+        $this->load->library('pdf');
         //Memanggil Helper Login
         is_logged_in();
         //Memanggil Helper
@@ -1654,5 +1656,264 @@ class Karyawan extends CI_Controller
         else {
             $this->load->view('auth/blocked');
         }
+    }
+
+    //Method untuk RESUME KARYAWAN
+    public function resumekaryawan($nik_karyawan)
+    {
+        //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+        $data['title'] = 'Resume Karyawan';
+        //Menyimpan session dari login
+        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+        //Mengambil data dari model
+        $karyawan = $this->karyawan->getResumeKaryawanByID($nik_karyawan);
+
+        //var_dump($karyawan);
+        //die;
+
+        //Mengambil data Tanggal Bulan Dan Tahun Sekarang
+        date_default_timezone_set("Asia/Jakarta");
+        $tahun      = date('Y');
+        $bulan      = date('m');
+        $tanggal    = date('d');
+        $hari       = date("w");
+
+        // membuat halaman baru Format Potrait Kertas A4
+        $pdf = new FPDF('P', 'mm', 'A4');
+        $pdf->setTopMargin(2);
+        $pdf->setLeftMargin(2);
+        $pdf->SetAutoPageBreak(true);
+
+        $pdf->AddPage();
+
+        //Mengambil masing masing 2 digit tanggal, bulan, dan 4 digit tahun tanggal mulai kerja
+        $tanggalmulaikerja      = IndonesiaTgl($karyawan['tanggal_mulai_kerja']);
+        $tanggalmulai           = substr($tanggalmulaikerja, 0, -8);
+        $bulankerja             = substr($tanggalmulaikerja, 3, -5);
+        $tahunkerja             = substr($tanggalmulaikerja, -4);
+
+        //Mengambil masing masing 2 digit tanggal, bulan, dan 4 digit tahun tanggal akhir kerja
+        $tanggalakhirkerja      = IndonesiaTgl($karyawan['tanggal_akhir_kerja']);
+        $tanggalakhir           = substr($tanggalakhirkerja, 0, -8);
+        $bulanakhir             = substr($tanggalakhirkerja, 3, -5);
+        $tahunakhir             = substr($tanggalakhirkerja, -4);
+
+        $pdf->Cell(205, 290, '', 1, 0, 'C');
+        $pdf->SetFont('Arial', 'B', '8');
+        $pdf->Cell(-200);
+        $pdf->Ln(2);
+        $pdf->Cell(5);
+        $pdf->Cell(70, 20, '', 1, 0, 'C');
+        $pdf->Image('assets/img/logo/logo.png', 9, 9, 65);
+        $pdf->Cell(50, 20, '', 1, 0, 'C');
+
+        $pdf->Cell(30, 5, "No.Form", 1, 0, 'L');
+        $pdf->Cell(43, 5, "FR/HRD-GA/HR/006/Rev.01", 1, 0, 'L');
+
+        $pdf->Ln(5);
+        $pdf->Cell(125);
+        $pdf->Cell(30, 5, "Tgl.Dikeluarkan", 1, 0, 'L');
+        $pdf->Cell(43, 5, "24 November 2012", 1, 0, 'L');
+
+        $pdf->Ln(5);
+        $pdf->Cell(125);
+        $pdf->Cell(30, 5, "Tgl.Revisi", 1, 0, 'L');
+        $pdf->Cell(43, 5, "01 April 2015", 1, 0, 'L');
+
+        $pdf->Ln(5);
+        $pdf->Cell(125);
+        $pdf->Cell(30, 5, "Halaman", 1, 0, 'L');
+        $pdf->Cell(43, 5, "1 Dari 1", 1, 0, 'L');
+
+        $pdf->SetFont('Arial', 'B', '12');
+        $pdf->Ln(-13);
+        $pdf->Cell(75);
+        $pdf->Cell(50, 5, "DETAIL", 0, 0, 'C');
+
+        $pdf->Ln(5);
+        $pdf->Cell(75);
+        $pdf->Cell(50, 5, "RESUME", 0, 0, 'C');
+
+        $pdf->Ln(5);
+        $pdf->Cell(75);
+        $pdf->Cell(50, 5, "KARYAWAN", 0, 0, 'C');
+
+        if ($karyawan['foto_karyawan'] == NULL) {
+            $pdf->Image('assets/img/karyawan/karyawan/default_karyawan.png', 160, 30, 40);
+        } else {
+            $pdf->Image('assets/img/karyawan/karyawan/' . $karyawan['foto_karyawan'], 160, 30, 40);
+        }
+
+        $pdf->SetFont('Arial', 'B', '10');
+
+        $pdf->Ln(10);
+        $pdf->Cell(5);
+        $pdf->Cell(50, 5, "A.Identitas Pribadi", 0, 0, 'L');
+
+        $pdf->SetFont('Arial', '', '10');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Nama ", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['nama_karyawan'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "No NIK KTP ", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['nik_karyawan'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "No NPWP", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['nomor_npwp'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Tempat,Tanggal Lahir", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['tempat_lahir'] . ', ' . IndonesiaTgl($karyawan['tanggal_lahir']), 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Agama", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['agama'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Jenis Kelamin", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['jenis_kelamin'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Nomor Handphone", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['nomor_handphone'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Email", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['email_karyawan'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Pendidikan Terakhir", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['pendidikan_terakhir'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Status Menikah", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['status_nikah'], 0, 0, 'L');
+
+        $pdf->SetFont('Arial', 'B', '10');
+
+        $pdf->Ln(5);
+        $pdf->Cell(5);
+        $pdf->Cell(50, 5, "B.Identitas Pekerjaan", 0, 0, 'L');
+
+        $pdf->SetFont('Arial', '', '10');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "ID Absen", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['nomor_absen'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "No Rekening", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['nomor_rekening'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Status Kerja", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['status_kerja'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Mulai Kerja", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, IndonesiaTgl($karyawan['tanggal_mulai_kerja']), 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Akhir Kerja", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+
+        if ($karyawan['status_kerja'] == "PKWTT") {
+            $pdf->Cell(90, 5, "-", 0, 0, 'L');
+        } else {
+            $pdf->Cell(90, 5, IndonesiaTgl($karyawan['tanggal_akhir_kerja']), 0, 0, 'L');
+        }
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Jabatan / Penempatan", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['jabatan'] . ' / ' . $karyawan['penempatan'], 0, 0, 'L');
+
+        $pdf->SetFont('Arial', 'B', '10');
+
+        $pdf->Ln(5);
+        $pdf->Cell(5);
+        $pdf->Cell(50, 5, "C.History Keluarga", 0, 0, 'L');
+
+        $pdf->SetFont('Arial', '', '10');
+
+        $pdf->SetFont('Arial', 'B', '10');
+
+        $pdf->Ln(5);
+        $pdf->Cell(5);
+        $pdf->Cell(50, 5, "D.History Kontrak", 0, 0, 'L');
+
+        $pdf->SetFont('Arial', '', '10');
+
+        $pdf->SetFont('Arial', 'B', '10');
+
+        $pdf->Ln(5);
+        $pdf->Cell(5);
+        $pdf->Cell(50, 5, "E.History Jabatan", 0, 0, 'L');
+
+        $pdf->SetFont('Arial', '', '10');
+
+        $pdf->SetFont('Arial', 'B', '10');
+
+        $pdf->Ln(5);
+        $pdf->Cell(5);
+        $pdf->Cell(50, 5, "F.History Pendidikan Formal", 0, 0, 'L');
+
+        $pdf->SetFont('Arial', '', '10');
+
+        $pdf->SetFont('Arial', 'B', '10');
+
+        $pdf->Ln(5);
+        $pdf->Cell(5);
+        $pdf->Cell(50, 5, "G.History Pendidikan Non Formal", 0, 0, 'L');
+
+        $pdf->SetFont('Arial', 'B', '10');
+
+        $pdf->Ln(5);
+        $pdf->Cell(5);
+        $pdf->Cell(50, 5, "H.History Training Internal", 0, 0, 'L');
+
+        $pdf->SetFont('Arial', 'B', '10');
+
+        $pdf->Ln(5);
+        $pdf->Cell(5);
+        $pdf->Cell(50, 5, "I.History Training Eksternal", 0, 0, 'L');
+
+        $pdf->SetFont('Arial', '', '10');
+
+        $pdf->Output();
     }
 }

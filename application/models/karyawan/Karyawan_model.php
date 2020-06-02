@@ -123,10 +123,6 @@ class Karyawan_model extends CI_model
     public function tambahKaryawan()
     {
 
-
-
-
-
         //Input Database
         $datakaryawan = [
             "perusahaan_id"                 => $this->input->post('perusahaan_id', true),
@@ -498,5 +494,19 @@ class Karyawan_model extends CI_model
     {
         $nikkaryawan = $id;
         $this->db->delete('history_training_eksternal', ['karyawan_id' => $nikkaryawan]);
+    }
+
+    //Mengambil semua data untuk resume karyawan
+    public function getResumeKaryawanByID($nik_karyawan)
+    {
+        $this->db->select('*');
+        $this->db->from('karyawan');
+        $this->db->join('perusahaan', 'perusahaan.id=karyawan.perusahaan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('jam_kerja', 'jam_kerja.id_jam_kerja=karyawan.jam_kerja_id');
+        $this->db->where('nik_karyawan', $nik_karyawan);
+        $query = $this->db->get()->row_array();
+        return $query;
     }
 }
