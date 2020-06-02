@@ -16,7 +16,7 @@
 
             <?= $this->session->flashdata('message'); ?>
 
-            <a href="<?= base_url('history/tambahkeluarga/');?><?= $this->input->post('nik_karyawan'); ?>" class="btn btn-primary mb-2 ml-4">
+            <a href="<?= base_url('history/tambahkeluarga/'); ?><?= $this->input->post('nik_karyawan'); ?>" class="btn btn-primary mb-2 ml-4">
                 <i class="fas fa-plus"></i>
                 Tambah Data Keluarga
             </a>
@@ -36,14 +36,14 @@
                 <tbody>
                     <?php
                     $i = 1; ?>
-                    <?php 
-                    foreach ($keluarga as $row) : 
+                    <?php
+                    foreach ($keluarga as $row) :
                         $tanggal_lahir_history_keluarga = IndonesiaTgl($row['tanggal_lahir_history_keluarga']);
                     ?>
                         <tr>
                             <td><?= $i; ?></td>
                             <td><?= $row['hubungan_keluarga']; ?></td>
-                            <td><?= $row['nama_karyawan']; ?></td>
+                            <td><?= $row['nama_history_keluarga']; ?></td>
                             <td><?= $row['nik_history_keluarga']; ?></td>
                             <td><?= $row['nomor_bpjs_kesehatan_history_keluarga']; ?></td>
                             <td><?= $tanggal_lahir_history_keluarga; ?></td>
