@@ -1941,7 +1941,7 @@ class Karyawan extends CI_Controller
             $pdf->Cell(10);
             $pdf->SetFont('Arial', '', '10');
             $pdf->Cell(10, 8, $nokontrak, 1, 0, 'C');
-            $pdf->Cell(70, 8, IndonesiaTgl($rowkontrak['tanggal_awal_kontrak']), 1, 0, 'L');
+            $pdf->Cell(70, 8, IndonesiaTgl($rowkontrak['tanggal_awal_kontrak']), 1, 0, 'C');
             $pdf->Cell(35, 8, $tanggal_akhir_kerja, 1, 0, 'C');
             $pdf->Cell(35, 8, $rowkontrak['status_kontrak_kerja'], 1, 0, 'C');
             $pdf->Cell(35, 8, $masa_kontrak, 1, 0, 'C');
