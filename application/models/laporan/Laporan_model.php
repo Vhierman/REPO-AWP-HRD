@@ -118,7 +118,7 @@ class Laporan_model extends CI_model
         $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
 
         //Jika Yang Login Adalah HRD Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11|| $role_id == 17|| $role_id == 18) {
 
             $this->db->select('*');
             $this->db->from('karyawan');
@@ -194,7 +194,7 @@ class Laporan_model extends CI_model
         $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
 
         //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('karyawan_keluar');
             $this->db->join('jabatan', 'karyawan_keluar.jabatan_id=jabatan.id');
@@ -267,7 +267,7 @@ class Laporan_model extends CI_model
         $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
 
         //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('karyawan_keluar');
             $this->db->join('perusahaan', 'karyawan_keluar.perusahaan_id=perusahaan.id');
@@ -343,7 +343,7 @@ class Laporan_model extends CI_model
         $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
 
         //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('karyawan_keluar');
             $this->db->join('perusahaan', 'karyawan_keluar.perusahaan_id=perusahaan.id');
@@ -422,7 +422,7 @@ class Laporan_model extends CI_model
         $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
 
         //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('karyawan_keluar');
             $this->db->join('perusahaan', 'karyawan_keluar.perusahaan_id=perusahaan.id');
@@ -498,7 +498,7 @@ class Laporan_model extends CI_model
         $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
 
         //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('karyawan_keluar');
             $this->db->join('perusahaan', 'karyawan_keluar.perusahaan_id=perusahaan.id');
@@ -579,7 +579,7 @@ class Laporan_model extends CI_model
         $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
 
         //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('karyawan_keluar');
             $this->db->join('jabatan', 'karyawan_keluar.jabatan_id=jabatan.id');
@@ -706,7 +706,7 @@ class Laporan_model extends CI_model
         $penempatan = $datakaryawan['penempatan_id'];
 
         //Jika Yang Login Adalah HRD Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18)  {
             $this->db->select('*');
             $this->db->from('inventaris_laptop');
             $this->db->join('karyawan', 'karyawan.nik_karyawan=inventaris_laptop.karyawan_id');
@@ -770,7 +770,7 @@ class Laporan_model extends CI_model
         $penempatan = $datakaryawan['penempatan_id'];
 
         //Jika Yang Login Adalah HRD Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('inventaris_motor');
             $this->db->join('karyawan', 'karyawan.nik_karyawan=inventaris_motor.karyawan_id');
@@ -834,7 +834,7 @@ class Laporan_model extends CI_model
         $penempatan = $datakaryawan['penempatan_id'];
 
         //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('inventaris_mobil');
             $this->db->join('karyawan', 'karyawan.nik_karyawan=inventaris_mobil.karyawan_id');
