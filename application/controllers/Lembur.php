@@ -189,17 +189,33 @@ class Lembur extends CI_Controller
     //Hapus Data Lembur
     public function hapuslembur($id_slip_lembur)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 11) {
+
         //mendelete kedalam database melalui method pada model lembur berdasarkan id nya
         $this->lembur->hapuslembur($id_slip_lembur);
         //menampikan pesan sukses
         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Success Delete Data Lembur</div>');
         //dan mendirect kehalaman lembur
         redirect('lembur/datalembur');
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Edit Data Lembur 
     public function editlembur($id_slip_lembur)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title']  = 'Edit Data Lembur';
         //Menyimpan session dari login
@@ -362,6 +378,12 @@ class Lembur extends CI_Controller
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Success Edit Data Lembur</div>');
             //dan mendirect kehalaman lembur
             redirect('lembur/datalembur');
+        }
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
         }
     }
 }

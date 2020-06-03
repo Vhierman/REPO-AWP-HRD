@@ -21,7 +21,7 @@ class Inventarismotor_model extends CI_model
         $penempatan = $datakaryawan['penempatan_id'];
 
         //Jika Yang Login Adalah HRD, Maka Akan Tampil Semua Data
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('inventaris_motor');
             $this->db->join('karyawan', 'inventaris_motor.karyawan_id=karyawan.nik_karyawan');

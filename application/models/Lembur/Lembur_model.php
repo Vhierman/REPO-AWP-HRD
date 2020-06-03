@@ -43,6 +43,24 @@ class Lembur_model extends CI_model
     //Query Slip Lembur Kecil
     public function datacetaksliplemburkecil()
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $mulaitanggal         = $this->input->post('mulai_tanggal', true);
         $sampaitanggal        = $this->input->post('sampai_tanggal', true);
         $penempatan           = $this->input->post('penempatan', true);
@@ -70,11 +88,36 @@ class Lembur_model extends CI_model
 
         $queryhasil = $this->db->query($query)->result_array();
         return $queryhasil;
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Query Slip Lembur Besar
     public function datacetaksliplemburbesar()
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $mulaitanggal         = $this->input->post('mulai_tanggal', true);
         $sampaitanggal        = $this->input->post('sampai_tanggal', true);
         $penempatan           = $this->input->post('penempatan', true);
@@ -102,11 +145,36 @@ class Lembur_model extends CI_model
 
         $queryhasil = $this->db->query($query)->result_array();
         return $queryhasil;
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Query Rekap Lembur 
     public function datacetakrekaplembur()
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $mulaitanggal         = $this->input->post('mulai_tanggal', true);
         $sampaitanggal        = $this->input->post('sampai_tanggal', true);
         $penempatan           = $this->input->post('penempatan', true);
@@ -163,6 +231,13 @@ class Lembur_model extends CI_model
          ";
         $queryhasil = $this->db->query($query)->result_array();
         return $queryhasil;
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Query untuk menampilkan data lembur 
@@ -191,7 +266,7 @@ class Lembur_model extends CI_model
         $penempatan = $datakaryawan['penempatan_id'];
 
         //Jika Yang Login Adalah HRD Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('slip_lembur');
             $this->db->join('karyawan', 'karyawan.nik_karyawan=slip_lembur.karyawan_id');
@@ -312,6 +387,24 @@ class Lembur_model extends CI_model
     public function tambahdatalembur($nikkaryawan, $jenis_lembur, $jam_lembur, $keterangan_lembur, $jamlembur, $jampertama, $jumlahjampertama, $jamkedua, $jumlahjamkedua, $jamketiga, $jumlahjamketiga, $jamkeempat, $jumlahjamkeempat, $uangmakanlembur)
     {
 
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 11 || $role_id == 8) {
+
         $this->db->trans_start();
 
         //Mengambil Zona Waktu
@@ -355,6 +448,13 @@ class Lembur_model extends CI_model
         $this->db->insert_batch('slip_lembur', $result);
 
         $this->db->trans_complete();
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Query untuk cari data lembur join karyawan berdasarkan id_slip lembur 
@@ -373,6 +473,24 @@ class Lembur_model extends CI_model
     //Query Untuk menghapus data lembur 
     public function editdatalembur($id_slip_lembur, $jam_lembur, $keterangan_lembur, $jamlembur, $jenis_lembur, $jampertama, $jumlahjampertama, $jamkedua, $jumlahjamkedua, $jamketiga, $jumlahjamketiga, $jamkeempat, $jumlahjamkeempat, $uangmakanlembur)
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 8 || $role_id == 11) {
+
         //Mengambil Zona Waktu
         date_default_timezone_set("Asia/Jakarta");
 
@@ -399,11 +517,43 @@ class Lembur_model extends CI_model
         ];
         $this->db->where('id_slip_lembur', $id_slip_lembur);
         $this->db->update('slip_lembur', $data);
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Query Untuk menghapus data lembur
     public function hapuslembur($id_slip_lembur)
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->delete('slip_lembur', ['id_slip_lembur' => $id_slip_lembur]);
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 }

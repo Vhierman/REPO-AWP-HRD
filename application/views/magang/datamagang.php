@@ -42,12 +42,18 @@
             //Mengambiol Session
             $role_id        = $this->session->userdata("role_id");
             //Jika Yang Login adalah HRD Maka Button Tambah Akan Tampil
-            if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) : ?>
+            if ($role_id == 1 || $role_id == 11) : ?>
                 <!-- Button Tambah -->
                 <a href="<?= base_url('magang/tambahmagang'); ?>" class="btn btn-primary mb-2 ml-4"><i class="fas fa-plus"></i> Tambah Data Magang</a>
-                
+                <!-- Button Download -->
                 <a href="<?= base_url('magang/downloadmagang/'); ?>" class="btn btn-success mb-2 ml-4"><i class="fas fa-download"></i> Download Data Magang</a>
-                <!-- Jika Yang Login adalah Bukan HRD Maka Button Tambah Tidak Tampil -->
+
+                <!-- Jika Yang Login adalah Accounting  Maka Button Tambah Tidak Tampil -->
+                <?php else if($role_id == 9 || $role_id == 10 || $role_id == 17 || $role_id == 18) : ?>
+                <!-- Button Download -->
+                <a href="<?= base_url('magang/downloadmagang/'); ?>" class="btn btn-success mb-2 ml-4"><i class="fas fa-download"></i> Download Data Magang</a>
+
+                <!-- Jika Yang Login adalah Bukan HRD Maka Button Tambah Dan Download Tidak Tampil -->
             <?php else : ?>
             <?php endif; ?>
 
@@ -104,7 +110,7 @@
                                                 )">
                                     <i class="fas fa-eye"></i> View</a>
                                 <!-- Jika yang login HRD Data Akan tampil Semua  -->
-                                <?php if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) : ?>
+                                <?php if ($role_id == 1 || $role_id == 11) : ?>
                                     <a href="<?= base_url(); ?>magang/editmagang/<?= $mg['id_magang']; ?>" class="btn btn-success btn-sm "><i class="fas fa-pen"></i> Edit</a>
                                     <a href="<?= base_url(); ?>magang/hapusmagang/<?= $mg['id_magang']; ?>" class="btn btn-danger btn-sm " onclick="return confirm('Apakah anda yakin akan menghapus data ini'); "><i class="fas fa-trash"></i> Delete</a>
                                     <a href="<?= base_url(); ?>magang/cetakpkwtmagang/<?= $mg['id_magang']; ?>" target="_blank" class="btn btn-info btn-sm "><i class="fas fa-print"></i> Cetak PKWT</a>

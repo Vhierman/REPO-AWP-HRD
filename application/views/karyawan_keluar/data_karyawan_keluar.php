@@ -43,7 +43,7 @@
             //Mengambil Session
             $role_id        = $this->session->userdata("role_id");
             //Jika Yang Login adalah HRD Maka Button Tambah Tampil
-            if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) : ?>
+            if ($role_id == 1 || $role_id == 11) : ?>
                 <!-- Button Tambah Data Karyawan Keluar -->
                 <a href="<?= base_url('KaryawanKeluar/tambahkaryawankeluar'); ?>" class="btn btn-primary mb-2 ml-4">
                     <i class="fas fa-plus"></i>
@@ -108,7 +108,7 @@
                                     <i class="fas fa-eye"></i>View</a>
 
                                 <!-- Jika Yang Login adalah HRD Maka Button EDIT Dan Hapus Akan Tampil Semua -->
-                                <?php if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) : ?>
+                                <?php if ($role_id == 1 || $role_id == 11) : ?>
                                     <a href="<?= base_url(); ?>KaryawanKeluar/editkaryawankeluar/<?= $kk['id_karyawan_keluar']; ?>" class="btn btn-success btn-sm "><i class="fas fa-pen"></i> Edit</a>
                                     <a href="<?= base_url(); ?>KaryawanKeluar/hapuskaryawankeluar/<?= $kk['id_karyawan_keluar']; ?>" class="btn btn-danger btn-sm " onclick="return confirm('Apakah anda yakin akan menghapus data ini'); "><i class="fas fa-trash"></i> Delete</a>
                                     <!-- Jika Yang Login adalah Bukan HRD Maka Data Tidak Akan Tampil Semua -->

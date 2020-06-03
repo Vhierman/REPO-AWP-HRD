@@ -90,6 +90,32 @@ class Karyawan_model extends CI_model
             $query = $this->db->get()->result_array();
             return $query;
         }
+        //Jika Yang Login Adalah Produksi ( Akan Tampil Karyawan Produksi, dan ALL PDC )
+        else if($role_id == 15 || $role_id == 16){
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'perusahaan.id=karyawan.perusahaan_id');
+            $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+            $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+            $this->db->join('jam_kerja', 'jam_kerja.id_jam_kerja=karyawan.jam_kerja_id');
+            $this->db->where_in('penempatan_id ', [8, 15, 16, 17, 18, 19, 20, 21]);
+            $this->db->order_by('nama_karyawan');
+            $query = $this->db->get()->result_array();
+            return $query;
+        }
+        //Jika Yang Login Adalah PPC ( Akan Tampil Karyawan PPC, Delivery, Delivery Produksi, RM,FG,BLok E )
+        else if($role_id == 13 || $role_id == 14){
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'perusahaan.id=karyawan.perusahaan_id');
+            $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+            $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+            $this->db->join('jam_kerja', 'jam_kerja.id_jam_kerja=karyawan.jam_kerja_id');
+            $this->db->where_in('penempatan_id ', [7, 9, 10, 11, 12, 22]);
+            $this->db->order_by('nama_karyawan');
+            $query = $this->db->get()->result_array();
+            return $query;
+        }
         //Jika Yang Login Adalah Selain Diatas
         else {
             $this->db->select('*');

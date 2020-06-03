@@ -21,11 +21,31 @@ class Siswa_model extends CI_model
         $penempatan = $datakaryawan['penempatan_id'];
 
         //Jika Yang Login Adalah HRD Dan Accounting Maka Data Siswa Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('siswa');
             $this->db->join('sekolah', 'siswa.sekolah_id=sekolah.id_sekolah');
             $this->db->join('penempatan', 'siswa.penempatan_id=penempatan.id');
+            $this->db->order_by('nama_siswa', 'asc');
+            return $this->db->get()->result_array();
+        }
+        //Jika Yang Login Adalah Produksi 
+        elseif ($role_id == 15 || $role_id == 16) {
+            $this->db->select('*');
+            $this->db->from('siswa');
+            $this->db->join('sekolah', 'siswa.sekolah_id=sekolah.id_sekolah');
+            $this->db->join('penempatan', 'siswa.penempatan_id=penempatan.id');
+            $this->db->where_in('penempatan_id ', [8, 15, 16, 17, 18, 19, 20, 21]);
+            $this->db->order_by('nama_siswa', 'asc');
+            return $this->db->get()->result_array();
+        }
+        //Jika Yang Login Adalah PPC
+        elseif ($role_id == 13 || $role_id == 14) {
+            $this->db->select('*');
+            $this->db->from('siswa');
+            $this->db->join('sekolah', 'siswa.sekolah_id=sekolah.id_sekolah');
+            $this->db->join('penempatan', 'siswa.penempatan_id=penempatan.id');
+            $this->db->where_in('penempatan_id ', [7, 9, 10, 11, 12, 22]);
             $this->db->order_by('nama_siswa', 'asc');
             return $this->db->get()->result_array();
         }

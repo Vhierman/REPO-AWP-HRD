@@ -37,7 +37,7 @@
             //Mangambil Session
             $role_id        = $this->session->userdata("role_id");
             //Jika Yang Login adalah HRD Maka Button Tambah Tampil
-            if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) : ?>
+            if ($role_id == 1 || $role_id == 11) : ?>
                 <!-- Button Tambah -->
                 <a href="<?= base_url('siswa/tambahsiswa'); ?>" class="btn btn-primary mb-2 ml-4"><i class="fas fa-plus"></i> Tambah Data Siswa</a>
                 <!-- Jika Yang Login adalah Bukan HRD Maka Button Tambah Tidak Tampil -->
@@ -90,7 +90,7 @@
                                                 )">
                                     <i class="fas fa-eye"></i> View</a>
                                 <!-- Jika yang login HRD, maka button edit, lihat, dan hapus akan tampil semua -->
-                                <?php if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) : ?>
+                                <?php if ($role_id == 1 || $role_id == 11) : ?>
                                     <a href="<?= base_url(); ?>siswa/editsiswa/<?= $ssw['id_siswa']; ?>" class="btn btn-success btn-sm "><i class="fas fa-pen"></i> Edit</a>
                                     <a href="<?= base_url(); ?>siswa/hapussiswa/<?= $ssw['id_siswa']; ?>" class="btn btn-danger btn-sm " onclick="return confirm('Apakah anda yakin akan menghapus data ini'); "><i class="fas fa-trash"></i> Delete</a>
                                     <!-- Jika yang login Bukan HRD, maka button edit dan hapus Tidak akan tampil-->

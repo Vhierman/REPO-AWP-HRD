@@ -47,6 +47,12 @@ class Magang extends CI_Controller
     //Method Download Data Magang
     public function downloadmagang()
     {
+
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login HRD
+        if ($role_id == 9|| $role_id == 1|| $role_id == 11 || $role_id == 10 || $role_id == 17 || $role_id == 18) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Magang';
         //Menyimpan session dari login
@@ -260,6 +266,11 @@ class Magang extends CI_Controller
 
         $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
         $write->save('php://output');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal tambah magang 
@@ -413,6 +424,11 @@ class Magang extends CI_Controller
     //Menampilkan halaman awal cetakpkwtmagang
     public function cetakpkwtmagang($id_magang)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login HRD
+        if ($role_id == 1 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Cetak Surat PKWT Magang';
         //Menyimpan session dari login
@@ -1147,5 +1163,11 @@ class Magang extends CI_Controller
         $pdf->Cell(50, 5, '( '.$magang['nama_magang'].' )', 0, 0, 'C');
 
         $pdf->Output();
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 }

@@ -29,21 +29,37 @@ class Gaji extends CI_Controller
     //Menampilkan halaman awal cetak slip gaji
     public function slipgaji()
     {
-        //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
-        $data['title'] = 'Data Slip Gaji';
-        //Menyimpan session dari login
-        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
-        //menampilkan halaman Cetak Slip Gaji
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('gaji/cetak_slipgaji', $data);
-        $this->load->view('templates/footer');
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
+            //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+            $data['title'] = 'Data Slip Gaji';
+            //Menyimpan session dari login
+            $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+            //menampilkan halaman Cetak Slip Gaji
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('gaji/cetak_slipgaji', $data);
+            $this->load->view('templates/footer');
+        
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal cetak slip gaji
     public function cetakslipgaji()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Cetak Slip Gaji';
         //Menyimpan session dari login
@@ -216,14 +232,24 @@ class Gaji extends CI_Controller
         $pdf->Cell(1.8, 1, "( Manager HRD - GA )", 0, 0, 'L');
         $pdf->Cell(11.5);
         $pdf->Cell(1.8, 1, "( " . $karyawan['jabatan'] . " " .  $karyawan['penempatan'] . " )", 0, 0, 'C');
-
-
         $pdf->Output();
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal Rekonsiliasi Data Gaji
     public function rekonsiliasigaji()
     {
+
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Rekonsiliasi Data Gaji';
         //Menyimpan session dari login
@@ -234,11 +260,24 @@ class Gaji extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('gaji/rekonsiliasi_gaji', $data);
         $this->load->view('templates/footer');
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
+
     }
 
     //Menampilkan halaman awal Rekonsiliasi Data Gaji
     public function tampilrekonsiliasigaji()
     {
+
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Rekonsiliasi Data Gaji';
         //Menyimpan session dari login
@@ -253,11 +292,23 @@ class Gaji extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('gaji/tampil_rekonsiliasi_gaji', $data);
         $this->load->view('templates/footer');
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Melakukan Rekonsiliasi Data Gaji
     public function prosesdatarekonsiliasigaji($mulai_tanggal, $sampai_tanggal)
     {
+
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         //Mengambil Method Rekon Pada Model
         $rekon    = $this->gaji->RekonsiliasiDataGaji();
 
@@ -295,11 +346,22 @@ class Gaji extends CI_Controller
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Berhasil Diproses</div>');
         //dan mendirect kehalaman rekon
         redirect('gaji/rekonsiliasigaji/');
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Cancel Proses Rekon
     public function canceldatarekonsiliasigaji($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         //Menghapus Data Berdasarkan Tanggal Rekon
         $this->db->delete('history_gaji', [
             'periode_awal_gaji_history'     => $mulai_tanggal,
@@ -309,11 +371,22 @@ class Gaji extends CI_Controller
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data Berhasil Diproses</div>');
         //dan mendirect kehalaman rekon
         redirect('gaji/rekonsiliasigaji/');
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     // Download Data Rekon Prima
     public function downloadrekonsiliasigajiprima()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Rekonsiliasi Gaji';
         //Menyimpan session dari login
@@ -438,6 +511,12 @@ class Gaji extends CI_Controller
 
         // Panggil function view yang ada di Model untuk menampilkan semua data
         $join = $this->gaji->DownloadDataGaji();
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     // Download Data Rekon Prima
@@ -448,6 +527,11 @@ class Gaji extends CI_Controller
     //Menampilkan halaman awal cetak REKAP gaji
     public function rekapgaji()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Rekap Gaji';
         //Menyimpan session dari login
@@ -458,11 +542,20 @@ class Gaji extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('gaji/rekap_gaji', $data);
         $this->load->view('templates/footer');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal cetak REKAP gaji Prima Komponen Indonesia
     public function rekap_gaji_prima_komponen_indonesia()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Rekap Gaji Prima Komponen Indonesia';
         //Menyimpan session dari login
@@ -473,11 +566,20 @@ class Gaji extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('gaji/rekap_gaji_prima_komponen_indonesia', $data);
         $this->load->view('templates/footer');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal cetak REKAP gaji Petra Ariesca
     public function rekap_gaji_petra_ariesca()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Rekap Gaji Petra Ariesca';
         //Menyimpan session dari login
@@ -488,11 +590,20 @@ class Gaji extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('gaji/rekap_gaji_petra_ariesca', $data);
         $this->load->view('templates/footer');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal cetak REKAP gaji Prima Komponen Indonesia
     public function tampil_rekap_gaji_prima_komponen_indonesia()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Rekap Gaji Prima';
         //Menyimpan session dari login
@@ -528,11 +639,20 @@ class Gaji extends CI_Controller
                 $this->load->view('templates/footer');
             }
         }
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal cetak REKAP gaji Petra Ariesca
     public function tampil_rekap_gaji_petra_ariesca()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Rekap Gaji Petra';
         //Menyimpan session dari login
@@ -568,11 +688,20 @@ class Gaji extends CI_Controller
                 $this->load->view('templates/footer');
             }
         }
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     // Download Data Rekonsiliasi Prima
     public function downloadrekonsiliasigajiprimaexcell($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Rekonsiliasi Gaji';
         //Menyimpan session dari login
@@ -813,11 +942,21 @@ class Gaji extends CI_Controller
 
         $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
         $write->save('php://output');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     // Download Data Rekonsiliasi Petra
     public function downloadrekonsiliasigajipetraexcell($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Rekonsiliasi Gaji';
         //Menyimpan session dari login
@@ -1058,11 +1197,20 @@ class Gaji extends CI_Controller
 
         $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
         $write->save('php://output');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     // Download Data Rekap Prima
     public function downloadrekapgajiprimaexcell($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Rekap Gaji';
         //Menyimpan session dari login
@@ -1303,11 +1451,20 @@ class Gaji extends CI_Controller
 
         $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
         $write->save('php://output');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     // Download Data Rekap Petra
     public function downloadrekapgajipetraexcell($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Rekap Gaji';
         //Menyimpan session dari login
@@ -1548,11 +1705,20 @@ class Gaji extends CI_Controller
 
         $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
         $write->save('php://output');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal cetak REKAP gaji Prima Komponen Indonesia
     public function downloadrekapgajiprimapdf($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Cetak Rekap Gaji';
         //Menyimpan session dari login
@@ -1717,11 +1883,20 @@ class Gaji extends CI_Controller
         $pdf->SetFont('Arial', 'B', '12');
         $pdf->Cell(50, 0, '( Manager Accounting )', 0, 0, 'C');
         $pdf->Output();
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal cetak REKAP gaji Prima Komponen Indonesia
     public function downloadrekapgajipetrapdf($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Cetak Rekap Gaji';
         //Menyimpan session dari login
@@ -1886,11 +2061,21 @@ class Gaji extends CI_Controller
         $pdf->SetFont('Arial', 'B', '12');
         $pdf->Cell(50, 0, '( Manager Accounting )', 0, 0, 'C');
         $pdf->Output();
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal data update gaji
     public function updategaji()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Update Gaji';
         //Menyimpan session dari login
@@ -1903,11 +2088,21 @@ class Gaji extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('gaji/form_update_gaji', $data);
         $this->load->view('templates/footer');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal data update gaji
     public function updategajikaryawan()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Update Gaji';
         //Menyimpan session dari login
@@ -1922,12 +2117,22 @@ class Gaji extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('gaji/update_gaji', $data);
         $this->load->view('templates/footer');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
 
     //Melakukan update gaji
     public function hasilupdategajikaryawan()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Update Gaji';
         //Menyimpan session dari login
@@ -2339,11 +2544,20 @@ class Gaji extends CI_Controller
             //dan mendirect kehalaman lembur
             redirect('gaji/updategaji');
         }
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal data edit rekon gaji
     public function editrekongaji($id_history_gaji, $mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Edit Rekon Gaji';
         //Menyimpan session dari login
@@ -2358,10 +2572,19 @@ class Gaji extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('gaji/edit_rekon_gaji', $data);
         $this->load->view('templates/footer');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     public function hasileditrekongajikaryawan()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Data Edit Rekon Gaji';
         //Menyimpan session dari login
@@ -2775,6 +2998,11 @@ class Gaji extends CI_Controller
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Success Edit Data Rekon Gaji</div>');
             //dan mendirect kehalaman tampil rekon gaji
             redirect('gaji/rekonsiliasigaji');
+        }
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
         }
     }
 }

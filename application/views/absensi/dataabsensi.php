@@ -36,7 +36,7 @@
             $role_id        = $this->session->userdata("role_id");
 
             //Jika yang login HRD
-            if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) : ?>
+            if ($role_id == 1 ||  $role_id == 11) : ?>
                 <!-- Button Tambah Data Absensi -->
                 <a href="<?= base_url('absensi/tambahabsensi'); ?>" class="btn btn-primary mb-2 ml-4">
                     <i class="fas fa-plus"></i>
@@ -93,7 +93,7 @@
                                     <i class="fas fa-eye"></i> View</a>
 
                                 <!-- Jika yang login HRD, Button Lihat EDIT , Dan Hapus Akan tampil Semua -->
-                                <?php if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) : ?>
+                                <?php if ($role_id == 1 || $role_id == 11) : ?>
                                     <a href="<?= base_url(); ?>absensi/editabsensi/<?= $pm['id_absen']; ?>" class="btn btn-sm btn-success  "><i class="fas fa-pen"></i> Edit</a>
                                     <a href="<?= base_url(); ?>absensi/hapusabsensi/<?= $pm['id_absen']; ?>" class="btn btn-sm btn-danger  " onclick="return confirm('Apakah anda yakin akan menghapus data ini'); "><i class="fas fa-trash"></i> Delete</a>
 

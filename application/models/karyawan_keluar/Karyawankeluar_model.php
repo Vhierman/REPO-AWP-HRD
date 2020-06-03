@@ -30,7 +30,7 @@ class Karyawankeluar_model extends CI_model
         $hasil = $data['penempatan_id'];
 
         //Jika Yang Login Adalah HRD Maka Data Karyawan Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
             $this->db->select('*');
             $this->db->from('karyawan_keluar');
             $this->db->join('jabatan', 'karyawan_keluar.jabatan_id=jabatan.id');

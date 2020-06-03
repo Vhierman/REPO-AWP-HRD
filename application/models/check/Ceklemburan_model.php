@@ -21,7 +21,7 @@ class Ceklemburan_model extends CI_model
         $penempatan = $datakaryawan['penempatan_id'];
 
         //Jika Yang Login Adalah Admin Dan Manager HRD Maka Data Akan Tampil Semua
-        if ($role_id == 1 || $role_id == 9) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10) {
             $this->db->select('*');
             $this->db->from('penempatan');
             $this->db->order_by('penempatan', 'asc');
@@ -35,7 +35,7 @@ class Ceklemburan_model extends CI_model
             $this->db->order_by('penempatan', 'asc');
             return $this->db->get()->result_array();
         }
-        //Jika Yang Login Adalah PPIC
+        //Jika Yang Login Adalah PPC
         else if ($role_id == 13 || $role_id == 14) {
             $this->db->select('*');
             $this->db->from('penempatan');
@@ -115,7 +115,7 @@ class Ceklemburan_model extends CI_model
             return $this->db->get()->result_array();
         }
 
-        //Jika Yang Login Adalah Manager PPIC
+        //Jika Yang Login Adalah Manager PPC
         else if ($role_id == 3 || $role_id == 14 || $role_id == 16) {
             $this->db->select('*');
             $this->db->from('slip_lembur');

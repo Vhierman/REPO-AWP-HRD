@@ -19,23 +19,9 @@
         <li class="nav-item">
             <a class="nav-link" id="alamat-tab" data-toggle="tab" href="#alamat" role="tab" aria-controls="alamat" aria-selected="false">Alamat</a>
         </li>
-
-        <?php
-        //Mengambil Session
-        $role_id        = $this->session->userdata("role_id");
-        ?>
-
-        <?php
-        //Jika yang login HRD, Maka Data Gaji Akan Tampil
-        if ($role_id == 1 || $role_id == 11) : ?>
-            <li class="nav-item">
-                <a class="nav-link" id="gaji-tab" data-toggle="tab" href="#gaji" role="tab" aria-controls="gaji" aria-selected="false">Rekening</a>
-            </li>
-        <?php
-        //Jika Bukan HRD , maka tidak akan  tampil
-        else : ?>
-        <?php endif; ?>
-
+        <li class="nav-item">
+            <a class="nav-link" id="gaji-tab" data-toggle="tab" href="#gaji" role="tab" aria-controls="gaji" aria-selected="false">Rekening</a>
+        </li>
         <li class="nav-item">
             <a class="nav-link" id="keluarga-tab" data-toggle="tab" href="#keluarga" role="tab" aria-controls="keluarga" aria-selected="false">Keluarga</a>
         </li>

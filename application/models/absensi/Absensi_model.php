@@ -21,7 +21,7 @@ class Absensi_model extends CI_model
         $penempatan = $datakaryawan['penempatan_id'];
 
         //Jika yang login HRD
-        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11|| $role_id == 17|| $role_id == 18) {
 
             $this->db->select('*');
             $this->db->from('absensi');
@@ -39,7 +39,7 @@ class Absensi_model extends CI_model
             $this->db->join('karyawan', 'karyawan.nik_karyawan=absensi.nik_karyawan_absen');
             $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
             $this->db->where('tanggal_absen >= ', '2020-01-01');
-        $this->db->where('tanggal_absen <= ', '2020-12-31');
+            $this->db->where('tanggal_absen <= ', '2020-12-31');
             $this->db->where_in('penempatan_id ', [8, 15, 16, 17, 18, 19, 20, 21]);
             $this->db->order_by('nama_karyawan', 'asc');
             return $this->db->get()->result_array();
@@ -51,7 +51,7 @@ class Absensi_model extends CI_model
             $this->db->join('karyawan', 'karyawan.nik_karyawan=absensi.nik_karyawan_absen');
             $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
             $this->db->where('tanggal_absen >= ', '2020-01-01');
-        $this->db->where('tanggal_absen <= ', '2020-12-31');
+            $this->db->where('tanggal_absen <= ', '2020-12-31');
             $this->db->where_in('penempatan_id ', [7, 9, 10, 11, 12, 22]);
             $this->db->order_by('nama_karyawan', 'asc');
             return $this->db->get()->result_array();
@@ -63,7 +63,7 @@ class Absensi_model extends CI_model
             $this->db->join('karyawan', 'karyawan.nik_karyawan=absensi.nik_karyawan_absen');
             $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
             $this->db->where('tanggal_absen >= ', '2020-01-01');
-        $this->db->where('tanggal_absen <= ', '2020-12-31');
+            $this->db->where('tanggal_absen <= ', '2020-12-31');
             $this->db->where('penempatan_id', $penempatan);
             $this->db->order_by('nama_karyawan', 'asc');
             return $this->db->get()->result_array();

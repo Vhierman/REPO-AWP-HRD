@@ -36,6 +36,11 @@ class Sekolah extends CI_Controller
     //Menampilkan halaman form tambah sekolah 
     public function tambahsekolah()
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login HRD
+        if ($role_id == 1 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Tambah Data Sekolah';
         //Menyimpan session dari login
@@ -69,11 +74,23 @@ class Sekolah extends CI_Controller
             //redirect ke halaman data absensi
             redirect('sekolah/sekolah');
         }
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Edit Sekolah
     public function editsekolah($id_sekolah)
     {
+
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login HRD
+        if ($role_id == 1 || $role_id == 11) {
+
         //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
         $data['title'] = 'Edit Data Sekolah';
         //Menyimpan session dari login
@@ -107,16 +124,33 @@ class Sekolah extends CI_Controller
             //redirect ke halaman data sekolah
             redirect('sekolah/sekolah');
         }
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Method Hapus Data Sekolah
     public function hapussekolah($id_sekolah)
     {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login HRD
+        if ($role_id == 1 || $role_id == 11) {
+            
         //mendelete kedalam database melalui method pada model sekolah berdasarkan id nya
         $this->sekolah->hapusSekolah($id_sekolah);
         //menampikan pesan sukses
         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Success Delete Data Sekolah</div>');
         //dan mendirect kehalaman sekolah
         redirect('sekolah/sekolah');
+
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 }

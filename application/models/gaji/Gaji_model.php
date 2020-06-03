@@ -57,6 +57,8 @@ class Gaji_model extends CI_model
             $query = $this->db->get();
             return $query->result();
         } else {
+            //dan mendirect kehalaman profile
+            redirect('auth/blocked');
         }
     }
 
@@ -77,6 +79,25 @@ class Gaji_model extends CI_model
     //mengambil data karyawan
     public function updatedatagaji($nikkaryawan, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan, $jpbebankaryawan, $jpbebanperusahaan, $jkkbebanperusahaan, $jkmbebanperusahaan, $jumlahbpjstkbebankaryawan, $jumlahbpjstkbebanperusahaan, $takehomepay)
     {
+
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->trans_start();
 
         $result = array();
@@ -105,11 +126,33 @@ class Gaji_model extends CI_model
             $this->db->update('gaji_master', $result);
         }
         $this->db->trans_complete();
+
+        } else {
+            //dan mendirect kehalaman profile
+            redirect('auth/blocked');
+        }
     }
 
     //mengambil data karyawan
     public function updatedatarekongaji($nikkaryawan, $mulai_tanggal, $sampai_tanggal, $gajipokok, $uangmakan, $uangtransport, $tunjangantugas, $tunjanganpulsa, $jumlahupah, $upahlemburperjam, $jknbebankaryawan, $jknbebanperusahaan, $jhtbebankaryawan, $jhtbebanperusahaan, $jpbebankaryawan, $jpbebanperusahaan, $jkkbebanperusahaan, $jkmbebanperusahaan, $jumlahbpjstkbebankaryawan, $jumlahbpjstkbebanperusahaan, $takehomepay)
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
 
         $result = [
             'gaji_pokok_history'                     => $gajipokok,
@@ -135,6 +178,11 @@ class Gaji_model extends CI_model
         $this->db->where('periode_awal_gaji_history', $mulai_tanggal);
         $this->db->where('periode_akhir_gaji_history', $sampai_tanggal);
         $this->db->update('history_gaji', $result);
+
+        } else {
+            //dan mendirect kehalaman profile
+            redirect('auth/blocked');
+        }
     }
 
     //Query untuk onchange mencari data gaji berdasarkan nik karyawan
@@ -164,8 +212,6 @@ class Gaji_model extends CI_model
         return $hasil;
     }
 
-
-
     //mengambil data berdasarkan NIK Karyawan untuk form cetak slip gaji
     public function getKaryawanByNIK()
     {
@@ -190,6 +236,24 @@ class Gaji_model extends CI_model
     public function getRekapGajiPrimaKomponenIndonesia()
     {
 
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $tanggal_awal   = $this->input->post('mulai_tanggal', true);
         $tanggal_akhir  = $this->input->post('sampai_tanggal', true);
 
@@ -204,12 +268,38 @@ class Gaji_model extends CI_model
         $this->db->where('perusahaan_id', 1);
         $karyawan = $this->db->get()->result_array();
         return $karyawan;
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
+
     }
 
     //mengambil data untuk form cetak rekap gaji Petra Ariesca
     public function getRekapGajiPetraAriesca()
     {
 
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $tanggal_awal   = $this->input->post('mulai_tanggal', true);
         $tanggal_akhir  = $this->input->post('sampai_tanggal', true);
 
@@ -224,11 +314,37 @@ class Gaji_model extends CI_model
         $this->db->where('perusahaan_id', 5);
         $karyawan = $this->db->get()->result_array();
         return $karyawan;
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Query untuk Download Rekon Gaji Karyawan Prima
     public function DownloadRekonGajiPrimaExcell($mulai_tanggal, $sampai_tanggal)
     {
+
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->select('*');
         $this->db->from('karyawan');
         $this->db->join('gaji_master', 'gaji_master.karyawan_id_master=karyawan.nik_karyawan');
@@ -239,11 +355,36 @@ class Gaji_model extends CI_model
         $this->db->order_by('nama_karyawan');
         $query = $this->db->get();
         return $query->result();
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Query untuk Download Rekon Gaji Karyawan Petra
     public function DownloadRekonGajiPetraExcell($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->select('*');
         $this->db->from('karyawan');
         $this->db->join('gaji_master', 'gaji_master.karyawan_id_master=karyawan.nik_karyawan');
@@ -254,11 +395,36 @@ class Gaji_model extends CI_model
         $this->db->order_by('nama_karyawan');
         $query = $this->db->get();
         return $query->result();
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Query untuk Download Rekap Gaji Karyawan Prima
     public function DownloadRekapGajiPrimaExcell($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->select('*');
         $this->db->from('karyawan');
         $this->db->join('history_gaji', 'history_gaji.karyawan_id_history=karyawan.nik_karyawan');
@@ -271,11 +437,36 @@ class Gaji_model extends CI_model
         $this->db->order_by('nama_karyawan');
         $query = $this->db->get();
         return $query->result();
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Query untuk Download Rekap Gaji Karyawan Petra
     public function DownloadRekapGajiPetraExcell($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->select('*');
         $this->db->from('karyawan');
         $this->db->join('history_gaji', 'history_gaji.karyawan_id_history=karyawan.nik_karyawan');
@@ -288,11 +479,36 @@ class Gaji_model extends CI_model
         $this->db->order_by('nama_karyawan');
         $query = $this->db->get();
         return $query->result();
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Query untuk Download Rekap Gaji Prima
     public function DownloadRekapGajiPrimaPDF($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->select('*');
         $this->db->from('karyawan');
         $this->db->join('history_gaji', 'history_gaji.karyawan_id_history=karyawan.nik_karyawan');
@@ -305,11 +521,36 @@ class Gaji_model extends CI_model
         $this->db->order_by('nama_karyawan');
         $query = $this->db->get()->result_array();
         return $query;
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Query untuk Download Rekap Gaji Petra
     public function DownloadRekapGajiPetraPDF($mulai_tanggal, $sampai_tanggal)
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->select('*');
         $this->db->from('karyawan');
         $this->db->join('history_gaji', 'history_gaji.karyawan_id_history=karyawan.nik_karyawan');
@@ -322,11 +563,36 @@ class Gaji_model extends CI_model
         $this->db->order_by('nama_karyawan');
         $query = $this->db->get()->result_array();
         return $query;
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //mengambil data untuk form rekon gaji
     public function getRekonsiliasiDataGaji()
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->select('*');
         $this->db->from('gaji_master');
         $this->db->join('karyawan', 'gaji_master.karyawan_id_master=karyawan.nik_karyawan');
@@ -334,11 +600,36 @@ class Gaji_model extends CI_model
         $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
         $query = $this->db->get()->result_array();
         return $query;
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //mengambil data untuk Melakukan rekonsiliasi gaji
     public function RekonsiliasiDataGaji()
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $mulai_tanggal  = $this->input->post('mulai_tanggal', true);
         $sampai_tanggal = $this->input->post('sampai_tanggal', true);
 
@@ -349,11 +640,36 @@ class Gaji_model extends CI_model
         $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
         $query = $this->db->get()->result_array();
         return $query;
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Download Rekon Data Petra
     public function DownloadExcellPetra()
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->select('*');
         $this->db->from('gaji_master');
         $this->db->join('karyawan', 'gaji_master.karyawan_id_master=karyawan.nik_karyawan');
@@ -363,11 +679,36 @@ class Gaji_model extends CI_model
         $this->db->where('perusahaan', 'PT Petra Ariesca ( Outsourching )');
         $query = $this->db->get();
         return $query->result();
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Download Rekon Data Prima
     public function DownloadExcellPrima()
     {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->select('*');
         $this->db->from('gaji_master');
         $this->db->join('karyawan', 'gaji_master.karyawan_id_master=karyawan.nik_karyawan');
@@ -377,11 +718,37 @@ class Gaji_model extends CI_model
         $this->db->where('perusahaan', 'PT Prima Komponen Indonesia');
         $query = $this->db->get();
         return $query->result();
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 
     //Melakukan query untuk get data rekon gaji
     public function editRekonGaji($id_history_gaji, $mulai_tanggal, $sampai_tanggal)
     {
+
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Jika Yang Login Adalah HRD Maka Akan Tampil Semua Data
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) {
+
         $this->db->select('*');
         $this->db->from('karyawan');
         $this->db->join('history_gaji', 'history_gaji.karyawan_id_history=karyawan.nik_karyawan');
@@ -393,5 +760,12 @@ class Gaji_model extends CI_model
         $this->db->where('karyawan_id_history', $id_history_gaji);
         $query = $this->db->get()->row_array();
         return $query;
+
+        //dan mendirect kehalaman kesalahan
+        } 
+        else 
+        {
+            redirect('auth/blocked');
+        }
     }
 }

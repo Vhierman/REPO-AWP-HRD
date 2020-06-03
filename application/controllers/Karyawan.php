@@ -998,7 +998,6 @@ class Karyawan extends CI_Controller
         }
     }
 
-
     //Menampilkan halaman lihat data karyawan
     public function lihatkaryawan($id)
     {
@@ -1065,11 +1064,10 @@ class Karyawan extends CI_Controller
     //Method untuk membuat load Download Data Karyawan
     public function downloaddatakaryawan()
     {
-
         //Mengambil Session
         $role_id = $this->session->userdata("role_id");
         //Jika yang login Admin, Manager HRD, Supervisor HRD ,Dan Staff HRD
-        if ($role_id == 1 || $role_id == 11 || $role_id == 9 || $role_id == 10) {
+        if ($role_id == 1 || $role_id == 11 || $role_id == 9 || $role_id == 10|| $role_id == 17|| $role_id == 18) {
 
             //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
             $data['title'] = 'Download Data Karyawan';
@@ -1097,7 +1095,7 @@ class Karyawan extends CI_Controller
         //Mengambil Session
         $role_id = $this->session->userdata("role_id");
         //Jika yang login Admin, Manager HRD, Supervisor HRD ,Dan Staff HRD
-        if ($role_id == 1 || $role_id == 11 || $role_id == 9 || $role_id == 10) {
+        if ($role_id == 1 || $role_id == 11 || $role_id == 9 || $role_id == 10 || $role_id == 17 || $role_id == 18) {
 
             // Load plugin PHPExcel nya
             include APPPATH . 'third_party/PHPExcel/PHPExcel.php';
@@ -1379,7 +1377,7 @@ class Karyawan extends CI_Controller
         //Mengambil Session
         $role_id = $this->session->userdata("role_id");
         //Jika yang login Admin, Manager HRD, Supervisor HRD ,Dan Staff HRD
-        if ($role_id == 1 || $role_id == 11 || $role_id == 9 || $role_id == 10) {
+        if ($role_id == 1 || $role_id == 11 || $role_id == 9 || $role_id == 10 || $role_id == 17 || $role_id == 18) {
 
             // Load plugin PHPExcel nya
             include APPPATH . 'third_party/PHPExcel/PHPExcel.php';
