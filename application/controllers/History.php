@@ -1138,8 +1138,6 @@ class History extends CI_Controller
                 //membedakan nama file jika ada yang sama
                 $this->upload->initialize($config);
 
-
-
                 //JIka file Foto Kosong / File Foto Lebih Dari 1 Mb, Maka Tampil Pesan Kesalahan 
                 if (!$this->upload->do_upload('dokumen_materi_training_internal')) {
                     //Menampilkan pesan Kesalahan
@@ -1164,7 +1162,6 @@ class History extends CI_Controller
                             'hari_training_internal'                    => $hari_training_internal,
                             'tanggal_training_internal'                 => $tanggal_training_internal,
                             'jam_training_internal'                     => $jam_training_internal,
-                            'lokasi_training_internal'                  => $lokasi_training_internal,
                             'materi_training_internal'                  => $materi_training_internal,
                             'penilaian_sebelum_training_internal'       => 0,
                             'penilaian_sesudah_training_internal'       => 0,

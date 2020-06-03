@@ -501,12 +501,92 @@ class Karyawan_model extends CI_model
     {
         $this->db->select('*');
         $this->db->from('karyawan');
+        $this->db->join('history_keluarga', 'history_keluarga.karyawan_id=karyawan.nik_karyawan');
         $this->db->join('perusahaan', 'perusahaan.id=karyawan.perusahaan_id');
         $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
         $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
         $this->db->join('jam_kerja', 'jam_kerja.id_jam_kerja=karyawan.jam_kerja_id');
         $this->db->where('nik_karyawan', $nik_karyawan);
         $query = $this->db->get()->row_array();
+        return $query;
+    }
+
+    //Mengambil semua data histoey keluarga untuk resume karyawan
+    public function getHistoryKeluarga($nik_karyawan)
+    {
+        $this->db->select('*');
+        $this->db->from('history_keluarga');
+        $this->db->join('karyawan', 'history_keluarga.karyawan_id=karyawan.nik_karyawan');
+        $this->db->where('karyawan_id', $nik_karyawan);
+        $query = $this->db->get()->result_array();
+        return $query;
+    }
+
+    //Mengambil semua data history kontrak untuk resume karyawan
+    public function getHistoryKontrak($nik_karyawan)
+    {
+        $this->db->select('*');
+        $this->db->from('history_kontrak');
+        $this->db->join('karyawan', 'history_kontrak.karyawan_id=karyawan.nik_karyawan');
+        $this->db->where('karyawan_id', $nik_karyawan);
+        $query = $this->db->get()->result_array();
+        return $query;
+    }
+
+    //Mengambil semua data history jabatan untuk resume karyawan
+    public function getHistoryJabatan($nik_karyawan)
+    {
+        $this->db->select('*');
+        $this->db->from('history_jabatan');
+        $this->db->join('karyawan', 'history_jabatan.karyawan_id=karyawan.nik_karyawan');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->where('karyawan_id', $nik_karyawan);
+        $query = $this->db->get()->result_array();
+        return $query;
+    }
+
+    //Mengambil semua data history pendidikan formal untuk resume karyawan
+    public function getHistoryPendidikanFormal($nik_karyawan)
+    {
+        $this->db->select('*');
+        $this->db->from('history_pendidikan_formal');
+        $this->db->join('karyawan', 'history_pendidikan_formal.karyawan_id=karyawan.nik_karyawan');
+        $this->db->where('karyawan_id', $nik_karyawan);
+        $query = $this->db->get()->result_array();
+        return $query;
+    }
+
+    //Mengambil semua data history pendidikan non formal untuk resume karyawan
+    public function getHistoryPendidikanNonFormal($nik_karyawan)
+    {
+        $this->db->select('*');
+        $this->db->from('history_pendidikan_non_formal');
+        $this->db->join('karyawan', 'history_pendidikan_non_formal.karyawan_id=karyawan.nik_karyawan');
+        $this->db->where('karyawan_id', $nik_karyawan);
+        $query = $this->db->get()->result_array();
+        return $query;
+    }
+
+    //Mengambil semua data history TRAINING INTERNAL untuk resume karyawan
+    public function getHistoryTrainingInternal($nik_karyawan)
+    {
+        $this->db->select('*');
+        $this->db->from('history_training_internal');
+        $this->db->join('karyawan', 'history_training_internal.karyawan_id=karyawan.nik_karyawan');
+        $this->db->where('karyawan_id', $nik_karyawan);
+        $query = $this->db->get()->result_array();
+        return $query;
+    }
+
+    //Mengambil semua data history TRAINING EKSTERNAL untuk resume karyawan
+    public function getHistoryTrainingEksternal($nik_karyawan)
+    {
+        $this->db->select('*');
+        $this->db->from('history_training_eksternal');
+        $this->db->join('karyawan', 'history_training_eksternal.karyawan_id=karyawan.nik_karyawan');
+        $this->db->where('karyawan_id', $nik_karyawan);
+        $query = $this->db->get()->result_array();
         return $query;
     }
 }

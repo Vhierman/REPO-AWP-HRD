@@ -1667,7 +1667,14 @@ class Karyawan extends CI_Controller
         $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
 
         //Mengambil data dari model
-        $karyawan = $this->karyawan->getResumeKaryawanByID($nik_karyawan);
+        $karyawan               = $this->karyawan->getResumeKaryawanByID($nik_karyawan);
+        $keluarga               = $this->karyawan->getHistoryKeluarga($nik_karyawan);
+        $kontrak                = $this->karyawan->getHistoryKontrak($nik_karyawan);
+        $jabatan                = $this->karyawan->getHistoryJabatan($nik_karyawan);
+        $pendidikanformal       = $this->karyawan->getHistoryPendidikanFormal($nik_karyawan);
+        $pendidikannonformal    = $this->karyawan->getHistoryPendidikanNonFormal($nik_karyawan);
+        $traininginternal       = $this->karyawan->getHistoryTrainingInternal($nik_karyawan);
+        $trainingeksternal      = $this->karyawan->getHistoryTrainingEksternal($nik_karyawan);
 
         //var_dump($karyawan);
         //die;
@@ -1870,6 +1877,34 @@ class Karyawan extends CI_Controller
 
         $pdf->SetFont('Arial', '', '10');
 
+        $pdf->Ln(5);
+
+
+        $pdf->Cell(10);
+        $pdf->SetFont('Arial', 'B', '10');
+        $pdf->SetFillColor(192, 192, 192); // Warna sel tabel header
+        $pdf->Cell(10, 8, 'No', 1, 0, 'C', 1);
+        $pdf->Cell(70, 8, 'Nama', 1, 0, 'C', 1);
+        $pdf->Cell(35, 8, 'Hubungan Keluarga', 1, 0, 'C', 1);
+        $pdf->Cell(35, 8, 'NIK', 1, 0, 'C', 1);
+        $pdf->Cell(35, 8, 'No BPJSKS', 1, 0, 'C', 1);
+
+        $no = 1;
+
+        foreach ($keluarga as $row) :
+            $pdf->Ln();
+            $pdf->Cell(10);
+            $pdf->SetFont('Arial', '', '10');
+            $pdf->Cell(10, 8, $no, 1, 0, 'C');
+            $pdf->Cell(70, 8, $row['nama_history_keluarga'], 1, 0, 'L');
+            $pdf->Cell(35, 8, $row['hubungan_keluarga'], 1, 0, 'C');
+            $pdf->Cell(35, 8, $row['nik_history_keluarga'], 1, 0, 'C');
+            $pdf->Cell(35, 8, $row['nomor_bpjs_kesehatan_history_keluarga'], 1, 0, 'C');
+            $no++;
+        endforeach;
+
+        $pdf->Ln(5);
+
         $pdf->SetFont('Arial', 'B', '10');
 
         $pdf->Ln(5);
@@ -1877,6 +1912,43 @@ class Karyawan extends CI_Controller
         $pdf->Cell(50, 5, "D.History Kontrak", 0, 0, 'L');
 
         $pdf->SetFont('Arial', '', '10');
+
+        $pdf->Ln(5);
+
+
+        $pdf->Cell(10);
+        $pdf->SetFont('Arial', 'B', '10');
+        $pdf->SetFillColor(192, 192, 192); // Warna sel tabel header
+        $pdf->Cell(10, 8, 'No', 1, 0, 'C', 1);
+        $pdf->Cell(70, 8, 'Awal Kontrak', 1, 0, 'C', 1);
+        $pdf->Cell(35, 8, 'Akhir Kontrak', 1, 0, 'C', 1);
+        $pdf->Cell(35, 8, 'Status', 1, 0, 'C', 1);
+        $pdf->Cell(35, 8, 'Masa Kontrak', 1, 0, 'C', 1);
+
+        $no = 1;
+
+        foreach ($kontrak as $row) :
+
+            if ($row['status_kontrak_kerja'] == "PKWT") {
+                $tanggal_akhir_kerja    = IndonesiaTgl($row['tanggal_akhir_kontrak']);
+                $masa_kontrak           = $row['masa_kontrak'];
+            } else {
+                $tanggal_akhir_kerja    = "-";
+                $masa_kontrak           = "-";
+            }
+
+            $pdf->Ln();
+            $pdf->Cell(10);
+            $pdf->SetFont('Arial', '', '10');
+            $pdf->Cell(10, 8, $no, 1, 0, 'C');
+            $pdf->Cell(70, 8, IndonesiaTgl($row['tanggal_awal_kontrak']), 1, 0, 'L');
+            $pdf->Cell(35, 8, $tanggal_akhir_kerja, 1, 0, 'C');
+            $pdf->Cell(35, 8, $row['status_kontrak_kerja'], 1, 0, 'C');
+            $pdf->Cell(35, 8, $masa_kontrak, 1, 0, 'C');
+            $no++;
+        endforeach;
+
+        $pdf->Ln(5);
 
         $pdf->SetFont('Arial', 'B', '10');
 
@@ -1886,6 +1958,32 @@ class Karyawan extends CI_Controller
 
         $pdf->SetFont('Arial', '', '10');
 
+        $pdf->Ln(5);
+
+        $pdf->Cell(10);
+        $pdf->SetFont('Arial', 'B', '10');
+        $pdf->SetFillColor(192, 192, 192); // Warna sel tabel header
+        $pdf->Cell(10, 8, 'No', 1, 0, 'C', 1);
+        $pdf->Cell(70, 8, 'Penempatan', 1, 0, 'C', 1);
+        $pdf->Cell(70, 8, 'Jabatan', 1, 0, 'C', 1);
+        $pdf->Cell(35, 8, 'Tanggal Mutasi', 1, 0, 'C', 1);
+
+        $no = 1;
+
+        foreach ($jabatan as $row) :
+
+            $pdf->Ln();
+            $pdf->Cell(10);
+            $pdf->SetFont('Arial', '', '10');
+            $pdf->Cell(10, 8, $no, 1, 0, 'C');
+            $pdf->Cell(70, 8, $row['penempatan'], 1, 0, 'C');
+            $pdf->Cell(70, 8, $row['jabatan'], 1, 0, 'C');
+            $pdf->Cell(35, 8, IndonesiaTgl($row['tanggal_mutasi']), 1, 0, 'C');
+            $no++;
+        endforeach;
+
+        $pdf->Ln(5);
+
         $pdf->SetFont('Arial', 'B', '10');
 
         $pdf->Ln(5);
@@ -1894,11 +1992,67 @@ class Karyawan extends CI_Controller
 
         $pdf->SetFont('Arial', '', '10');
 
+        $pdf->Ln(5);
+
+        $pdf->Cell(10);
+        $pdf->SetFont('Arial', 'B', '10');
+        $pdf->SetFillColor(192, 192, 192); // Warna sel tabel header
+        $pdf->Cell(10, 8, 'No', 1, 0, 'C', 1);
+        $pdf->Cell(40, 8, 'Tingkat', 1, 0, 'C', 1);
+        $pdf->Cell(50, 8, 'Nama Instansi', 1, 0, 'C', 1);
+        $pdf->Cell(50, 8, 'Jurusan', 1, 0, 'C', 1);
+        $pdf->Cell(35, 8, 'Tahun Lulus', 1, 0, 'C', 1);
+
+        $no = 1;
+
+        foreach ($pendidikanformal as $row) :
+
+            $pdf->Ln();
+            $pdf->Cell(10);
+            $pdf->SetFont('Arial', '', '10');
+            $pdf->Cell(10, 8, $no, 1, 0, 'C');
+            $pdf->Cell(40, 8, $row['tingkat_pendidikan_formal'], 1, 0, 'C');
+            $pdf->Cell(50, 8, $row['nama_instansi_pendidikan'], 1, 0, 'C');
+            $pdf->Cell(50, 8, $row['jurusan'], 1, 0, 'C');
+            $pdf->Cell(35, 8, $row['tahun_lulus'], 1, 0, 'C');
+            $no++;
+        endforeach;
+
+        $pdf->Ln(5);
+
         $pdf->SetFont('Arial', 'B', '10');
 
         $pdf->Ln(5);
         $pdf->Cell(5);
         $pdf->Cell(50, 5, "G.History Pendidikan Non Formal", 0, 0, 'L');
+
+        $pdf->SetFont('Arial', '', '10');
+
+        $pdf->Ln(5);
+
+        $pdf->Cell(10);
+        $pdf->SetFont('Arial', 'B', '10');
+        $pdf->SetFillColor(192, 192, 192); // Warna sel tabel header
+        $pdf->Cell(10, 8, 'No', 1, 0, 'C', 1);
+        $pdf->Cell(95, 8, 'Nama Instansi', 1, 0, 'C', 1);
+        $pdf->Cell(40, 8, 'Awal Pendidikan', 1, 0, 'C', 1);
+        $pdf->Cell(40, 8, 'Akhir Pendidikan', 1, 0, 'C', 1);
+
+        $no = 1;
+
+        foreach ($pendidikannonformal as $row) :
+
+            $pdf->Ln();
+            $pdf->Cell(10);
+            $pdf->SetFont('Arial', '', '10');
+            $pdf->Cell(10, 8, $no, 1, 0, 'C');
+            $pdf->Cell(95, 8, $row['nama_instansi_pendidikan_non_formal'], 1, 0, 'C');
+            $pdf->Cell(40, 8, IndonesiaTgl($row['tanggal_awal_pendidikan_non_formal']), 1, 0, 'C');
+            $pdf->Cell(40, 8, IndonesiaTgl($row['tanggal_akhir_pendidikan_non_formal']), 1, 0, 'C');
+            $no++;
+        endforeach;
+
+        $pdf->Ln(5);
 
         $pdf->SetFont('Arial', 'B', '10');
 
@@ -1906,11 +2060,65 @@ class Karyawan extends CI_Controller
         $pdf->Cell(5);
         $pdf->Cell(50, 5, "H.History Training Internal", 0, 0, 'L');
 
+        $pdf->SetFont('Arial', '', '10');
+
+        $pdf->Ln(5);
+
+        $pdf->Cell(10);
+        $pdf->SetFont('Arial', 'B', '10');
+        $pdf->SetFillColor(192, 192, 192); // Warna sel tabel header
+        $pdf->Cell(10, 8, 'No', 1, 0, 'C', 1);
+        $pdf->Cell(65, 8, 'Waktu Training', 1, 0, 'C', 1);
+        $pdf->Cell(110, 8, 'Materi Training', 1, 0, 'C', 1);
+
+        $no = 1;
+
+        foreach ($traininginternal as $row) :
+
+            $pdf->Ln();
+            $pdf->Cell(10);
+            $pdf->SetFont('Arial', '', '10');
+            $pdf->Cell(10, 8, $no, 1, 0, 'C');
+            $pdf->Cell(65, 8, $row['hari_training_internal'] . ', ' . IndonesiaTgl($row['tanggal_training_internal']), 1, 0, 'C');
+            $pdf->Cell(110, 8, $row['materi_training_internal'], 1, 0, 'C');
+            $no++;
+        endforeach;
+
+        $pdf->Ln(5);
+
         $pdf->SetFont('Arial', 'B', '10');
 
         $pdf->Ln(5);
         $pdf->Cell(5);
         $pdf->Cell(50, 5, "I.History Training Eksternal", 0, 0, 'L');
+
+        $pdf->SetFont('Arial', '', '10');
+
+        $pdf->Ln(5);
+
+        $pdf->Cell(10);
+        $pdf->SetFont('Arial', 'B', '10');
+        $pdf->SetFillColor(192, 192, 192); // Warna sel tabel header
+        $pdf->Cell(10, 8, 'No', 1, 0, 'C', 1);
+        $pdf->Cell(95, 8, 'Nama Institusi', 1, 0, 'C', 1);
+        $pdf->Cell(40, 8, 'Awal Training', 1, 0, 'C', 1);
+        $pdf->Cell(40, 8, 'Akhir Training', 1, 0, 'C', 1);
+
+        $no = 1;
+
+        foreach ($trainingeksternal as $row) :
+
+            $pdf->Ln();
+            $pdf->Cell(10);
+            $pdf->SetFont('Arial', '', '10');
+            $pdf->Cell(10, 8, $no, 1, 0, 'C');
+            $pdf->Cell(95, 8, $row['institusi_penyelenggara_training_eksternal'], 1, 0, 'C');
+            $pdf->Cell(40, 8, IndonesiaTgl($row['tanggal_awal_training_eksternal']), 1, 0, 'C');
+            $pdf->Cell(40, 8, IndonesiaTgl($row['tanggal_akhir_training_eksternal']), 1, 0, 'C');
+            $no++;
+        endforeach;
+
+        $pdf->Ln(5);
 
         $pdf->SetFont('Arial', '', '10');
 
