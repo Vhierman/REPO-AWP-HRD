@@ -1889,18 +1889,18 @@ class Karyawan extends CI_Controller
         $pdf->Cell(35, 8, 'NIK', 1, 0, 'C', 1);
         $pdf->Cell(35, 8, 'No BPJSKS', 1, 0, 'C', 1);
 
-        $no = 1;
+        $nokeluarga = 1;
 
-        foreach ($keluarga as $row) :
+        foreach ($keluarga as $rowkeluarga) :
             $pdf->Ln();
             $pdf->Cell(10);
             $pdf->SetFont('Arial', '', '10');
-            $pdf->Cell(10, 8, $no, 1, 0, 'C');
-            $pdf->Cell(70, 8, $row['nama_history_keluarga'], 1, 0, 'L');
-            $pdf->Cell(35, 8, $row['hubungan_keluarga'], 1, 0, 'C');
-            $pdf->Cell(35, 8, $row['nik_history_keluarga'], 1, 0, 'C');
-            $pdf->Cell(35, 8, $row['nomor_bpjs_kesehatan_history_keluarga'], 1, 0, 'C');
-            $no++;
+            $pdf->Cell(10, 8, $nokeluarga, 1, 0, 'C');
+            $pdf->Cell(70, 8, $rowkeluarga['nama_history_keluarga'], 1, 0, 'L');
+            $pdf->Cell(35, 8, $rowkeluarga['hubungan_keluarga'], 1, 0, 'C');
+            $pdf->Cell(35, 8, $rowkeluarga['nik_history_keluarga'], 1, 0, 'C');
+            $pdf->Cell(35, 8, $rowkeluarga['nomor_bpjs_kesehatan_history_keluarga'], 1, 0, 'C');
+            $nokeluarga++;
         endforeach;
 
         $pdf->Ln(5);
@@ -1925,13 +1925,13 @@ class Karyawan extends CI_Controller
         $pdf->Cell(35, 8, 'Status', 1, 0, 'C', 1);
         $pdf->Cell(35, 8, 'Masa Kontrak', 1, 0, 'C', 1);
 
-        $no = 1;
+        $nokontrak = 1;
 
-        foreach ($kontrak as $row) :
+        foreach ($kontrak as $rowkontrak) :
 
-            if ($row['status_kontrak_kerja'] == "PKWT") {
-                $tanggal_akhir_kerja    = IndonesiaTgl($row['tanggal_akhir_kontrak']);
-                $masa_kontrak           = $row['masa_kontrak'];
+            if ($rowkontrak['status_kontrak_kerja'] == "PKWT") {
+                $tanggal_akhir_kerja    = IndonesiaTgl($rowkontrak['tanggal_akhir_kontrak']);
+                $masa_kontrak           = $rowkontrak['masa_kontrak'];
             } else {
                 $tanggal_akhir_kerja    = "-";
                 $masa_kontrak           = "-";
@@ -1940,12 +1940,12 @@ class Karyawan extends CI_Controller
             $pdf->Ln();
             $pdf->Cell(10);
             $pdf->SetFont('Arial', '', '10');
-            $pdf->Cell(10, 8, $no, 1, 0, 'C');
-            $pdf->Cell(70, 8, IndonesiaTgl($row['tanggal_awal_kontrak']), 1, 0, 'L');
+            $pdf->Cell(10, 8, $nokontrak, 1, 0, 'C');
+            $pdf->Cell(70, 8, IndonesiaTgl($rowkontrak['tanggal_awal_kontrak']), 1, 0, 'L');
             $pdf->Cell(35, 8, $tanggal_akhir_kerja, 1, 0, 'C');
-            $pdf->Cell(35, 8, $row['status_kontrak_kerja'], 1, 0, 'C');
+            $pdf->Cell(35, 8, $rowkontrak['status_kontrak_kerja'], 1, 0, 'C');
             $pdf->Cell(35, 8, $masa_kontrak, 1, 0, 'C');
-            $no++;
+            $nokontrak++;
         endforeach;
 
         $pdf->Ln(5);
@@ -1968,18 +1968,18 @@ class Karyawan extends CI_Controller
         $pdf->Cell(70, 8, 'Jabatan', 1, 0, 'C', 1);
         $pdf->Cell(35, 8, 'Tanggal Mutasi', 1, 0, 'C', 1);
 
-        $no = 1;
+        $nojabatan = 1;
 
-        foreach ($jabatan as $row) :
+        foreach ($jabatan as $rowjabatan) :
 
             $pdf->Ln();
             $pdf->Cell(10);
             $pdf->SetFont('Arial', '', '10');
-            $pdf->Cell(10, 8, $no, 1, 0, 'C');
-            $pdf->Cell(70, 8, $row['penempatan'], 1, 0, 'C');
-            $pdf->Cell(70, 8, $row['jabatan'], 1, 0, 'C');
-            $pdf->Cell(35, 8, IndonesiaTgl($row['tanggal_mutasi']), 1, 0, 'C');
-            $no++;
+            $pdf->Cell(10, 8, $nojabatan, 1, 0, 'C');
+            $pdf->Cell(70, 8, $rowjabatan['penempatan'], 1, 0, 'C');
+            $pdf->Cell(70, 8, $rowjabatan['jabatan'], 1, 0, 'C');
+            $pdf->Cell(35, 8, IndonesiaTgl($rowjabatan['tanggal_mutasi']), 1, 0, 'C');
+            $nojabatan++;
         endforeach;
 
         $pdf->Ln(5);
@@ -2003,19 +2003,19 @@ class Karyawan extends CI_Controller
         $pdf->Cell(50, 8, 'Jurusan', 1, 0, 'C', 1);
         $pdf->Cell(35, 8, 'Tahun Lulus', 1, 0, 'C', 1);
 
-        $no = 1;
+        $nopendidikanformal = 1;
 
-        foreach ($pendidikanformal as $row) :
+        foreach ($pendidikanformal as $rowpendidikanformal) :
 
             $pdf->Ln();
             $pdf->Cell(10);
             $pdf->SetFont('Arial', '', '10');
-            $pdf->Cell(10, 8, $no, 1, 0, 'C');
-            $pdf->Cell(40, 8, $row['tingkat_pendidikan_formal'], 1, 0, 'C');
-            $pdf->Cell(50, 8, $row['nama_instansi_pendidikan'], 1, 0, 'C');
-            $pdf->Cell(50, 8, $row['jurusan'], 1, 0, 'C');
-            $pdf->Cell(35, 8, $row['tahun_lulus'], 1, 0, 'C');
-            $no++;
+            $pdf->Cell(10, 8, $nopendidikanformal, 1, 0, 'C');
+            $pdf->Cell(40, 8, $rowpendidikanformal['tingkat_pendidikan_formal'], 1, 0, 'C');
+            $pdf->Cell(50, 8, $rowpendidikanformal['nama_instansi_pendidikan'], 1, 0, 'C');
+            $pdf->Cell(50, 8, $rowpendidikanformal['jurusan'], 1, 0, 'C');
+            $pdf->Cell(35, 8, $rowpendidikanformal['tahun_lulus'], 1, 0, 'C');
+            $nopendidikanformal++;
         endforeach;
 
         $pdf->Ln(5);
@@ -2038,18 +2038,18 @@ class Karyawan extends CI_Controller
         $pdf->Cell(40, 8, 'Awal Pendidikan', 1, 0, 'C', 1);
         $pdf->Cell(40, 8, 'Akhir Pendidikan', 1, 0, 'C', 1);
 
-        $no = 1;
+        $nopendidikannonformal = 1;
 
-        foreach ($pendidikannonformal as $row) :
+        foreach ($pendidikannonformal as $rowpendidikannonformal) :
 
             $pdf->Ln();
             $pdf->Cell(10);
             $pdf->SetFont('Arial', '', '10');
-            $pdf->Cell(10, 8, $no, 1, 0, 'C');
-            $pdf->Cell(95, 8, $row['nama_instansi_pendidikan_non_formal'], 1, 0, 'C');
-            $pdf->Cell(40, 8, IndonesiaTgl($row['tanggal_awal_pendidikan_non_formal']), 1, 0, 'C');
-            $pdf->Cell(40, 8, IndonesiaTgl($row['tanggal_akhir_pendidikan_non_formal']), 1, 0, 'C');
-            $no++;
+            $pdf->Cell(10, 8, $nopendidikannonformal, 1, 0, 'C');
+            $pdf->Cell(95, 8, $rowpendidikannonformal['nama_instansi_pendidikan_non_formal'], 1, 0, 'C');
+            $pdf->Cell(40, 8, IndonesiaTgl($rowpendidikannonformal['tanggal_awal_pendidikan_non_formal']), 1, 0, 'C');
+            $pdf->Cell(40, 8, IndonesiaTgl($rowpendidikannonformal['tanggal_akhir_pendidikan_non_formal']), 1, 0, 'C');
+            $nopendidikannonformal++;
         endforeach;
 
         $pdf->Ln(5);
@@ -2071,17 +2071,17 @@ class Karyawan extends CI_Controller
         $pdf->Cell(65, 8, 'Waktu Training', 1, 0, 'C', 1);
         $pdf->Cell(110, 8, 'Materi Training', 1, 0, 'C', 1);
 
-        $no = 1;
+        $notraininginternal = 1;
 
-        foreach ($traininginternal as $row) :
+        foreach ($traininginternal as $rowtraininginternal) :
 
             $pdf->Ln();
             $pdf->Cell(10);
             $pdf->SetFont('Arial', '', '10');
-            $pdf->Cell(10, 8, $no, 1, 0, 'C');
-            $pdf->Cell(65, 8, $row['hari_training_internal'] . ', ' . IndonesiaTgl($row['tanggal_training_internal']), 1, 0, 'C');
-            $pdf->Cell(110, 8, $row['materi_training_internal'], 1, 0, 'C');
-            $no++;
+            $pdf->Cell(10, 8, $notraininginternal, 1, 0, 'C');
+            $pdf->Cell(65, 8, $rowtraininginternal['hari_training_internal'] . ', ' . IndonesiaTgl($rowtraininginternal['tanggal_training_internal']), 1, 0, 'C');
+            $pdf->Cell(110, 8, $rowtraininginternal['materi_training_internal'], 1, 0, 'C');
+            $notraininginternal++;
         endforeach;
 
         $pdf->Ln(5);
@@ -2104,18 +2104,17 @@ class Karyawan extends CI_Controller
         $pdf->Cell(40, 8, 'Awal Training', 1, 0, 'C', 1);
         $pdf->Cell(40, 8, 'Akhir Training', 1, 0, 'C', 1);
 
-        $no = 1;
+        $notrainingeksternal = 1;
 
-        foreach ($trainingeksternal as $row) :
-
+        foreach ($trainingeksternal as $rowtrainingeksternal) :
             $pdf->Ln();
             $pdf->Cell(10);
             $pdf->SetFont('Arial', '', '10');
-            $pdf->Cell(10, 8, $no, 1, 0, 'C');
-            $pdf->Cell(95, 8, $row['institusi_penyelenggara_training_eksternal'], 1, 0, 'C');
-            $pdf->Cell(40, 8, IndonesiaTgl($row['tanggal_awal_training_eksternal']), 1, 0, 'C');
-            $pdf->Cell(40, 8, IndonesiaTgl($row['tanggal_akhir_training_eksternal']), 1, 0, 'C');
-            $no++;
+            $pdf->Cell(10, 8, $notrainingeksternal, 1, 0, 'C');
+            $pdf->Cell(95, 8, $rowtrainingeksternal['institusi_penyelenggara_training_eksternal'], 1, 0, 'C');
+            $pdf->Cell(40, 8, IndonesiaTgl($rowtrainingeksternal['tanggal_awal_training_eksternal']), 1, 0, 'C');
+            $pdf->Cell(40, 8, IndonesiaTgl($rowtrainingeksternal['tanggal_akhir_training_eksternal']), 1, 0, 'C');
+            $notrainingeksternal++;
         endforeach;
 
         $pdf->Ln(5);
