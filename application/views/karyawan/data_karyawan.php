@@ -20,7 +20,7 @@
             //Mengambil Session
             $role_id        = $this->session->userdata("role_id");
             //Jika Yang Login adalah HRD Maka Button Tambah Dan Download Tampil
-            if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11) : ?>
+            if ($role_id == 1 || $role_id == 11) : ?>
                 <!-- Button Tambah Data Karyawan -->
                 <a href="<?= base_url('karyawan/tambahkaryawan'); ?>" class="btn btn-primary mb-2 ml-4">
                     <i class="fas fa-plus"></i>
@@ -32,7 +32,10 @@
                     Download Data Karyawan
                 </a>
                 <!-- Jika Yang Login adalah Accounting -->
-                <?php elseif ($role_id == 17 || $role_id == 18): ?>
+                <?php 
+                //Mengambil Session
+            $role_id        = $this->session->userdata("role_id");
+            elseif ($role_id == 17 || $role_id == 18|| $role_id == 9|| $role_id == 10): ?>
                 <!-- Button Download Data Karyawan -->
                 <a href="<?= base_url('karyawan/downloaddatakaryawan'); ?>" class="btn btn-success mb-2 ml-4">
                     <i class="fas fa-download"></i>
@@ -86,13 +89,13 @@
                                     <a href="<?= base_url(); ?>karyawan/resumekaryawan/<?= $pm['nik_karyawan']; ?>" class="btn btn-sm btn-info" title="Resume" target="_blank"><i class="fas fa-address-card"></i></a>
                                     <a href="<?= base_url(); ?>karyawan/editkaryawan/<?= $pm['id_karyawan']; ?>" class="btn btn-sm btn-success" title="Edit"><i class="fas fa-pen"></i></a>
                                     <a href="<?= base_url(); ?>karyawan/hapuskaryawan/<?= $pm['id_karyawan']; ?>" class="btn btn-sm btn-danger" title="Hapus" onclick="return confirm('Apakah anda yakin akan menghapus data ini'); "><i class="fas fa-trash"></i></a>
-                                    <!-- Jika yang login HRD, Maka Button EDIT, Lihat, Dan Hapus Akan Tampil Semua-->
-                                <?php else if ($role_id == 9 || $role_id == 10) : ?>
-                                    <a href="<?= base_url(); ?>karyawan/resumekaryawan/<?= $pm['nik_karyawan']; ?>" class="btn btn-sm btn-info" title="Resume" target="_blank"><i class="fas fa-address-card"></i></a>
+                                    <!-- Jika yang login Manager HRD Dan Supervisor, Maka Button  Resume Yang Tampil-->
                                 <?php 
-                                //Jika Yang Login Accounting, Maka Button Resume yang akan tampil
-                                else if ($role_id == 17 || $role_id == 18): ?>
-                                <a href="<?= base_url(); ?>karyawan/resumekaryawan/<?= $pm['nik_karyawan']; ?>" class="btn btn-sm btn-info" title="Resume" target="_blank"><i class="fas fa-address-card"></i></a>
+                                //Mengambil Session
+            $role_id        = $this->session->userdata("role_id");
+            elseif ($role_id == 9 || $role_id == 10|| $role_id == 17|| $role_id == 18) : ?>
+                                    <a href="<?= base_url(); ?>karyawan/resumekaryawan/<?= $pm['nik_karyawan']; ?>" class="btn btn-sm btn-info" title="Resume" target="_blank"><i class="fas fa-address-card"></i></a>
+                                
                                 <?php 
                                 //Jika Yang Login Bukan HRD,dan Accounting Maka Button Lihat Doank yang tampil
                                 else : ?>
