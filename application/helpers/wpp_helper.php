@@ -342,3 +342,15 @@ function diffInMonths(\DateTime $date1, \DateTime $date2)
 
     return (int) round($months);
 }
+
+function hitung_umur($tanggal_lahir)
+{
+    $birthDate = new DateTime($tanggal_lahir);
+    $today = new DateTime("today");
+    if ($birthDate > $today) {
+        exit("0 tahun 0 bulan 0 hari");
+    }
+    $y = $today->diff($birthDate)->y;
+    $m = $today->diff($birthDate)->m;
+    return $y . " tahun " . $m . " bulan ";
+}

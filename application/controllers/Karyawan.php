@@ -1067,7 +1067,7 @@ class Karyawan extends CI_Controller
         //Mengambil Session
         $role_id = $this->session->userdata("role_id");
         //Jika yang login Admin, Manager HRD, Supervisor HRD ,Dan Staff HRD
-        if ($role_id == 1 || $role_id == 11 || $role_id == 9 || $role_id == 10|| $role_id == 17|| $role_id == 18) {
+        if ($role_id == 1 || $role_id == 11 || $role_id == 9 || $role_id == 10 || $role_id == 17 || $role_id == 18) {
 
             //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
             $data['title'] = 'Download Data Karyawan';
@@ -1729,7 +1729,7 @@ class Karyawan extends CI_Controller
         $pdf->Ln(5);
         $pdf->Cell(125);
         $pdf->Cell(30, 5, "Halaman", 1, 0, 'L');
-        $pdf->Cell(43, 5, "1 Dari 1", 1, 0, 'L');
+        $pdf->Cell(43, 5, "1 Dari 2", 1, 0, 'L');
 
         $pdf->SetFont('Arial', 'B', '12');
         $pdf->Ln(-13);
@@ -1784,6 +1784,12 @@ class Karyawan extends CI_Controller
 
         $pdf->Ln();
         $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Umur", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, hitung_umur($karyawan['tanggal_lahir']), 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
         $pdf->Cell(45, 5, "Agama", 0, 0, 'L');
         $pdf->Cell(5, 5, " : ", 0, 0, 'C');
         $pdf->Cell(90, 5, $karyawan['agama'], 0, 0, 'L');
@@ -1817,6 +1823,20 @@ class Karyawan extends CI_Controller
         $pdf->Cell(45, 5, "Status Menikah", 0, 0, 'L');
         $pdf->Cell(5, 5, " : ", 0, 0, 'C');
         $pdf->Cell(90, 5, $karyawan['status_nikah'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Alamat", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['alamat'] . ', RT/RW' . $karyawan['rt'] . '/' . $karyawan['rw'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(59);
+        $pdf->Cell(140, 5, 'Kelurahan ' . $karyawan['kelurahan'] . ', Kecamatan ' . $karyawan['kecamatan'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(59);
+        $pdf->Cell(140, 5, 'Kabupaten/Kota ' . $karyawan['kota'] . ', Provinsi ' . $karyawan['provinsi'] . ', Kode POS ' . $karyawan['kode_pos'], 0, 0, 'L');
 
         $pdf->SetFont('Arial', 'B', '10');
 
@@ -1863,13 +1883,31 @@ class Karyawan extends CI_Controller
 
         $pdf->Ln();
         $pdf->Cell(9);
+        $pdf->Cell(45, 5, "Masa Kerja", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, hitung_umur($karyawan['tanggal_mulai_kerja']), 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
         $pdf->Cell(45, 5, "Jabatan / Penempatan", 0, 0, 'L');
         $pdf->Cell(5, 5, " : ", 0, 0, 'C');
         $pdf->Cell(90, 5, $karyawan['jabatan'] . ' / ' . $karyawan['penempatan'], 0, 0, 'L');
 
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "No.BPJSTK", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['nomor_jht'], 0, 0, 'L');
+
+        $pdf->Ln();
+        $pdf->Cell(9);
+        $pdf->Cell(45, 5, "No.BPJSKS", 0, 0, 'L');
+        $pdf->Cell(5, 5, " : ", 0, 0, 'C');
+        $pdf->Cell(90, 5, $karyawan['nomor_jkn'], 0, 0, 'L');
+
         $pdf->SetFont('Arial', 'B', '10');
 
-        $pdf->Ln(5);
+        $pdf->Ln(7);
         $pdf->Cell(5);
         $pdf->Cell(50, 5, "C.History Keluarga", 0, 0, 'L');
 
@@ -1905,7 +1943,7 @@ class Karyawan extends CI_Controller
 
         $pdf->SetFont('Arial', 'B', '10');
 
-        $pdf->Ln(5);
+        $pdf->Ln(7);
         $pdf->Cell(5);
         $pdf->Cell(50, 5, "D.History Kontrak", 0, 0, 'L');
 
@@ -1948,9 +1986,58 @@ class Karyawan extends CI_Controller
 
         $pdf->Ln(5);
 
-        $pdf->SetFont('Arial', 'B', '10');
+
+
+        $pdf->Ln(90);
+        $pdf->Cell(205, 290, '', 1, 0, 'C');
+
+        $pdf->SetFont('Arial', 'B', '8');
+        $pdf->Cell(-200);
+        $pdf->Ln(2);
+        $pdf->Cell(5);
+        $pdf->Cell(70, 20, '', 1, 0, 'C');
+        $pdf->Image('assets/img/logo/logo.png', 9, 9, 65);
+        $pdf->Cell(50, 20, '', 1, 0, 'C');
+
+        $pdf->Cell(30, 5, "No.Form", 1, 0, 'L');
+        $pdf->Cell(43, 5, "FR/HRD-GA/HR/006/Rev.01", 1, 0, 'L');
 
         $pdf->Ln(5);
+        $pdf->Cell(125);
+        $pdf->Cell(30, 5, "Tgl.Dikeluarkan", 1, 0, 'L');
+        $pdf->Cell(43, 5, "24 November 2012", 1, 0, 'L');
+
+        $pdf->Ln(5);
+        $pdf->Cell(125);
+        $pdf->Cell(30, 5, "Tgl.Revisi", 1, 0, 'L');
+        $pdf->Cell(43, 5, "01 April 2015", 1, 0, 'L');
+
+        $pdf->Ln(5);
+        $pdf->Cell(125);
+        $pdf->Cell(30, 5, "Halaman", 1, 0, 'L');
+        $pdf->Cell(43, 5, "2 Dari 2", 1, 0, 'L');
+
+        $pdf->SetFont('Arial', 'B', '12');
+        $pdf->Ln(-13);
+        $pdf->Cell(75);
+        $pdf->Cell(50, 5, "DETAIL", 0, 0, 'C');
+
+        $pdf->Ln(5);
+        $pdf->Cell(75);
+        $pdf->Cell(50, 5, "RESUME", 0, 0, 'C');
+
+        $pdf->Ln(5);
+        $pdf->Cell(75);
+        $pdf->Cell(50, 5, "KARYAWAN", 0, 0, 'C');
+
+        $pdf->Cell(5);
+        $pdf->Cell(50, 5, "", 0, 0, 'L');
+
+
+
+        $pdf->SetFont('Arial', 'B', '10');
+
+        $pdf->Ln(10);
         $pdf->Cell(5);
         $pdf->Cell(50, 5, "E.History Jabatan", 0, 0, 'L');
 
