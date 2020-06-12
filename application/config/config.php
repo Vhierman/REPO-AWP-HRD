@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +25,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 */
 
 //Kalau di hosting rubah sesuai domainnya http:achmadfirmansyah.web.id/
-$config['base_url'] = 'http://localhost/REPO-AWP-HRD/';
+$config['base_url'] = 'https://hrd.achmadfirmansyah.web.id';
 
 /*
 |--------------------------------------------------------------------------
