@@ -6,7 +6,7 @@
 		<div class="sidebar-brand-icon rotate-n-15">
 			<i class="fab fa-autoprefixer"></i>
 		</div>
-		<div class="sidebar-brand-text mx-3">WPP Admin </div>
+		<div class="sidebar-brand-text mx-3">HRD-GA Prima</div>
 	</a>
 
 	<!-- Divider / Garis Pembatas -->
