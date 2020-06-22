@@ -212,7 +212,23 @@
             <div class="card border-danger">
                 <h5 class="card-header text-white bg-gradient-danger">Form Alamat</h5>
                 <div class="card-body border-bottom-danger ">
-
+					
+					<?php
+					/*
+					API NEGARA
+					<div class="form-group">
+                        <select name="negara" id="negara" class="form-control" required>
+                            <option value="">Pilih Negara</option>
+                            <?php foreach ($negara as $key => $ng) : ?>
+                                <option value="<?= $ng->name; ?>">
+                                    <?= $ng->name; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+					</div>
+					*/
+					?>
+					
                     <div class="form-group">
                         <input type="text" value="<?= set_value('alamat'); ?>" class="form-control" id="alamat" name="alamat" placeholder="Masukan Nama Gedung / Jalan">
                         <small class="form-text text-danger"><?php echo form_error('alamat'); ?></small>

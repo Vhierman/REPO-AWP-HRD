@@ -49,7 +49,7 @@
                 <a href="<?= base_url('magang/downloadmagang/'); ?>" class="btn btn-success mb-2 ml-4"><i class="fas fa-download"></i> Download Data Magang</a>
 
                 <!-- Jika Yang Login adalah Accounting  Maka Button Tambah Tidak Tampil -->
-                <?php else if($role_id == 9 || $role_id == 10 || $role_id == 17 || $role_id == 18) : ?>
+                <?php elseif($role_id == 9 || $role_id == 10 || $role_id == 17 || $role_id == 18) : ?>
                 <!-- Button Download -->
                 <a href="<?= base_url('magang/downloadmagang/'); ?>" class="btn btn-success mb-2 ml-4"><i class="fas fa-download"></i> Download Data Magang</a>
 

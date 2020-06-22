@@ -62,6 +62,16 @@ class Karyawan extends CI_Controller
 			//Mengambil data jamkerja
 			$data['jamkerja'] = $this->karyawan->getAllJamKerja();
 
+			
+
+			$this->curl->http_header('x-rapidapi-host','restcountries-v1.p.rapidapi.com');
+			$this->curl->http_header('x-rapidapi-key','3e33277e62mshc9ce8b92dcfa9b2p13765djsn809b8f4d5bd8');
+			$this->curl->create('https://restcountries-v1.p.rapidapi.com/all');
+			$result 	= $this->curl->execute();
+			//print_r($result)->exit();
+			$data['negara']=json_decode($result);
+			
+
 			//Validation Form Input
 			$this->form_validation->set_rules('perusahaan_id', 'Nama Perusahaan', 'required');
 			$this->form_validation->set_rules('penempatan_id', 'Penempatan', 'required');
