@@ -225,9 +225,6 @@ class Karyawan extends CI_Controller
 			$this->form_validation->set_rules('kelurahan', 'Kelurahan', 'required');
 			$this->form_validation->set_rules('kode_pos', 'Kode Pos', 'required');
 			$this->form_validation->set_rules('nomor_rekening', 'Nomor Rekening', 'required');
-			$this->form_validation->set_rules('gaji_pokok', 'Gaji Pokok', 'required');
-			$this->form_validation->set_rules('uang_makan', 'Uang Makan', 'required');
-			$this->form_validation->set_rules('uang_transport', 'Uang Transport', 'required');
 			$this->form_validation->set_rules('nomor_kartu_keluarga', 'Nomor KK', 'required|min_length[16]');
 			$this->form_validation->set_rules('status_nikah', 'Status Nikah', 'required');
 			$this->form_validation->set_rules('nama_ayah', 'Nama Ayah', 'required|trim|min_length[2]');

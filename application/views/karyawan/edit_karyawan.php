@@ -3,7 +3,14 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-2 ml-4 text-gray-800"><?= $title; ?></h1>
-
+	<!-- Menampilkan Pesan Kesalahan -->
+	<?php if (validation_errors()) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= validation_errors(); ?>
+                </div>
+            <?php endif; ?>
+            <?= $this->session->flashdata('message'); ?>
+            <!-- Menampilkan Pesan Kesalahan -->
     <!-- Tab Tambah Data Karyawan -->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
