@@ -41,6 +41,7 @@
                     <label for="label">Hubungan Keluarga</label>
                     <select name="hubungan_keluarga" id="hubungan_keluarga" class="form-control" required>
                         <option value="">Pilih Hubungan Keluarga</option>
+                        <option value="Suami">Suami</option>
                         <option value="Istri">Istri</option>
                         <option value="Anak">Anak</option>
                     </select>

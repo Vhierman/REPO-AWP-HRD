@@ -197,6 +197,7 @@ class History extends CI_Controller
             //Edit Select Option
             $data['hubungan_keluarga'] = [
                 '' => 'Pilih Hubungan Keluarga',
+                'Suami' => 'Suami',
                 'Istri' => 'Istri',
                 'Anak' => 'Anak'
             ];
