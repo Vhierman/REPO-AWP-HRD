@@ -1639,5 +1639,232 @@ class Laporan extends CI_Controller
         endforeach;
 
         $pdf->Output();
-    }
+	}
+	
+	//Menampilkan halaman awal laporan data kpi absensi
+    public function kpiabsensi()
+    {
+        //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+        $data['title'] = 'Laporan KPI Absensi';
+        //Menyimpan session dari login
+        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+        //menampilkan halaman Cetak Laporan KPI Absensi
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('laporan/laporan_kpi_absensi', $data);
+        $this->load->view('templates/footer');
+	}
+	
+	//Menampilkan halaman cetak laporan KPI Absensi
+    public function cetaklaporankpiabsensi()
+    {
+
+		 //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+		 $data['title']      = 'Cetak Laporan KPI Absensi';
+		 //Menyimpan session dari login
+		 $data['user']       = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+ 
+		 //Mengambil data dari model laporan
+		 $kpiabsensi           				= $this->laporan->getLaporanKPIAbsensi();
+		 $jumlahkaryawankpi           		= $this->laporan->getJumlahKaryawanKPI();
+		 $jumlahabsen           			= $this->laporan->getJumlahAbsenKaryawan();
+
+		 //var_dump($jumlahkaryawankpi);
+		 //die;
+		 
+		 //Mengambil data Tanggal Bulan Dan Tahun Sekarang
+		 date_default_timezone_set("Asia/Jakarta");
+		 $tahun      = date('Y');
+		 $bulan      = date('m');
+		 $tanggal    = date('d');
+ 
+		 //Mengambil Data Dari Inputan
+		 $mulai_tanggal       = $this->input->post('mulai_tanggal', true);
+		 $sampai_tanggal     = $this->input->post('sampai_tanggal', true);
+ 
+		 //Memisahkan data 2 digit tanggal 2 digit bulan dan 4 digit tahun
+		 $tanggalmulai       = substr(IndonesiaTgl($mulai_tanggal), 0, -8);
+		 $bulanmulai         = substr(IndonesiaTgl($mulai_tanggal), 3, -5);
+		 $tahunmulai         = substr(IndonesiaTgl($mulai_tanggal), -4);
+ 
+		 $tanggalakhir       = substr(IndonesiaTgl($sampai_tanggal), 0, -8);
+		 $bulanakhir         = substr(IndonesiaTgl($sampai_tanggal), 3, -5);
+		 $tahunakhir         = substr(IndonesiaTgl($sampai_tanggal), -4);
+ 
+		 $pdf = new FPDF('L', 'mm', 'A4');
+		 $pdf->setTopMargin(2);
+        $pdf->setLeftMargin(2);
+		$pdf->SetAutoPageBreak(TRUE);
+			
+		 $pdf->AddPage();
+		
+		 $pdf->Cell(2);
+
+		 $pdf->Image('assets/img/logo/logo.png', 7, 10, 80);
+
+		 
+
+		$pdf->Ln(1);
+        $pdf->Cell(2);
+		$pdf->Cell(85, 28, '', 1, 0, 'C');
+
+		$pdf->Cell(120, 28, '', 1, 0, 'C');
+
+		$pdf->Cell(80, 7, '', 1, 0, 'C');
+		
+		$pdf->Ln();
+		$pdf->Cell(207);
+		$pdf->Cell(80, 7, '', 1, 0, 'C');
+		$pdf->Ln();
+		$pdf->Cell(207);
+		$pdf->Cell(80, 7, '', 1, 0, 'C');
+		$pdf->Ln();
+		$pdf->Cell(207);
+		$pdf->Cell(80, 7, '', 1, 0, 'C');
+		
+
+		$pdf->Ln(-21);
+		$pdf->Cell(87);
+		$pdf->SetFont('Arial', 'B', '16');
+		$pdf->Cell(120, 14, "LAPORAN KPI ABSENSI", 0, 0, 'C');
+
+		$pdf->SetFont('Arial', '', '12');
+		$pdf->Cell(40, 7, "Nomor Dokumen", 0, 0, 'L');
+		$pdf->Cell(40, 7, ": Nomor Dokumen", 0, 0, 'L');
+		$pdf->Ln();
+		$pdf->Cell(207);
+		$pdf->Cell(40, 7, "Tanggal Dikeluarkan", 0, 0, 'L');
+		$pdf->Cell(40, 7, ": 01 Januari 2012", 0, 0, 'L');
+		$pdf->Ln();
+		$pdf->Cell(207);
+		$pdf->Cell(40, 7, "Pemilik Dokumen", 0, 0, 'L');
+		$pdf->Cell(40, 7, ": HRD-GA", 0, 0, 'L');
+		$pdf->Ln();
+		$pdf->Cell(207);
+		$pdf->Cell(40, 7, "Tanggal Revisi", 0, 0, 'L');
+		$pdf->Cell(40, 7, ": -", 0, 0, 'L');
+
+		$pdf->Ln(-7);
+		$pdf->Cell(87);
+		$pdf->SetFont('Arial', 'B', '16');
+		$pdf->Cell(120, 14, "Bulan ".bulan($bulanmulai)." Tahun ".$tahunmulai."", 0, 0, 'C');
+		
+		$pdf->Ln(14);
+		$pdf->Cell(2);
+        $pdf->SetFont('Arial', 'B', '12');
+        $pdf->SetFillColor(192, 192, 192); 
+        $pdf->Cell(10, 10, 'No', 1, 0, 'C', 1);
+        $pdf->Cell(70, 10, 'Nama Karyawan', 1, 0, 'C', 1);
+        $pdf->Cell(60, 10, 'Penempatan', 1, 0, 'C', 1);
+        $pdf->Cell(35, 10, 'Tanggal Absen', 1, 0, 'C', 1);
+        $pdf->Cell(35, 10, 'Sampai Tanggal', 1, 0, 'C', 1);
+        $pdf->Cell(45, 10, 'Jenis Ketidakhadiran', 1, 0, 'C', 1);
+        $pdf->Cell(30, 10, 'Lama', 1, 0, 'C', 1);
+	
+
+		$no = 1;
+		$total_absen = 0;
+        foreach ($kpiabsensi as $row) :
+            $pdf->Ln();
+            $pdf->Cell(2);
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(10, 10, $no, 1, 0, 'C');
+            $pdf->Cell(70, 10, $row['nama_karyawan'], 1, 0, 'L');
+            $pdf->Cell(60, 10, $row['penempatan'], 1, 0, 'L');
+            $pdf->Cell(35, 10, IndonesiaTgl($row['tanggal_absen']), 1, 0, 'C');
+            $pdf->Cell(35, 10, IndonesiaTgl($row['tanggal_selesai']), 1, 0, 'C');
+            $pdf->Cell(45, 10, $row['keterangan_absen'], 1, 0, 'C');
+			$pdf->Cell(30, 10, $row['lama_absen']." Hari", 1, 0, 'C');
+			
+			$no++;
+			$total_absen += $row['lama_absen'];
+		endforeach;
+		
+		$jumlahmanpower = $jumlahkaryawankpi;
+
+		$pdf->Ln();
+		$pdf->Cell(2);
+		$pdf->Cell(210, 7, "", 1, 0, 'C');
+		$pdf->Cell(45, 7, "Jumlah", 1, 0, 'C');
+		$pdf->Cell(30, 7, $total_absen." Hari", 1, 0, 'C');
+
+		$pdf->Ln();
+		$pdf->Cell(2);
+		$pdf->Cell(95, 7, "A. Jumlah Man Power", 1, 0, 'L');
+		$pdf->Cell(5, 7, "", 1, 0, 'C');
+		$pdf->Cell(30, 7, "", 1, 0, 'L');
+		$pdf->Cell(5, 7, "", 1, 0, 'C');
+		$pdf->Cell(25, 7, "", 1, 0, 'L');
+		$pdf->Cell(5, 7, " = ", 1, 0, 'C');
+		$pdf->Cell(40, 7, $jumlahmanpower." Orang ", 1, 0, 'R');
+		
+		$pdf->Cell(40, 7, "Mengetahui", 1, 0, 'C');
+		$pdf->Cell(40, 7, "Dibuat", 1, 0, 'C');
+
+		$pdf->Ln();
+		$pdf->Cell(2);
+		$pdf->Cell(95, 7, "B. Jumlah Jam Kerja Normal Per Orang", 1, 0, 'L');
+		$pdf->Cell(5, 7, " = ", 1, 0, 'C');
+		$pdf->Cell(30, 7, " 21 Hari Kerja ", 1, 0, 'L');
+		$pdf->Cell(5, 7, " x ", 1, 0, 'C');
+		$pdf->Cell(25, 7, " 8 Jam/Hari ", 1, 0, 'L');
+		$pdf->Cell(5, 7, " = ", 1, 0, 'C');
+		$pdf->Cell(40, 7, " 168 Jam/Bulan ", 1, 0, 'R');
+
+		$pdf->Cell(40, 7, "Rudiyanto", 1, 0, 'C');
+		$pdf->Cell(40, 7, "Achmad Firmansyah", 1, 0, 'C');
+
+		$pdf->Ln();
+		$pdf->Cell(2);
+		$pdf->Cell(95, 7, "C. Jumlah Jam Kerja Normal Per Bulan", 1, 0, 'L');
+		$pdf->Cell(5, 7, " = ", 1, 0, 'C');
+		$pdf->Cell(30, 7, " 168 Jam/Bulan ", 1, 0, 'L');
+		$pdf->Cell(5, 7, " x ", 1, 0, 'C');
+		$pdf->Cell(25, 7, $jumlahmanpower. " Orang ", 1, 0, 'L');
+		$pdf->Cell(5, 7, " = ", 1, 0, 'C');
+		$jumlahabsenkaryawan = 168*$jumlahmanpower;
+		$pdf->Cell(40, 7, format_angka($jumlahabsenkaryawan)." Jam/Bulan", 1, 0, 'R');
+
+		$pdf->Cell(40, 21, "", 1, 0, 'C');
+		$pdf->Cell(40, 21, "", 1, 0, 'C');
+
+		$pdf->Ln(7);
+		$pdf->Cell(2);
+		$pdf->Cell(95, 7, "D. Jumlah Jam Kerja Yang Hilang ( Sakit, Izin, Alpa )", 1, 0, 'L');
+		$pdf->Cell(5, 7, " = ", 1, 0, 'C');
+		$pdf->Cell(30, 7, $total_absen." Hari Kerja ", 1, 0, 'L');
+		$pdf->Cell(5, 7, " x ", 1, 0, 'C');
+		$pdf->Cell(25, 7, " 8 Jam/Hari ", 1, 0, 'L');
+		$pdf->Cell(5, 7, " = ", 1, 0, 'C');
+		$jumlahjamkerjahilang = $total_absen*8;
+		$pdf->Cell(40, 7, format_angka($jumlahjamkerjahilang)." Jam/Bulan", 1, 0, 'R');
+
+		$pdf->Ln();
+		$pdf->Cell(2);
+		$pdf->Cell(95, 7, "E. Jumlah Jam Kerja Sebenarnya ( C-D = E )", 1, 0, 'L');
+		$pdf->Cell(5, 7, " = ", 1, 0, 'C');
+		$pdf->Cell(30, 7, "", 1, 0, 'L');
+		$pdf->Cell(5, 7, "", 1, 0, 'C');
+		$pdf->Cell(25, 7, "", 1, 0, 'L');
+		$pdf->Cell(5, 7, " = ", 1, 0, 'C');
+		$jumlahjamkerjasebenarnya = $jumlahabsenkaryawan-$jumlahjamkerjahilang;
+		$pdf->Cell(40, 7, format_angka($jumlahjamkerjasebenarnya)." Jam/Bulan", 1, 0, 'R');
+
+		$pdf->Ln();
+		$pdf->Cell(2);
+		$pdf->Cell(95, 7, "F. Persentasi Kehadiran ( E/C ) x 100%", 1, 0, 'L');
+		$pdf->Cell(5, 7, " = ", 1, 0, 'C');
+		$pdf->Cell(30, 7, "", 1, 0, 'L');
+		$pdf->Cell(5, 7, "", 1, 0, 'C');
+		$pdf->Cell(25, 7, "", 1, 0, 'L');
+		$pdf->Cell(5, 7, " = ", 1, 0, 'C');
+		$persentasi = ($jumlahjamkerjasebenarnya/$jumlahabsenkaryawan)*100;
+		$pdf->Cell(40, 7, round($persentasi,2)." %", 1, 0, 'R');
+
+		$pdf->Cell(40, 7, "Manager HRD-GA", 1, 0, 'C');
+		$pdf->Cell(40, 7, "Staff HRD-GA", 1, 0, 'C');
+		
+		 $pdf->Output();
+	}
 }

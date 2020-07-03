@@ -916,5 +916,65 @@ class Laporan_model extends CI_model
         $this->db->where('tanggal_absen <= ', $tanggalselesailaporanabsen);
         $datakaryawan = $this->db->get()->result_array();
         return $datakaryawan;
+	}
+	
+
+	//mengambil data ABSENSI BERDASARKAN TANGGAL ABSEN
+    public function getLaporanKPIAbsensi()
+    {
+
+        //Mengambil data dari form input
+
+        $mulai_tanggal       	= $this->input->post('mulai_tanggal', true);
+        $sampai_tanggal     	= $this->input->post('sampai_tanggal', true);
+
+        $this->db->select('*');
+        $this->db->from('absensi');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=absensi.nik_karyawan_absen');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('tanggal_absen >= ', $mulai_tanggal);
+		$this->db->where('tanggal_absen <= ', $sampai_tanggal);
+		$this->db->where_in('keterangan_absen', ["Sakit","Ijin","Alpa"]);
+		$this->db->order_by('penempatan');
+		$this->db->order_by('nama_karyawan');
+        $data = $this->db->get()->result_array();
+        return $data;
+	}
+
+	//mengambil data Jumlah Absen
+    public function getJumlahAbsenKaryawan()
+    {
+
+        //Mengambil data dari form input
+
+        $mulai_tanggal       	= $this->input->post('mulai_tanggal', true);
+        $sampai_tanggal     	= $this->input->post('sampai_tanggal', true);
+
+        $this->db->select('*');
+        $this->db->from('absensi');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=absensi.nik_karyawan_absen');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('tanggal_absen >= ', $mulai_tanggal);
+		$this->db->where('tanggal_absen <= ', $sampai_tanggal);
+		$this->db->where_in('keterangan_absen', ["Sakit","Ijin","Alpa"]);
+		return $this->db->get()->num_rows();
+	}
+	
+	//mengambil data Jumlah Karyawan Untuk KPI
+    public function getJumlahKaryawanKPI()
+    {
+
+        //Mengambil data dari form input
+
+        $mulai_tanggal       	= $this->input->post('mulai_tanggal', true);
+        $sampai_tanggal     	= $this->input->post('sampai_tanggal', true);
+
+        $this->db->select('*');
+        $this->db->from('history_gaji');
+        $this->db->where('periode_awal_gaji_history >= ', $mulai_tanggal);
+		$this->db->where('periode_akhir_gaji_history <= ', $sampai_tanggal);
+        return $this->db->get()->num_rows();
     }
 }

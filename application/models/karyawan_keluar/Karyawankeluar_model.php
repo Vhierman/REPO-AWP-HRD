@@ -211,9 +211,7 @@ class Karyawankeluar_model extends CI_model
     public function hapusAbsenKaryawan()
     {
         $nikkaryawan = $this->input->post('nik_karyawan', true);
-        $this->db->delete('absensi_2018', ['nik_karyawan_absen' => $nikkaryawan]);
-        $this->db->delete('absensi_2019', ['nik_karyawan_absen' => $nikkaryawan]);
-        $this->db->delete('absensi_2020', ['nik_karyawan_absen' => $nikkaryawan]);
+        $this->db->delete('absensi', ['nik_karyawan_absen' => $nikkaryawan]);
     }
 
     //melakukan query hapus inventaris karyawan
