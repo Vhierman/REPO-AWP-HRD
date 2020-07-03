@@ -1691,7 +1691,14 @@ class Laporan extends CI_Controller
 		 $tanggalakhir       = substr(IndonesiaTgl($sampai_tanggal), 0, -8);
 		 $bulanakhir         = substr(IndonesiaTgl($sampai_tanggal), 3, -5);
 		 $tahunakhir         = substr(IndonesiaTgl($sampai_tanggal), -4);
- 
+		
+		 if ($kpiabsensi == NULL) {
+			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data KPI Tidak Ada / 100%</div>');
+            redirect('laporan/kpiabsensi');
+		}
+		else{
+
+		
 		 $pdf = new FPDF('L', 'mm', 'A4');
 		 $pdf->setTopMargin(2);
         $pdf->setLeftMargin(2);
@@ -1867,4 +1874,5 @@ class Laporan extends CI_Controller
 		
 		 $pdf->Output();
 	}
+}
 }

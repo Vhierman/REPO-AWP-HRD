@@ -7,6 +7,15 @@
         <h5 class="card-header">Form <?= $title; ?></h5>
         <div class="card-body">
 
+            <!-- Menampilkan Pesan Kesalahan -->
+            <?php if (validation_errors()) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= validation_errors(); ?>
+                </div>
+            <?php endif; ?>
+            <?= $this->session->flashdata('message'); ?>
+            <!-- Menampilkan Pesan Kesalahan -->
+            
             <div class="alert alert-info" role="alert">
                 Silakan Masukan Periode Tanggal Laporan KPI Absensi.
             </div>
