@@ -57,9 +57,9 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Nama Karyawan Keluar</th>
                         <th scope="col">NIK Karyawan Keluar</th>
                         <th scope="col">No BPJS Kesehatan</th>
-                        <th scope="col">Nama Karyawan Keluar</th>
                         <th scope="col">Tanggal Keluar</th>
                         <th scope="col">Penempatan</th>
                         <th scope="col">Status</th>
@@ -79,9 +79,9 @@
 
                         <tr>
                             <td><?= $i; ?></td>
+                            <td><?= $kk['nama_karyawan_keluar']; ?></td>
                             <td><?= $kk['nik_karyawan_keluar']; ?></td>
                             <td><?= $kk['nomor_jkn_karyawan_keluar']; ?></td>
-                            <td><?= $kk['nama_karyawan_keluar']; ?></td>
                             <td><?= $tanggalkeluarkaryawankeluar; ?></td>
                             <td><?= $kk['penempatan']; ?></td>
                             <td><?= $kk['status_kerja_karyawan_keluar']; ?></td>
