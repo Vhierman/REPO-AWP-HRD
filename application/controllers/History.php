@@ -127,7 +127,7 @@ class History extends CI_Controller
 
                 //Upload Foto File History Keluarga 
                 //file yang diperbolehkan hanya png dan jpg
-                $config['allowed_types'] = 'jpg|png';
+                $config['allowed_types'] = 'jpg|jpeg|png';
                 //max file 500 kb
                 $config['max_size'] = '500';
                 //lokasi penyimpanan file
@@ -245,7 +245,7 @@ class History extends CI_Controller
                 if (!empty($upload_file_keluarga)) {
                     //Upload Foto File Keluarga 
                     //file yang diperbolehkan hanya png dan jpg
-                    $config['allowed_types'] = 'jpg|png';
+                    $config['allowed_types'] = 'jpg|jpeg|png';
                     //max file 1 mb
                     $config['max_size'] = '500';
                     //lokasi penyimpanan file
@@ -1066,9 +1066,154 @@ class History extends CI_Controller
         else {
             $this->load->view('auth/blocked');
         }
+	}
+	
+	//Menampilkan halaman awal form history data training internal
+    public function tambahdetailtraininginternal($nik_karyawan)
+    {
+
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 11) {
+
+            //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+            $data['title'] = 'Tambah Data History Training Internal';
+            //Menyimpan session dari login
+            $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+            //Data Untuk Select Option Pada Tambah History Training Internal
+            $data['karyawan']   = $this->traininginternal->datadetailkaryawan($nik_karyawan);
+
+            //menampilkan halaman history training internal
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('history/form_tambah_detail_history_training_internal', $data);
+            $this->load->view('templates/footer');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal form history tambah data training internal
+    public function aksitambahdetailtraininginternal()
+    {
+
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 11) {
+
+            //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+            $data['title'] = 'Tambah Data History Training Internal';
+            //Menyimpan session dari login
+            $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+            //Data Untuk Select Option Pada Tambah History Training Internal
+            $data['karyawan']   = $this->traininginternal->datakaryawan();
+
+            //Validation Form Input
+            $this->form_validation->set_rules('tanggal_training_internal', 'Tanggal Training Internal', 'required');
+            $this->form_validation->set_rules('jam_training_internal', 'Jam Training Internal', 'required');
+            $this->form_validation->set_rules('lokasi_training_internal', 'Lokasi Training Internal', 'required');
+            $this->form_validation->set_rules('materi_training_internal', 'Materi Training Internal', 'required');
+            $this->form_validation->set_rules('trainer_training_internal', 'Trainer Training Internal', 'required');
+
+            //jika validasinya salah akan menampilkan halaman Training Internal
+            if ($this->form_validation->run() == false) {
+                $this->load->view('templates/header', $data);
+                $this->load->view('templates/sidebar', $data);
+                $this->load->view('templates/topbar', $data);
+                $this->load->view('history/form_tambah_history_training_internal', $data);
+                $this->load->view('templates/footer');
+            }
+            //jika validasinya benar
+            else {
+                //Mengambil Data Dari FORM
+                $nikkaryawan                = $this->input->post('nik_karyawan', TRUE);
+                $tanggal_training_internal  = $this->input->post('tanggal_training_internal', TRUE);
+                $jam_training_internal      = $this->input->post('jam_training_internal', TRUE);
+                $lokasi_training_internal   = $this->input->post('lokasi_training_internal', TRUE);
+                $materi_training_internal   = $this->input->post('materi_training_internal', TRUE);
+                $trainer_training_internal  = $this->input->post('trainer_training_internal', TRUE);
+
+                //Mencari Nama Hari
+                $tanggaltraininginternal      = IndonesiaTgl($tanggal_training_internal);
+
+                date_default_timezone_set("Asia/Jakarta");
+                $tahun                      = date('Y');
+                $bulan                      = date('m');
+                $tanggal                    = date('d');
+                $hari                       = date("w");
+
+                //Mengambil masing masing 2 digit
+                $tanggal                    = substr($tanggaltraininginternal, 0, -8);
+                $bulan                      = substr($tanggaltraininginternal, 3, -5);
+                $tahun                      = substr($tanggaltraininginternal, -4);
+                $nama_hari                  = date('w', mktime(0, 0, 0, $bulan, $tanggal, $tahun));
+                $hari_training_internal     = hari($nama_hari);
+                //Mencari Nama Hari
+
+                //Upload Foto File History Training Internak 
+                //file yang diperbolehkan hanya pdf dan ppt
+                $config['allowed_types'] = 'pdf|jpg|jpeg|ppt|pptx|doc|docx';
+                //max file 1024 kb
+                $config['max_size'] = '1024';
+                //lokasi penyimpanan file
+                $config['upload_path'] = './assets/file/traininginternal/';
+                //memanggil library upload
+                $this->load->library('upload', $config);
+                //membedakan nama file jika ada yang sama
+                $this->upload->initialize($config);
+
+                //JIka file Foto Kosong / File Foto Lebih Dari 1 Mb, Maka Tampil Pesan Kesalahan 
+                if (!$this->upload->do_upload('dokumen_materi_training_internal')) {
+                    //Menampilkan pesan Kesalahan
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Periksa kembali file upload anda..! ( Maksimal File 1 Mb Dan Format File pdf dan ppt )</div>');
+                    redirect('history/traininginternal');
+                }
+                // Menyimpan Ke Database
+                else {
+
+                    //Mengambil Nama File Training Internal
+                    $new_image_file_history_training_internal = $this->upload->data('file_name');
+                    //Mengambil Nama File Training Internal
+
+					//Query Insert Training Internal
+					$datatraininginternal = [
+						'karyawan_id'                               => $_POST['nik_karyawan'],
+						'hari_training_internal'                    => $hari_training_internal,
+						'tanggal_training_internal'                 => $tanggal_training_internal,
+						'jam_training_internal'                     => $jam_training_internal,
+						'lokasi_training_internal'                  => $lokasi_training_internal,
+						'materi_training_internal'                  => $materi_training_internal,
+						'penilaian_sebelum_training_internal'       => 0,
+						'penilaian_sesudah_training_internal'       => 0,
+						'trainer_training_internal'                 => $trainer_training_internal,
+						'dokumen_materi_training_internal'          => $new_image_file_history_training_internal
+					];
+                
+
+                    // INSERT TO HISTORY TRAINING INTERNAL
+                    $this->db->insert('history_training_internal', $datatraininginternal);
+
+                    //menampikan pesan sukses
+                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Success Tambah Data Training Internal</div>');
+                    //dan mendirect kehalaman training internal
+                    redirect('history/traininginternal');
+                }
+            }
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
+	}
+	
+	//Menampilkan halaman awal form history tambah data training internal
     public function aksitambahtraininginternal()
     {
 
@@ -1129,7 +1274,7 @@ class History extends CI_Controller
 
                 //Upload Foto File History Training Internak 
                 //file yang diperbolehkan hanya pdf dan ppt
-                $config['allowed_types'] = 'pdf';
+                $config['allowed_types'] = 'pdf|jpg|jpeg|ppt|pptx|doc|docx';
                 //max file 1024 kb
                 $config['max_size'] = '1024';
                 //lokasi penyimpanan file
@@ -1163,6 +1308,7 @@ class History extends CI_Controller
                             'hari_training_internal'                    => $hari_training_internal,
                             'tanggal_training_internal'                 => $tanggal_training_internal,
                             'jam_training_internal'                     => $jam_training_internal,
+                            'lokasi_training_internal'                  => $lokasi_training_internal,
                             'materi_training_internal'                  => $materi_training_internal,
                             'penilaian_sebelum_training_internal'       => 0,
                             'penilaian_sesudah_training_internal'       => 0,
@@ -1230,7 +1376,7 @@ class History extends CI_Controller
                 if (!empty($upload_file_training_internal)) {
                     //Upload Foto File Training Internal
                     //file yang diperbolehkan hanya pdf
-                    $config['allowed_types'] = 'pdf';
+                    $config['allowed_types'] = 'pdf|jpg|jpeg|ppt|pptx|doc|docx';
                     //max file 1 mb
                     $config['max_size'] = '1024';
                     //lokasi penyimpanan file
@@ -1402,6 +1548,36 @@ class History extends CI_Controller
         else {
             $this->load->view('auth/blocked');
         }
+	}
+	
+	//Menampilkan halaman awal form history data training eksternal
+    public function tambahdetailtrainingeksternal($nik_karyawan)
+    {
+
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 11) {
+
+            //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+            $data['title'] = 'Tambah Data History Training Eksternal';
+            //Menyimpan session dari login
+            $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+            //Data Untuk Select Option Pada Tambah History Training Eksternal
+            $data['karyawan']   = $this->trainingeksternal->datadetailkaryawan($nik_karyawan);
+
+            //menampilkan halaman history training eksternal
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('history/form_tambah_detail_history_training_eksternal', $data);
+            $this->load->view('templates/footer');
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal form history tambah data training eksternal
@@ -1480,7 +1656,7 @@ class History extends CI_Controller
 
                 //Upload Foto File History Training Internak 
                 //file yang diperbolehkan hanya pdf dan ppt
-                $config['allowed_types'] = 'pdf';
+                $config['allowed_types'] = 'pdf|jpg|jpeg|ppt|pptx|doc|docx';
                 //max file 1024 kb
                 $config['max_size'] = '1024';
                 //lokasi penyimpanan file
@@ -1542,6 +1718,139 @@ class History extends CI_Controller
         else {
             $this->load->view('auth/blocked');
         }
+	}
+	
+	//Menampilkan halaman awal form history tambah data training eksternal
+    public function aksitambahdetailtrainingeksternal()
+    {
+
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login Admin, Dan Staff HRD
+        if ($role_id == 1 || $role_id == 11) {
+
+            //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+            $data['title'] = 'Tambah Data History Training Eksternal';
+            //Menyimpan session dari login
+            $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+            //Data Untuk Select Option Pada Tambah History Training Eksternal
+            $data['karyawan']   = $this->trainingeksternal->datakaryawan();
+
+            //Validation Form Input
+            $this->form_validation->set_rules('tanggal_awal_training_eksternal', 'Tanggal Awal', 'required');
+            $this->form_validation->set_rules('tanggal_akhir_training_eksternal', 'Tanggal Akhir', 'required');
+            $this->form_validation->set_rules('institusi_penyelenggara_training_eksternal', 'Institusi Penyelenggara', 'required');
+            $this->form_validation->set_rules('perihal_training_eksternal', 'Perihal Training Eksternal', 'required');
+            $this->form_validation->set_rules('jam_training_eksternal', 'Jam Training Eksternal', 'required');
+            $this->form_validation->set_rules('lokasi_training_eksternal', 'Lokasi Training Eksternal', 'required');
+            $this->form_validation->set_rules('alamat_training_eksternal', 'Alamat Training Eksternal', 'required');
+            $this->form_validation->set_rules('nomor_surat_training_eksternal', 'Nomor Surat Training Eksternal', 'required');
+
+            //jika validasinya salah akan menampilkan halaman Training Eksternal
+            if ($this->form_validation->run() == false) {
+                $this->load->view('templates/header', $data);
+                $this->load->view('templates/sidebar', $data);
+                $this->load->view('templates/topbar', $data);
+                $this->load->view('history/form_tambah_history_training_eksternal', $data);
+                $this->load->view('templates/footer');
+            }
+            //jika validasinya benar
+            else {
+                //Mengambil Data Dari FORM
+                $nikkaryawan                                = $this->input->post('nik_karyawan', TRUE);
+                $tanggal_awal_training_eksternal            = $this->input->post('tanggal_awal_training_eksternal', TRUE);
+                $tanggal_akhir_training_eksternal           = $this->input->post('tanggal_akhir_training_eksternal', TRUE);
+                $institusi_penyelenggara_training_eksternal = $this->input->post('institusi_penyelenggara_training_eksternal', TRUE);
+                $perihal_training_eksternal                 = $this->input->post('perihal_training_eksternal', TRUE);
+                $jam_training_eksternal                     = $this->input->post('jam_training_eksternal', TRUE);
+                $lokasi_training_eksternal                  = $this->input->post('lokasi_training_eksternal', TRUE);
+                $alamat_training_eksternal                  = $this->input->post('alamat_training_eksternal', TRUE);
+                $nomor_surat_training_eksternal             = $this->input->post('nomor_surat_training_eksternal', TRUE);
+
+                //Mencari Nama Hari
+                $tanggalawaltrainingeksternal      = IndonesiaTgl($tanggal_awal_training_eksternal);
+                $tanggalakhirtrainingeksternal     = IndonesiaTgl($tanggal_akhir_training_eksternal);
+
+                date_default_timezone_set("Asia/Jakarta");
+                $tahun                              = date('Y');
+                $bulan                              = date('m');
+                $tanggal                            = date('d');
+                $hari                               = date("w");
+
+                //Mencari Nama Hari Awal
+                $tanggalawal                        = substr($tanggalawaltrainingeksternal, 0, -8);
+                $bulanawal                          = substr($tanggalawaltrainingeksternal, 3, -5);
+                $tahunawal                          = substr($tanggalawaltrainingeksternal, -4);
+                $nama_hari_awal                     = date('w', mktime(0, 0, 0, $bulanawal, $tanggalawal, $tahunawal));
+                $hari_training_eksternal_awal       = hari($nama_hari_awal);
+                //Mencari Nama Hari Awal
+
+                //Mencari Nama Hari Akhir
+                $tanggalakhir                       = substr($tanggalakhirtrainingeksternal, 0, -8);
+                $bulanakhir                         = substr($tanggalakhirtrainingeksternal, 3, -5);
+                $tahunakhir                         = substr($tanggalakhirtrainingeksternal, -4);
+                $nama_hari_akhir                    = date('w', mktime(0, 0, 0, $bulanakhir, $tanggalakhir, $tahunakhir));
+                $hari_training_eksternal_akhir      = hari($nama_hari_akhir);
+                //Mencari Nama Hari Akhir
+
+                //Upload Foto File History Training Internak 
+                //file yang diperbolehkan hanya pdf dan ppt
+                $config['allowed_types'] = 'pdf|jpg|jpeg|ppt|pptx|doc|docx';
+                //max file 1024 kb
+                $config['max_size'] = '1024';
+                //lokasi penyimpanan file
+                $config['upload_path'] = './assets/file/trainingeksternal/';
+                //memanggil library upload
+                $this->load->library('upload', $config);
+                //membedakan nama file jika ada yang sama
+                $this->upload->initialize($config);
+
+                //JIka file Foto Kosong / File Foto Lebih Dari 1 Mb, Maka Tampil Pesan Kesalahan 
+                if (!$this->upload->do_upload('dokumen_materi_training_eksternal')) {
+                    //Menampilkan pesan Kesalahan
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Periksa kembali file upload anda..! ( Maksimal File 1 Mb Dan Format File pdf dan ppt )</div>');
+                    redirect('history/trainingeksternal');
+                }
+                // Menyimpan Ke Database
+                else {
+
+                    //Mengambil Nama File Training eksternal
+                    $new_image_file_history_training_eksternal = $this->upload->data('file_name');
+                    //Mengambil Nama File Training eksternal
+
+                    //Input Ke Dalam Database
+                    //Input Training eksternal
+                        $datatrainingeksternal = [
+                            'karyawan_id'                                   => $_POST['nik_karyawan'],
+                            'institusi_penyelenggara_training_eksternal'    => $institusi_penyelenggara_training_eksternal,
+                            'perihal_training_eksternal'                    => $perihal_training_eksternal,
+                            'hari_awal_training_eksternal'                  => $hari_training_eksternal_awal,
+                            'hari_akhir_training_eksternal'                 => $hari_training_eksternal_akhir,
+                            'tanggal_awal_training_eksternal'               => $tanggal_awal_training_eksternal,
+                            'tanggal_akhir_training_eksternal'              => $tanggal_akhir_training_eksternal,
+                            'jam_training_eksternal'                        => $jam_training_eksternal,
+                            'lokasi_training_eksternal'                     => $lokasi_training_eksternal,
+                            'alamat_training_eksternal'                     => $alamat_training_eksternal,
+                            'nomor_surat_training_eksternal'                => $nomor_surat_training_eksternal,
+                            'dokumen_materi_training_eksternal'             => $new_image_file_history_training_eksternal
+						];
+                    
+
+                    //MULTIPLE INSERT TO HISTORY TRAINING EKSTERNAL
+                    $this->db->insert('history_training_eksternal', $datatrainingeksternal);
+
+                    //menampikan pesan sukses
+                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Success Tambah Data Training Eksternal</div>');
+                    //dan mendirect kehalaman training eksternal
+                    redirect('history/trainingeksternal');
+                }
+            }
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
     }
 
     //Menampilkan halaman awal form history edit data History Training eksternal
@@ -1589,7 +1898,7 @@ class History extends CI_Controller
                 if (!empty($upload_file_training_eksternal)) {
                     //Upload Foto File Training eksternal
                     //file yang diperbolehkan hanya pdf
-                    $config['allowed_types'] = 'pdf';
+                    $config['allowed_types'] = 'pdf|jpg|jpeg|ppt|pptx|doc|docx';
                     //max file 1 mb
                     $config['max_size'] = '1024';
                     //lokasi penyimpanan file

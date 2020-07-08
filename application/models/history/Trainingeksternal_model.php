@@ -38,6 +38,18 @@ class Trainingeksternal_model extends CI_model
         $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
         $this->db->order_by('nama_karyawan', 'asc');
         return $this->db->get()->result_array();
+	}
+	
+	//Query untuk menampilkan data karyawan join dengan jabatan dan penempatan untuk select nama karyawan pada form history kontrak
+    public function datadetailkaryawan($nik_karyawan)
+    {
+
+        $this->db->select('*');
+        $this->db->from('karyawan');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik_karyawan);
+        return $this->db->get()->row_array();
     }
 
     //Mengambil semua data karyawan untuk form Edit History Training Eksternal

@@ -16,7 +16,7 @@
 
             <?= $this->session->flashdata('message'); ?>
 
-            <a href="<?= base_url('history/tambahtraininginternal/'); ?>" class="btn btn-primary mb-2 ml-4">
+            <a href="<?= base_url('history/tambahdetailtraininginternal/'); ?><?= $this->input->post('nik_karyawan'); ?>" class="btn btn-primary mb-2 ml-4">
                 <i class="fas fa-plus"></i>
                 Tambah Data History Training Internal
             </a>
