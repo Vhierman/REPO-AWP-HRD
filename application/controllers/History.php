@@ -1127,7 +1127,7 @@ class History extends CI_Controller
                 $this->load->view('templates/header', $data);
                 $this->load->view('templates/sidebar', $data);
                 $this->load->view('templates/topbar', $data);
-                $this->load->view('history/form_tambah_history_training_internal', $data);
+                $this->load->view('history/form_tambah_detail_history_training_internal', $data);
                 $this->load->view('templates/footer');
             }
             //jika validasinya benar
@@ -1752,7 +1752,7 @@ class History extends CI_Controller
                 $this->load->view('templates/header', $data);
                 $this->load->view('templates/sidebar', $data);
                 $this->load->view('templates/topbar', $data);
-                $this->load->view('history/form_tambah_history_training_eksternal', $data);
+                $this->load->view('history/form_tambah_detail_history_training_eksternal', $data);
                 $this->load->view('templates/footer');
             }
             //jika validasinya benar
