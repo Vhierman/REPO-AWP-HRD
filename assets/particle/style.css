@@ -12,12 +12,9 @@ body {
 }
 
 .intro {
-	left: 50%;
+	position: absolute;
+	left: 0;
 	top: 50%;
-	width: 150%;
+	width: 100%;
 	text-align: center;
-}
-
-.text-center {
-	color: #16a085;
 }

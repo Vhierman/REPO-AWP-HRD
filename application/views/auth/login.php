@@ -1,6 +1,6 @@
+
 <div id="particles">
 <div class="intro">
-
 <div class="container mt-3">
 
     <!-- Outer Row -->
@@ -8,7 +8,7 @@
 
         <div class="col-lg-6">
 
-            <div class="card o-hidden border-0 shadow-lg ">
+            <div class="card o-hidden border-0 shadow-lg">
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="row">
