@@ -565,8 +565,8 @@ class Karyawan_model extends CI_model
         $this->db->select('*');
         $this->db->from('history_jabatan');
         $this->db->join('karyawan', 'history_jabatan.karyawan_id=karyawan.nik_karyawan');
-        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
-        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'history_jabatan.penempatan_id_history_jabatan=penempatan.id');
+        $this->db->join('jabatan', 'history_jabatan.jabatan_id_history_jabatan=jabatan.id');
         $this->db->where('karyawan_id', $nik_karyawan);
         $query = $this->db->get()->result_array();
         return $query;
