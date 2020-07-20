@@ -163,8 +163,8 @@ class Auth extends CI_Controller
         $config = [
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_user' => 'projectrahasia856@gmail.com',
-            'smtp_pass' => 'projectnurjaya',
+            'smtp_user' => 'achmadfirmansyah856@gmail.com',
+            'smtp_pass' => 'achmadfi',
             'smtp_port' => 465,
             'mailtype' => 'html',
             'charset' => 'utf-8',
@@ -173,7 +173,7 @@ class Auth extends CI_Controller
 
         $this->load->library('email', $config);
         $this->email->initialize($config);
-        $this->email->from('projectrahasia856@gmail.com', 'Achmad Firmansyah');
+        $this->email->from('achmadfirmansyah856@gmail.com', 'Achmad Firmansyah');
         //jika type token verify
         if ($type == 'verify') {
             $this->email->to($this->input->post('email'));
