@@ -169,6 +169,409 @@ class Laporan_model extends CI_model
             $karyawan = $this->db->get()->result_array();
             return $karyawan;
         }
+	}
+	
+	//mengambil data berdasarkan NIK Karyawan Keluar untuk form cetak laporan karyawan masuk
+    public function getLaporanKaryawanMasuk()
+    {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Mengambil data mulai tanggal dan sampai tanggal
+        $mulaitanggal       = $this->input->post('mulai_tanggal', true);
+        $sampaitanggal      = $this->input->post('sampai_tanggal', true);
+        $mulai_tanggal      = IndonesiaTgl($mulaitanggal);
+        $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
+
+        //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->order_by('penempatan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        }
+        //Jika Yang Login Adalah Produksi 
+        elseif ($role_id == 15 || $role_id == 16) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where_in('penempatan_id ', [8, 15, 16, 17, 18, 19, 20, 21]);
+            $this->db->order_by('penempatan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        }
+        //Jika Yang Login Adalah PPC
+        elseif ($role_id == 13 && $role_id == 14) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where_in('penempatan_id ', [7, 9, 10, 11, 12, 22]);
+            $this->db->order_by('penempatan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        } else {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where('penempatan_id', $penempatan);
+            $this->db->order_by('penempatan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        }
+	}
+	
+	//mengambil data berdasarkan NIK Karyawan Masuk untuk form cetak laporan karyawan masuk
+    public function getLaporanKaryawanMasukExcellPrima($mulaitanggal, $sampaitanggal)
+    {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Mengambil data mulai tanggal dan sampai tanggal
+        $mulai_tanggal      = IndonesiaTgl($mulaitanggal);
+        $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
+
+        //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where('perusahaan', 'PT Prima Komponen Indonesia');
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $query = $this->db->get();
+            return $query->result();
+        }
+        //Jika Yang Login Adalah Produksi 
+        elseif ($role_id == 15 || $role_id == 16) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where_in('penempatan_id ', [8, 15, 16, 17, 18, 19, 20, 21]);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $query = $this->db->get();
+            return $query->result();
+        }
+        //Jika Yang Login Adalah PPC
+        elseif ($role_id == 13 && $role_id == 14) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where_in('penempatan_id ', [7, 9, 10, 11, 12, 22]);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $query = $this->db->get();
+            return $query->result();
+        } else {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where('penempatan_id', $penempatan);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $query = $this->db->get();
+            return $query->result();
+        }
+	}
+
+	//mengambil data berdasarkan NIK Karyawan Masuk untuk form cetak laporan karyawan masuk
+    public function getLaporanKaryawanMasukPDFPrima($mulaitanggal, $sampaitanggal)
+    {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Mengambil data mulai tanggal dan sampai tanggal
+        $mulai_tanggal      = IndonesiaTgl($mulaitanggal);
+        $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
+
+        //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where('perusahaan', 'PT Prima Komponen Indonesia');
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        }
+        //Jika Yang Login Adalah Produksi 
+        elseif ($role_id == 15 || $role_id == 16) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where_in('penempatan_id ', [8, 15, 16, 17, 18, 19, 20, 21]);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        }
+        //Jika Yang Login Adalah PPC
+        elseif ($role_id == 13 && $role_id == 14) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where_in('penempatan_id ', [7, 9, 10, 11, 12, 22]);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        } else {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where('penempatan_id', $penempatan);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        }
+    }
+	
+	//mengambil data berdasarkan NIK Karyawan Masuk untuk form cetak laporan karyawan masuk
+    public function getLaporanKaryawanMasukExcellPetra($mulaitanggal, $sampaitanggal)
+    {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Mengambil data mulai tanggal dan sampai tanggal
+        $mulai_tanggal      = IndonesiaTgl($mulaitanggal);
+        $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
+
+        //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where('perusahaan', 'PT Petra Ariesca ( Outsourching )');
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $query = $this->db->get();
+            return $query->result();
+        }
+        //Jika Yang Login Adalah Produksi 
+        elseif ($role_id == 15 || $role_id == 16) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where_in('penempatan_id ', [8, 15, 16, 17, 18, 19, 20, 21]);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $query = $this->db->get();
+            return $query->result();
+        }
+        //Jika Yang Login Adalah PPC
+        elseif ($role_id == 13 && $role_id == 14) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where_in('penempatan_id ', [7, 9, 10, 11, 12, 22]);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $query = $this->db->get();
+            return $query->result();
+        } else {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where('penempatan_id', $penempatan);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $query = $this->db->get();
+            return $query->result();
+        }
+	}
+	
+	//mengambil data berdasarkan NIK Karyawan Masuk untuk form cetak laporan karyawan masuk
+    public function getLaporanKaryawanMasukPDFPetra($mulaitanggal, $sampaitanggal)
+    {
+        //Mengambil Session
+        $role_id        = $this->session->userdata("role_id");
+        $nik            = $this->session->userdata("nik");
+
+        //Mengambil Data Penempatan
+        $this->db->select('*');
+        $this->db->from('login');
+        $this->db->join('karyawan', 'karyawan.nik_karyawan=login.nik');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nik);
+        $datakaryawan = $this->db->get()->row_array();
+
+        $penempatan = $datakaryawan['penempatan_id'];
+
+        //Mengambil data mulai tanggal dan sampai tanggal
+        $mulai_tanggal      = IndonesiaTgl($mulaitanggal);
+        $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
+
+        //Jika Yang Login Adalah HRD Dan Accounting Maka Data Karyawan Akan Tampil Semua
+        if ($role_id == 1 || $role_id == 9 || $role_id == 10 || $role_id == 11 || $role_id == 17 || $role_id == 18) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where('perusahaan', 'PT Petra Ariesca ( Outsourching )');
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        }
+        //Jika Yang Login Adalah Produksi 
+        elseif ($role_id == 15 || $role_id == 16) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where_in('penempatan_id ', [8, 15, 16, 17, 18, 19, 20, 21]);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        }
+        //Jika Yang Login Adalah PPC
+        elseif ($role_id == 13 && $role_id == 14) {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where_in('penempatan_id ', [7, 9, 10, 11, 12, 22]);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        } else {
+            $this->db->select('*');
+            $this->db->from('karyawan');
+            $this->db->join('perusahaan', 'karyawan.perusahaan_id=perusahaan.id');
+            $this->db->join('jabatan', 'karyawan.jabatan_id=jabatan.id');
+            $this->db->join('penempatan', 'karyawan.penempatan_id=penempatan.id');
+            $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
+            $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
+            $this->db->where('penempatan_id', $penempatan);
+            $this->db->order_by('penempatan');
+            $this->db->order_by('nama_karyawan');
+            $karyawan = $this->db->get()->result_array();
+            return $karyawan;
+        }
     }
 
     //mengambil data berdasarkan NIK Karyawan Keluar untuk form cetak laporan karyawan keluar

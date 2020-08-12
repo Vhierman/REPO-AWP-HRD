@@ -2,7 +2,7 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <?= form_open_multipart('laporan/cetaklaporankaryawanmasuk'); ?>
+    <?= form_open_multipart('laporan/tampillaporankaryawanmasuk'); ?>
     <div class="card">
         <h5 class="card-header">Form <?= $title; ?></h5>
         <div class="card-body">

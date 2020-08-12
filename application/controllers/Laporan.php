@@ -39,8 +39,28 @@ class Laporan extends CI_Controller
         $this->load->view('templates/topbar', $data);
         $this->load->view('laporan/cetak_laporan_karyawan_masuk', $data);
         $this->load->view('templates/footer');
+	}
+	
+	//Menampilkan halaman awal TAMPIL laporan karyawan masuk
+    public function tampillaporankaryawanmasuk()
+    {
+        //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+        $data['title'] = 'Laporan Karyawan Masuk';
+        //Menyimpan session dari login
+        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+        //Mengambil data dari model laporan
+        $data['tampillaporan']  = $this->laporan->getLaporanKaryawanMasuk();
+
+        //menampilkan halaman Tampil Laporan Karyawan masuk
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('laporan/tampil_laporan_karyawan_masuk', $data);
+        $this->load->view('templates/footer');
     }
 
+	/*
     //Menampilkan halaman awal laporan karyawan masuk
     public function cetaklaporankaryawanmasuk()
     {
@@ -132,7 +152,552 @@ class Laporan extends CI_Controller
                 $pdf->Output();
             }
         }
-    }
+	}
+	*/
+
+	//Menampilkan halaman awal laporan karyawan masuk
+    public function downloadpdfkaryawanmasukprima($mulaitanggal, $sampaitanggal)
+    {
+		//Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+        $data['title'] = 'Cetak Laporan Karyawan Masuk';
+        //Menyimpan session dari login
+        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+        //Mengambil data dari model laporan
+        $karyawan               = $this->laporan->getLaporanKaryawanMasukPDFPrima($mulaitanggal, $sampaitanggal);
+
+        //Mengambil data mulai tanggal dan sampai tanggal
+        $mulai_tanggal      = IndonesiaTgl($mulaitanggal);
+        $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
+
+        //Mengambil data Tanggal Bulan Dan Tahun Sekarang
+        date_default_timezone_set("Asia/Jakarta");
+        $tahun      = date('Y');
+        $bulan      = date('m');
+        $tanggal    = date('d');
+        $hari       = date("w");
+
+        //Mengambil masing masing 2 digit
+        $tanggalmulai           = substr($mulai_tanggal, 0, -8);
+        $bulanmulai             = substr($mulai_tanggal, 3, -5);
+        $tahunmulai              = substr($mulai_tanggal, -4);
+
+        //Mengambil masing masing 2 digit
+        $tanggalakhir           = substr($sampai_tanggal, 0, -8);
+        $bulanakhir             = substr($sampai_tanggal, 3, -5);
+        $tahunakhir              = substr($sampai_tanggal, -4);
+
+        //Jika tidak ada data ang dicetak
+        if ($karyawan == NULL) {
+            redirect('laporan/karyawanmasuk');
+        }
+        //Jika ada data
+        else {
+            //Jika Format Pemilihan Tanggal Salah
+            if ($mulaitanggal > $sampaitanggal) {
+
+                echo "
+            <script> alert(' Format Penulisan Tanggal Salah ');
+            window . close();
+            </script>
+            ";
+            } else {
+                $pdf = new FPDF('P', 'mm', 'A4');
+                $pdf->AddPage();
+
+                $pdf->Ln(10);
+                $pdf->SetFont('Arial', 'B', '18');
+                $pdf->Cell(190, 5, 'DATA KARYAWAN MASUK', 0, 1, 'C');
+                $pdf->Ln(5);
+
+                $pdf->SetFont('Arial', 'B', '18');
+                $pdf->Cell(190, 5, 'PT PRIMA KOMPONEN INDONESIA', 0, 1, 'C');
+                $pdf->Ln(5);
+
+                $pdf->Cell(190, 5, 'PERIODE', 0, 1, 'C');
+                $pdf->Ln(5);
+
+                $pdf->Cell(190, 5, $tanggalmulai . ' ' . bulan($bulanmulai) . ' ' . $tahunmulai . ' s/d ' . $tanggalakhir . ' ' . bulan($bulanakhir) . ' ' . $tahunakhir . '', 0, 1, 'C');
+
+                $pdf->Ln(10);
+
+                $pdf->Cell(1);
+                $pdf->SetFont('Arial', 'B', '12');
+                $pdf->SetFillColor(192, 192, 192); // Warna sel tabel header
+                $pdf->Cell(10, 10, 'No', 1, 0, 'C', 1);
+                $pdf->Cell(55, 10, 'Nama Karyawan', 1, 0, 'C', 1);
+                $pdf->Cell(40, 10, 'Mulai Kerja', 1, 0, 'C', 1);
+                $pdf->Cell(40, 10, 'Nomor Rekening', 1, 0, 'C', 1);
+                $pdf->Cell(50, 10, 'Penempatan', 1, 0, 'C', 1);
+
+                $no = 1;
+                foreach ($karyawan as $row) :
+                    $tanggal_mulai_kerja = IndonesiaTgl($row['tanggal_mulai_kerja']);
+                    $pdf->Ln();
+                    $pdf->Cell(1);
+                    $pdf->SetFont('Arial', '', '11');
+                    $pdf->Cell(10, 8, $no, 1, 0, 'C');
+                    $pdf->Cell(55, 8, $row['nama_karyawan'], 1, 0, 'L');
+                    $pdf->Cell(40, 8, $tanggal_mulai_kerja, 1, 0, 'C');
+                    $pdf->Cell(40, 8, $row['nomor_rekening'], 1, 0, 'C');
+                    $pdf->Cell(50, 8, $row['penempatan'], 1, 0, 'C');
+                    $no++;
+                endforeach;
+
+                $pdf->Output();
+            }
+        }
+	}
+
+	//Menampilkan halaman awal laporan karyawan masuk
+    public function downloadpdfkaryawanmasukpetra($mulaitanggal, $sampaitanggal)
+    {
+		//Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+        $data['title'] = 'Cetak Laporan Karyawan Masuk';
+        //Menyimpan session dari login
+        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+        //Mengambil data dari model laporan
+        $karyawan               = $this->laporan->getLaporanKaryawanMasukPDFPetra($mulaitanggal, $sampaitanggal);
+
+        //Mengambil data mulai tanggal dan sampai tanggal
+        $mulai_tanggal      = IndonesiaTgl($mulaitanggal);
+        $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
+
+        //Mengambil data Tanggal Bulan Dan Tahun Sekarang
+        date_default_timezone_set("Asia/Jakarta");
+        $tahun      = date('Y');
+        $bulan      = date('m');
+        $tanggal    = date('d');
+        $hari       = date("w");
+
+        //Mengambil masing masing 2 digit
+        $tanggalmulai           = substr($mulai_tanggal, 0, -8);
+        $bulanmulai             = substr($mulai_tanggal, 3, -5);
+        $tahunmulai              = substr($mulai_tanggal, -4);
+
+        //Mengambil masing masing 2 digit
+        $tanggalakhir           = substr($sampai_tanggal, 0, -8);
+        $bulanakhir             = substr($sampai_tanggal, 3, -5);
+        $tahunakhir              = substr($sampai_tanggal, -4);
+
+        //Jika tidak ada data ang dicetak
+        if ($karyawan == NULL) {
+            redirect('laporan/karyawanmasuk');
+        }
+        //Jika ada data
+        else {
+            //Jika Format Pemilihan Tanggal Salah
+            if ($mulaitanggal > $sampaitanggal) {
+
+                echo "
+            <script> alert(' Format Penulisan Tanggal Salah ');
+            window . close();
+            </script>
+            ";
+            } else {
+                $pdf = new FPDF('P', 'mm', 'A4');
+                $pdf->AddPage();
+
+                $pdf->Ln(10);
+                $pdf->SetFont('Arial', 'B', '18');
+                $pdf->Cell(190, 5, 'DATA KARYAWAN MASUK', 0, 1, 'C');
+                $pdf->Ln(5);
+
+                $pdf->SetFont('Arial', 'B', '18');
+                $pdf->Cell(190, 5, 'PT PETRA ARIESCA', 0, 1, 'C');
+                $pdf->Ln(5);
+
+                $pdf->Cell(190, 5, 'PERIODE', 0, 1, 'C');
+                $pdf->Ln(5);
+
+                $pdf->Cell(190, 5, $tanggalmulai . ' ' . bulan($bulanmulai) . ' ' . $tahunmulai . ' s/d ' . $tanggalakhir . ' ' . bulan($bulanakhir) . ' ' . $tahunakhir . '', 0, 1, 'C');
+
+                $pdf->Ln(10);
+
+                $pdf->Cell(1);
+                $pdf->SetFont('Arial', 'B', '12');
+                $pdf->SetFillColor(192, 192, 192); // Warna sel tabel header
+                $pdf->Cell(10, 10, 'No', 1, 0, 'C', 1);
+                $pdf->Cell(55, 10, 'Nama Karyawan', 1, 0, 'C', 1);
+                $pdf->Cell(40, 10, 'Mulai Kerja', 1, 0, 'C', 1);
+                $pdf->Cell(40, 10, 'Nomor Rekening', 1, 0, 'C', 1);
+                $pdf->Cell(50, 10, 'Penempatan', 1, 0, 'C', 1);
+
+                $no = 1;
+                foreach ($karyawan as $row) :
+                    $tanggal_mulai_kerja = IndonesiaTgl($row['tanggal_mulai_kerja']);
+                    $pdf->Ln();
+                    $pdf->Cell(1);
+                    $pdf->SetFont('Arial', '', '11');
+                    $pdf->Cell(10, 8, $no, 1, 0, 'C');
+                    $pdf->Cell(55, 8, $row['nama_karyawan'], 1, 0, 'L');
+                    $pdf->Cell(40, 8, $tanggal_mulai_kerja, 1, 0, 'C');
+                    $pdf->Cell(40, 8, $row['nomor_rekening'], 1, 0, 'C');
+                    $pdf->Cell(50, 8, $row['penempatan'], 1, 0, 'C');
+                    $no++;
+                endforeach;
+
+                $pdf->Output();
+            }
+        }
+	}
+
+	//Menampilkan halaman awal laporan karyawan masuk
+    public function downloadexcellkaryawanmasukprima($mulaitanggal, $sampaitanggal)
+    {
+		//Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+        $data['title'] = 'Cetak Laporan Karyawan Masuk';
+        //Menyimpan session dari login
+        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+        //Mengambil data dari model laporan
+        $karyawan               = $this->laporan->getLaporanKaryawanMasukExcellPrima($mulaitanggal, $sampaitanggal);
+
+        //Mengambil data mulai tanggal dan sampai tanggal
+        $mulai_tanggal      = IndonesiaTgl($mulaitanggal);
+        $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
+
+        //Mengambil data Tanggal Bulan Dan Tahun Sekarang
+        date_default_timezone_set("Asia/Jakarta");
+        $tahun      = date('Y');
+        $bulan      = date('m');
+        $tanggal    = date('d');
+        $hari       = date("w");
+
+        //Mengambil masing masing 2 digit
+        $tanggalmulai           = substr($mulai_tanggal, 0, -8);
+        $bulanmulai             = substr($mulai_tanggal, 3, -5);
+        $tahunmulai             = substr($mulai_tanggal, -4);
+
+        //Mengambil masing masing 2 digit
+        $tanggalakhir           = substr($sampai_tanggal, 0, -8);
+        $bulanakhir             = substr($sampai_tanggal, 3, -5);
+        $tahunakhir             = substr($sampai_tanggal, -4);
+
+        //Jika tidak ada data ang dicetak
+        if ($karyawan == NULL) {
+            redirect('laporan/karyawanmasuk');
+        }
+        //Jika ada data
+        else {
+
+            // Load plugin PHPExcel nya
+            include APPPATH . 'third_party/PHPExcel/PHPExcel.php';
+
+            // Panggil class PHPExcel nya
+            $excel = new PHPExcel();
+
+            // Settingan Description awal file excel
+            $excel->getProperties()->setCreator('Vhierman Sach')
+                ->setLastModifiedBy('Vhierman Sach')
+                ->setTitle("Data Karyawan Masuk")
+                ->setSubject("Karyawan Masuk")
+                ->setDescription("Laporan Data Karyawan Masuk")
+                ->setKeywords("Data Karyawan Masuk");
+
+            // Buat sebuah variabel untuk menampung pengaturan style dari header tabel
+            $style_col = array(
+                'font' => array('bold' => true), // Set font nya jadi bold
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, // Set text jadi ditengah secara horizontal (center)
+                    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+                ),
+                'borders' => array(
+                    'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+                    'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+                    'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+                    'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+                )
+            );
+
+            // Buat sebuah variabel untuk menampung pengaturan style dari isi tabel
+            $style_row = array(
+                'alignment' => array(
+                    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+                ),
+                'borders' => array(
+                    'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+                    'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+                    'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+                    'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+                )
+            );
+
+            $excel->setActiveSheetIndex(0)->setCellValue('B2', "DATA KARYAWAN MASUK PT PRIMA KOMPONEN INDONESIA");
+            // Set kolom B2 dengan tulisan "DATA KARYAWAN MASUK PT PRIMA KOMPONEN INDONESIA"
+
+            $excel->getActiveSheet()->mergeCells('B2:H2'); // Set Merge Cell 
+            $excel->getActiveSheet()->getStyle('B2')->getFont()->setBold(TRUE); // Set bold
+            $excel->getActiveSheet()->getStyle('B2')->getFont()->setSize(16); // Set font size
+            $excel->getActiveSheet()->getStyle('B2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            // Set text center 
+
+            $excel->setActiveSheetIndex(0)->setCellValue('B3', "PT PRIMA KOMPONEN INDONESIA");
+            // Set kolom B2 dengan tulisan "PT PRIMA KOMPONEN INDONESIA"
+
+            $excel->getActiveSheet()->mergeCells('B3:H3'); // Set Merge Cell 
+            $excel->getActiveSheet()->getStyle('B3')->getFont()->setBold(TRUE); // Set bold
+            $excel->getActiveSheet()->getStyle('B3')->getFont()->setSize(16); // Set font size
+            $excel->getActiveSheet()->getStyle('B3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            // Set text center 
+
+            $excel->setActiveSheetIndex(0)->setCellValue('B4', "PERIODE " . $tanggalmulai . " " . bulan($bulanmulai) . " " . $tahunmulai . " s/d " . $tanggalakhir . " " . bulan($bulanakhir) . " " . $tahunakhir . "");
+            // Set kolom B2 dengan tulisan "PT PRIMA KOMPONEN INDONESIA"
+
+            $excel->getActiveSheet()->mergeCells('B4:H4'); // Set Merge Cell 
+            $excel->getActiveSheet()->getStyle('B4')->getFont()->setBold(TRUE); // Set bold
+            $excel->getActiveSheet()->getStyle('B4')->getFont()->setSize(16); // Set font size
+            $excel->getActiveSheet()->getStyle('B4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            // Set text center 
+
+            // Buat header juudl tabel nya pada baris ke 5
+            $excel->setActiveSheetIndex(0)->setCellValue('B6', "NO");
+            $excel->setActiveSheetIndex(0)->setCellValue('C6', "NAMA KARYAWAN");
+            $excel->setActiveSheetIndex(0)->setCellValue('D6', "TANGGAL MASUK KERJA");
+            $excel->setActiveSheetIndex(0)->setCellValue('E6', "NOMOR REKENING");
+            $excel->setActiveSheetIndex(0)->setCellValue('F6', "PENEMPATAN");
+            
+            // Apply style header yang telah kita buat tadi ke masing-masing kolom header
+            $excel->getActiveSheet()->getStyle('B6')->applyFromArray($style_col);
+            $excel->getActiveSheet()->getStyle('C6')->applyFromArray($style_col);
+            $excel->getActiveSheet()->getStyle('D6')->applyFromArray($style_col);
+            $excel->getActiveSheet()->getStyle('E6')->applyFromArray($style_col);
+            $excel->getActiveSheet()->getStyle('F6')->applyFromArray($style_col);
+           
+
+            // Panggil function view yang ada di Model untuk menampilkan semua data
+            $join = $this->laporan->getLaporanKaryawanMasukExcellPrima($mulaitanggal, $sampaitanggal);
+
+
+            $no = 1; // Untuk penomoran tabel, di awal set dengan 1
+            $numrow = 7; // Set baris pertama untuk isi tabel adalah baris ke 4
+            foreach ($join as $data) {
+
+
+                // Lakukan looping pada variabel karyawan
+                $excel->setActiveSheetIndex(0)->setCellValue('B' . $numrow, $no);
+                $excel->setActiveSheetIndex(0)->setCellValue('C' . $numrow, $data->nama_karyawan);
+                $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow,  "'" . $data->tanggal_mulai_kerja);
+                $excel->setActiveSheetIndex(0)->setCellValue('E' . $numrow, $data->nomor_rekening);
+                $excel->setActiveSheetIndex(0)->setCellValue('F' . $numrow, "'" . $data->penempatan);
+               
+                // Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
+                $excel->getActiveSheet()->getStyle('B' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('E' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('F' . $numrow)->applyFromArray($style_row);
+
+                $no++; // Tambah 1 setiap kali looping
+                $numrow++; // Tambah 1 setiap kali looping
+            }
+
+            // Set width kolom di excell
+            $excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('B')->setWidth(5); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('C')->setWidth(30); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('D')->setWidth(30); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('E')->setWidth(30); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('F')->setWidth(30); // Set width kolom 
+
+            // Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
+            $excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
+
+            // Set orientasi kertas jadi LANDSCAPE
+            $excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+
+            // Set judul Sheet excel nya
+            $excel->getActiveSheet(0)->setTitle("Data Karyawan Masuk");
+            $excel->setActiveSheetIndex(0);
+
+            // Proses file excel
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="Data Karyawan Masuk.xlsx"'); // Set nama file excel nya
+            header('Cache-Control: max-age=0');
+
+            $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+            $write->save('php://output');
+        }
+	}
+
+	//Menampilkan halaman awal laporan karyawan masuk
+    public function downloadexcellkaryawanmasukpetra($mulaitanggal, $sampaitanggal)
+    {
+		//Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+        $data['title'] = 'Cetak Laporan Karyawan Masuk';
+        //Menyimpan session dari login
+        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+        //Mengambil data dari model laporan
+        $karyawan               = $this->laporan->getLaporanKaryawanMasukExcellPetra($mulaitanggal, $sampaitanggal);
+
+        //Mengambil data mulai tanggal dan sampai tanggal
+        $mulai_tanggal      = IndonesiaTgl($mulaitanggal);
+        $sampai_tanggal     = IndonesiaTgl($sampaitanggal);
+
+        //Mengambil data Tanggal Bulan Dan Tahun Sekarang
+        date_default_timezone_set("Asia/Jakarta");
+        $tahun      = date('Y');
+        $bulan      = date('m');
+        $tanggal    = date('d');
+        $hari       = date("w");
+
+        //Mengambil masing masing 2 digit
+        $tanggalmulai           = substr($mulai_tanggal, 0, -8);
+        $bulanmulai             = substr($mulai_tanggal, 3, -5);
+        $tahunmulai             = substr($mulai_tanggal, -4);
+
+        //Mengambil masing masing 2 digit
+        $tanggalakhir           = substr($sampai_tanggal, 0, -8);
+        $bulanakhir             = substr($sampai_tanggal, 3, -5);
+        $tahunakhir             = substr($sampai_tanggal, -4);
+
+        //Jika tidak ada data ang dicetak
+        if ($karyawan == NULL) {
+            redirect('laporan/karyawanmasuk');
+        }
+        //Jika ada data
+        else {
+
+            // Load plugin PHPExcel nya
+            include APPPATH . 'third_party/PHPExcel/PHPExcel.php';
+
+            // Panggil class PHPExcel nya
+            $excel = new PHPExcel();
+
+            // Settingan Description awal file excel
+            $excel->getProperties()->setCreator('Vhierman Sach')
+                ->setLastModifiedBy('Vhierman Sach')
+                ->setTitle("Data Karyawan Masuk")
+                ->setSubject("Karyawan Masuk")
+                ->setDescription("Laporan Data Karyawan Masuk")
+                ->setKeywords("Data Karyawan Masuk");
+
+            // Buat sebuah variabel untuk menampung pengaturan style dari header tabel
+            $style_col = array(
+                'font' => array('bold' => true), // Set font nya jadi bold
+                'alignment' => array(
+                    'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, // Set text jadi ditengah secara horizontal (center)
+                    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+                ),
+                'borders' => array(
+                    'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+                    'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+                    'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+                    'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+                )
+            );
+
+            // Buat sebuah variabel untuk menampung pengaturan style dari isi tabel
+            $style_row = array(
+                'alignment' => array(
+                    'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+                ),
+                'borders' => array(
+                    'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+                    'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+                    'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+                    'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+                )
+            );
+
+            $excel->setActiveSheetIndex(0)->setCellValue('B2', "DATA KARYAWAN MASUK PT PETRA ARIESCA");
+            // Set kolom B2 dengan tulisan "DATA KARYAWAN MASUK PT PRIMA KOMPONEN INDONESIA"
+
+            $excel->getActiveSheet()->mergeCells('B2:H2'); // Set Merge Cell 
+            $excel->getActiveSheet()->getStyle('B2')->getFont()->setBold(TRUE); // Set bold
+            $excel->getActiveSheet()->getStyle('B2')->getFont()->setSize(16); // Set font size
+            $excel->getActiveSheet()->getStyle('B2')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            // Set text center 
+
+            $excel->setActiveSheetIndex(0)->setCellValue('B3', "PT PETRA ARIESCA");
+            // Set kolom B2 dengan tulisan "PT PRIMA KOMPONEN INDONESIA"
+
+            $excel->getActiveSheet()->mergeCells('B3:H3'); // Set Merge Cell 
+            $excel->getActiveSheet()->getStyle('B3')->getFont()->setBold(TRUE); // Set bold
+            $excel->getActiveSheet()->getStyle('B3')->getFont()->setSize(16); // Set font size
+            $excel->getActiveSheet()->getStyle('B3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            // Set text center 
+
+            $excel->setActiveSheetIndex(0)->setCellValue('B4', "PERIODE " . $tanggalmulai . " " . bulan($bulanmulai) . " " . $tahunmulai . " s/d " . $tanggalakhir . " " . bulan($bulanakhir) . " " . $tahunakhir . "");
+            // Set kolom B2 dengan tulisan "PT PRIMA KOMPONEN INDONESIA"
+
+            $excel->getActiveSheet()->mergeCells('B4:H4'); // Set Merge Cell 
+            $excel->getActiveSheet()->getStyle('B4')->getFont()->setBold(TRUE); // Set bold
+            $excel->getActiveSheet()->getStyle('B4')->getFont()->setSize(16); // Set font size
+            $excel->getActiveSheet()->getStyle('B4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+            // Set text center 
+
+            // Buat header juudl tabel nya pada baris ke 5
+            $excel->setActiveSheetIndex(0)->setCellValue('B6', "NO");
+            $excel->setActiveSheetIndex(0)->setCellValue('C6', "NAMA KARYAWAN");
+            $excel->setActiveSheetIndex(0)->setCellValue('D6', "TANGGAL MASUK KERJA");
+            $excel->setActiveSheetIndex(0)->setCellValue('E6', "NOMOR REKENING");
+            $excel->setActiveSheetIndex(0)->setCellValue('F6', "PENEMPATAN");
+            
+            // Apply style header yang telah kita buat tadi ke masing-masing kolom header
+            $excel->getActiveSheet()->getStyle('B6')->applyFromArray($style_col);
+            $excel->getActiveSheet()->getStyle('C6')->applyFromArray($style_col);
+            $excel->getActiveSheet()->getStyle('D6')->applyFromArray($style_col);
+            $excel->getActiveSheet()->getStyle('E6')->applyFromArray($style_col);
+            $excel->getActiveSheet()->getStyle('F6')->applyFromArray($style_col);
+           
+
+            // Panggil function view yang ada di Model untuk menampilkan semua data
+            $join = $this->laporan->getLaporanKaryawanMasukExcellPetra($mulaitanggal, $sampaitanggal);
+
+
+            $no = 1; // Untuk penomoran tabel, di awal set dengan 1
+            $numrow = 7; // Set baris pertama untuk isi tabel adalah baris ke 4
+            foreach ($join as $data) {
+
+
+                // Lakukan looping pada variabel karyawan
+                $excel->setActiveSheetIndex(0)->setCellValue('B' . $numrow, $no);
+                $excel->setActiveSheetIndex(0)->setCellValue('C' . $numrow, $data->nama_karyawan);
+                $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow,  "'" . $data->tanggal_mulai_kerja);
+                $excel->setActiveSheetIndex(0)->setCellValue('E' . $numrow, $data->nomor_rekening);
+                $excel->setActiveSheetIndex(0)->setCellValue('F' . $numrow, "'" . $data->penempatan);
+               
+                // Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
+                $excel->getActiveSheet()->getStyle('B' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('C' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('E' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('F' . $numrow)->applyFromArray($style_row);
+
+                $no++; // Tambah 1 setiap kali looping
+                $numrow++; // Tambah 1 setiap kali looping
+            }
+
+            // Set width kolom di excell
+            $excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('B')->setWidth(5); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('C')->setWidth(30); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('D')->setWidth(30); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('E')->setWidth(30); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('F')->setWidth(30); // Set width kolom 
+
+            // Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
+            $excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
+
+            // Set orientasi kertas jadi LANDSCAPE
+            $excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+
+            // Set judul Sheet excel nya
+            $excel->getActiveSheet(0)->setTitle("Data Karyawan Masuk");
+            $excel->setActiveSheetIndex(0);
+
+            // Proses file excel
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="Data Karyawan Masuk.xlsx"'); // Set nama file excel nya
+            header('Cache-Control: max-age=0');
+
+            $write = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+            $write->save('php://output');
+        }
+	}
 
     //Menampilkan halaman awal laporan karyawan keluar
     public function karyawankeluar()
