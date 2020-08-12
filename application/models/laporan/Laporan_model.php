@@ -127,6 +127,8 @@ class Laporan_model extends CI_model
             $this->db->where('tanggal_mulai_kerja >= ', $mulaitanggal);
             $this->db->where('tanggal_mulai_kerja <= ', $sampaitanggal);
             $this->db->order_by('penempatan');
+            $this->db->order_by('tanggal_mulai_kerja');
+            $this->db->order_by('nama_karyawan');
             $karyawan = $this->db->get()->result_array();
             return $karyawan;
         }

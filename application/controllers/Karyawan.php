@@ -190,7 +190,7 @@ class Karyawan extends CI_Controller
 				'Wanita' => 'Wanita'
 			];
 			$data['agama'] = ['Islam', 'Kristen Protestan', 'Kristen Katholik', 'Hindu', 'Budha'];
-			$data['pendidikan_terakhir'] = ['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3'];
+			$data['pendidikan_terakhir'] = ['SD', 'SMP', 'SMA / SMK', 'D3', 'S1', 'S2', 'S3'];
 			$data['golongan_darah'] = ['A', 'B', 'AB', 'O'];
 			$data['status_kerja'] = ['PKWT', 'PKWTT', 'Outsourcing'];
 			$data['status_nikah'] = ['Single', 'Menikah', 'Duda', 'Janda'];
