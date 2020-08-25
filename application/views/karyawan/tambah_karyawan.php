@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="form-group">
-                        <select name="penempatan_id" id="penempatan_id" class="form-control" required>
+                        <select name="penempatan_id" id="penempatan_id" data-width="100%" data-live-search="true" class="bootstrap-select" required>
                             <option value="">Pilih Penempatan</option>
                             <?php foreach ($penempatan as $pn) : ?>
                                 <option value="<?= $pn['id']; ?>">
@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="form-group">
-                        <select name="jabatan_id" id="jabatan_id" class="form-control" required>
+                        <select name="jabatan_id" id="jabatan_id" data-width="100%" data-live-search="true" class="bootstrap-select" required>
                             <option value="">Pilih Jabatan</option>
                             <?php foreach ($jabatan as $jb) : ?>
                                 <option value="<?= $jb['id']; ?>">

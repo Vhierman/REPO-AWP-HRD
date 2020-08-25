@@ -71,7 +71,7 @@
                     <div class="form-group row">
                         <label for="penempatan_id" class="col-sm-3 col-form-label"><b>Nama Penempatan</b></label>
                         <div class="col-sm-9">
-                            <select name="penempatan_id" id="penempatan_id" class="form-control">
+                            <select name="penempatan_id" id="penempatan_id" data-width="100%" data-live-search="true" class="bootstrap-select">
                                 <option value="">Pilih Penempatan</option>
                                 <?php foreach ($penempatan as $pn) : ?>
 
@@ -90,7 +90,7 @@
                     <div class="form-group row">
                         <label for="jabatan_id" class="col-sm-3 col-form-label"><b>Nama Jabatan</b></label>
                         <div class="col-sm-9">
-                            <select name="jabatan_id" id="jabatan_id" class="form-control">
+                            <select name="jabatan_id" id="jabatan_id" data-width="100%" data-live-search="true" class="bootstrap-select">
                                 <option value="">Pilih Jabatan</option>
                                 <?php foreach ($jabatan as $jb) : ?>
 
@@ -121,7 +121,7 @@
 
                                 <?php endforeach; ?>
                             </select>
-                            <small class="form-text text-danger"><?php echo form_error('jabatan_id'); ?></small>
+                            <small class="form-text text-danger"><?php echo form_error('jam_kerja_id'); ?></small>
                         </div>
                     </div>
 
