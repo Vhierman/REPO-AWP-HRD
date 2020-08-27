@@ -457,6 +457,9 @@ class Laporan extends CI_Controller
             $excel->setActiveSheetIndex(0)->setCellValue('D6', "TANGGAL MASUK KERJA");
             $excel->setActiveSheetIndex(0)->setCellValue('E6', "NOMOR REKENING");
             $excel->setActiveSheetIndex(0)->setCellValue('F6', "PENEMPATAN");
+            $excel->setActiveSheetIndex(0)->setCellValue('G6', "NIK");
+            $excel->setActiveSheetIndex(0)->setCellValue('H6', "TEMPAT LAHIR");
+            $excel->setActiveSheetIndex(0)->setCellValue('I6', "TANGGAL LAHIR");
             
             // Apply style header yang telah kita buat tadi ke masing-masing kolom header
             $excel->getActiveSheet()->getStyle('B6')->applyFromArray($style_col);
@@ -464,6 +467,9 @@ class Laporan extends CI_Controller
             $excel->getActiveSheet()->getStyle('D6')->applyFromArray($style_col);
             $excel->getActiveSheet()->getStyle('E6')->applyFromArray($style_col);
             $excel->getActiveSheet()->getStyle('F6')->applyFromArray($style_col);
+            $excel->getActiveSheet()->getStyle('G6')->applyFromArray($style_col);
+            $excel->getActiveSheet()->getStyle('H6')->applyFromArray($style_col);
+            $excel->getActiveSheet()->getStyle('I6')->applyFromArray($style_col);
            
 
             // Panggil function view yang ada di Model untuk menampilkan semua data
@@ -481,6 +487,9 @@ class Laporan extends CI_Controller
                 $excel->setActiveSheetIndex(0)->setCellValue('D' . $numrow,  "'" . $data->tanggal_mulai_kerja);
                 $excel->setActiveSheetIndex(0)->setCellValue('E' . $numrow, $data->nomor_rekening);
                 $excel->setActiveSheetIndex(0)->setCellValue('F' . $numrow, "'" . $data->penempatan);
+                $excel->setActiveSheetIndex(0)->setCellValue('G' . $numrow, "'" . $data->nik_karyawan);
+                $excel->setActiveSheetIndex(0)->setCellValue('H' . $numrow, "'" . $data->tempat_lahir);
+                $excel->setActiveSheetIndex(0)->setCellValue('I' . $numrow, "'" . $data->tanggal_lahir);
                
                 // Apply style row yang telah kita buat tadi ke masing-masing baris (isi tabel)
                 $excel->getActiveSheet()->getStyle('B' . $numrow)->applyFromArray($style_row);
@@ -488,6 +497,9 @@ class Laporan extends CI_Controller
                 $excel->getActiveSheet()->getStyle('D' . $numrow)->applyFromArray($style_row);
                 $excel->getActiveSheet()->getStyle('E' . $numrow)->applyFromArray($style_row);
                 $excel->getActiveSheet()->getStyle('F' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('G' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('H' . $numrow)->applyFromArray($style_row);
+                $excel->getActiveSheet()->getStyle('I' . $numrow)->applyFromArray($style_row);
 
                 $no++; // Tambah 1 setiap kali looping
                 $numrow++; // Tambah 1 setiap kali looping
@@ -500,6 +512,9 @@ class Laporan extends CI_Controller
             $excel->getActiveSheet()->getColumnDimension('D')->setWidth(30); // Set width kolom 
             $excel->getActiveSheet()->getColumnDimension('E')->setWidth(30); // Set width kolom 
             $excel->getActiveSheet()->getColumnDimension('F')->setWidth(30); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('G')->setWidth(30); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('H')->setWidth(30); // Set width kolom 
+            $excel->getActiveSheet()->getColumnDimension('I')->setWidth(30); // Set width kolom 
 
             // Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
             $excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
