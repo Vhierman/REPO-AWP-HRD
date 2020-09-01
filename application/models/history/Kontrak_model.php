@@ -212,7 +212,7 @@ class Kontrak_model extends CI_model
 
         //query edit
         $data = [
-            "karyawan_id"           => $nik_karyawan,
+            "nik_karyawan"          => $nik_karyawan,
             "tanggal_mulai_kerja"   => $tanggal_awal_kontrak,
             "tanggal_akhir_kerja"   => $hasiltanggalakhirkontrak,
             "status_kerja"          => $status_kontrak_kerja
