@@ -987,7 +987,7 @@ class Surat extends CI_Controller
                 $pdf->Cell(94, 5, '' . $lama . ' terhitung sejak perjanjian kerja ini ditandatangani yaitu dari ', 0, 0, 'L');
 
                 $pdf->SetFont('Arial', 'B', '9');
-                $pdf->Cell(26, 5, $tanggalmulai . ' ' . bulan($bulankerja) . ' ' . $tahunkerja . '', 0, 0, 'C');
+                $pdf->Cell(26, 5,  $tanggal . ' ' . bulan($bulan) . ' ' . $tahun . '', 0, 0, 'C');
 
                 $pdf->SetFont('Arial', '', '9');
                 $pdf->Cell(24, 5, ' sampai dengan ', 0, 0, 'C');
