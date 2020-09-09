@@ -664,7 +664,12 @@ class History extends CI_Controller
 					$pdf->AddPage();
 	
 					//Mengambil masing masing 2 digit tanggal, bulan, dan 4 digit tahun tanggal mulai kerja
-					$tanggalmulaikerja      = IndonesiaTgl($karyawan['tanggal_awal_kontrak']);
+                    $tanggalmulaikerja      = IndonesiaTgl($karyawan['tanggal_awal_kontrak']);
+                    
+                    var_dump($karyawan);
+                    die;
+
+
 					$tanggalmulai           = substr($tanggalmulaikerja, 0, -8);
 					$bulankerja             = substr($tanggalmulaikerja, 3, -5);
 					$tahunkerja             = substr($tanggalmulaikerja, -4);
