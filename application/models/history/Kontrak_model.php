@@ -3,6 +3,31 @@
 class Kontrak_model extends CI_model
 {
 
+	//mengambil data berdasarkan NIK Karyawan untuk form cetak pkwt
+    public function CetakPKWT($id_history_kontrak)
+    {
+        
+        $this->db->select('*');
+        $this->db->from('history_kontrak');
+        $this->db->join('karyawan', 'history_kontrak.karyawan_id=karyawan.nik_karyawan');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('id_history_kontrak', $id_history_kontrak);
+        $datanikkaraywan = $this->db->get()->row_array();
+
+		$nikkaryawan = $datanikkaraywan['karyawan_id'];
+		
+		$this->db->select('*');
+        $this->db->from('history_kontrak');
+        $this->db->join('karyawan', 'history_kontrak.karyawan_id=karyawan.nik_karyawan');
+        $this->db->join('jabatan', 'jabatan.id=karyawan.jabatan_id');
+        $this->db->join('penempatan', 'penempatan.id=karyawan.penempatan_id');
+        $this->db->where('nik_karyawan', $nikkaryawan);
+        $datakaryawan = $this->db->get()->row_array();
+        return $datakaryawan;
+	}
+	
+
     //mengambil data berdasarkan NIK Karyawan untuk form tampil history kontrak
     public function getKaryawanByNIK()
     {
