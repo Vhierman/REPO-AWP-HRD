@@ -48,7 +48,7 @@
                             <td><?= $row['masa_kontrak']; ?></td>
                             <td><?= $row['status_kontrak_kerja']; ?></td>
                             <td>
-								<a href="<?= base_url(); ?>history/cetakpkwtt/<?= $row['id_history_kontrak']; ?>" class="btn btn-primary btn-sm "><i class="fas fa-pen" target="_blank"></i> Cetak</a>
+								<a href="<?= base_url(); ?>history/cetakpkwtt/<?= $row['id_history_kontrak']; ?>" target="_blank" class="btn btn-primary btn-sm "><i class="fas fa-pen"></i> Cetak</a>
                                 <a href="<?= base_url(); ?>history/editkontrak/<?= $row['id_history_kontrak']; ?>" class="btn btn-success btn-sm "><i class="fas fa-pen"></i> Edit</a>
                                 <a href="<?= base_url(); ?>history/hapuskontrak/<?= $row['id_history_kontrak']; ?>" class="btn btn-danger btn-sm " onclick="return confirm('Apakah anda yakin akan menghapus data ini'); "><i class="fas fa-trash"></i> Delete</a>
                             </td>

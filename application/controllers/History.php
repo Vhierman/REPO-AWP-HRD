@@ -665,10 +665,6 @@ class History extends CI_Controller
 	
 					//Mengambil masing masing 2 digit tanggal, bulan, dan 4 digit tahun tanggal mulai kerja
                     $tanggalmulaikerja      = IndonesiaTgl($karyawan['tanggal_awal_kontrak']);
-                    
-                    var_dump($karyawan);
-                    die;
-
 
 					$tanggalmulai           = substr($tanggalmulaikerja, 0, -8);
 					$bulankerja             = substr($tanggalmulaikerja, 3, -5);
@@ -815,12 +811,15 @@ class History extends CI_Controller
 					$pdf->Ln(5);
 					$pdf->Cell(20);
 					$pdf->SetFont('Arial', '', '9');
-					$pdf->Cell(170, 5, 'PIHAK KEDUA bersedia bekerja sebagai karyawan kontrak pada PIHAK PERTAMA untuk jangka waktu ' . $masa . ' ( ' . $masaa . ' )', 0, 0, 'L');
+					$pdf->Cell(150, 5, 'PIHAK KEDUA bersedia bekerja sebagai karyawan kontrak pada PIHAK PERTAMA untuk jangka waktu ', 0, 0, 'L');
+
+					$pdf->SetFont('Arial', 'B', '9');
+					$pdf->Cell(20, 5, $karyawan['masa_kontrak'], 0, 0, 'C');
 
 					$pdf->Ln(5);
 					$pdf->Cell(20);
 					$pdf->SetFont('Arial', '', '9');
-					$pdf->Cell(85, 5, '' . $lama . ' terhitung sejak perjanjian kerja ini ditandatangani yaitu dari ', 0, 0, 'L');
+					$pdf->Cell(85, 5,'terhitung sejak perjanjian kerja ini ditandatangani yaitu dari ', 0, 0, 'L');
 
 					$pdf->SetFont('Arial', 'B', '9');
 					$pdf->Cell(32, 5,  $tanggalmulai . ' ' . bulan($bulankerja) . ' ' . $tahunkerja . '', 0, 0, 'C');
