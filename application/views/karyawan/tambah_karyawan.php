@@ -118,7 +118,7 @@
                 <div class="card-body border-bottom-danger ">
 
                     <div class="form-group">
-                        <input type="text" value="<?= set_value('nik_karyawan'); ?>" class="form-control" id="nik_karyawan" onkeyup="angka(this);" name="nik_karyawan" maxlength="16" placeholder="Masukan NIK KTP">
+                        <input type="text" value="<?= set_value('nik_karyawan'); ?>" class="form-control" id="nik_karyawan" onkeyup="angka(this);" id="nik_karyawan" name="nik_karyawan" maxlength="16" placeholder="Masukan NIK KTP">
                         <small class="form-text text-danger"><?php echo form_error('nik_karyawan'); ?></small>
                     </div>
 

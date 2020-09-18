@@ -18,6 +18,14 @@ class Karyawan extends CI_Controller
 		$this->load->helper('wpp');
 	}
 
+	//untuk mencari data karyawan berdasarkan NIK Karyawan Keluar
+    public function get_datakaryawankeluarkaryawan()
+    {
+        $nikkaryawan = $this->input->post('nik_karyawan');
+        $data = $this->karyawan->get_karyawan_bynik($nikkaryawan);
+        echo json_encode($data);
+    }
+
 	//Menampilkan halaman awal data karyawan
 	public function karyawan()
 	{

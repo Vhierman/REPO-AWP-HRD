@@ -28,6 +28,59 @@ class Karyawan_model extends CI_model
     {
         $query = $this->db->get('jam_kerja')->result_array();
         return $query;
+	}
+	
+	//Query untuk mencari data karyawan berdasarkan NIK Karyawan Keluar
+    function get_karyawan_bynik($nik_karyawan)
+    {
+        $this->db->select('*');
+        $this->db->from('karyawan_keluar');
+        $this->db->join('jabatan', 'karyawan_keluar.jabatan_id=jabatan.id');
+        $this->db->join('penempatan', 'karyawan_keluar.penempatan_id=penempatan.id');
+        $this->db->join('perusahaan', 'karyawan_keluar.perusahaan_id=perusahaan.id');
+        $this->db->where('nik_karyawan_keluar', $nik_karyawan);
+        $hsl = $this->db->get()->row_array();
+        return $hsl;
+
+        if ($hsl->num_rows() > 0) {
+            foreach ($hsl->result() as $data) {
+                $hasil = array(
+                    'tanggal_mulai_kerja'		=> $data->tanggal_masuk_karyawan_keluar,
+                    'status_kerja'				=> $data->status_kerja_karyawan_keluar,
+                    'jabatan_id'				=> $data->jabatan_id,
+                    'penempatan_id'				=> $data->penempatan_id,
+                    'perusahaan_id'				=> $data->perusahaan_id,
+                    'nama_karyawan'				=> $data->nama_karyawan_keluar,
+                    'email_karyawan'			=> $data->email_karyawan_keluar,
+                    'nomor_absen'				=> $data->nomor_absen_karyawan_keluar,
+                    'nomor_npwp'				=> $data->nomor_npwp_karyawan_keluar,
+                    'tempat_lahir'				=> $data->tempat_lahir_karyawan_keluar,
+                    'tanggal_lahir'				=> $data->tanggal_lahir_karyawan_keluar,
+                    'agama'						=> $data->agama_karyawan_keluar,
+                    'jenis_kelamin'				=> $data->jenis_kelamin_karyawan_keluar,
+                    'pendidikan_terakhir'		=> $data->pendidikan_terakhir_karyawan_keluar,
+                    'nomor_handphone'			=> $data->nomor_handphone_karyawan_keluar,
+                    'golongan_darah'			=> $data->golongan_darah_karyawan_keluar,
+                    'alamat'					=> $data->alamat_karyawan_keluar,
+                    'rt'						=> $data->rt_karyawan_keluar,
+                    'rw'						=> $data->rw_karyawan_keluar,
+                    'provinsi'					=> $data->provinsi_karyawan_keluar,
+                    'kota'						=> $data->kota_karyawan_keluar,
+                    'kecamatan'					=> $data->kecamatan_karyawan_keluar,
+                    'kelurahan'					=> $data->kelurahan_karyawan_keluar,
+                    'kode_pos'					=> $data->kode_pos_karyawan_keluar,
+                    'nomor_rekening'			=> $data->nomor_rekening_karyawan_keluar,
+                    'nomor_kartu_keluarga'		=> $data->nomor_kartu_keluarga_karyawan_keluar,
+                    'status_nikah'				=> $data->status_nikah_karyawan_keluar,
+                    'nama_ayah'					=> $data->nama_ayah_karyawan_keluar,
+                    'nama_ibu'					=> $data->nama_ibu_karyawan_keluar,
+                    'nomor_jht'					=> $data->nomor_jht_karyawan_keluar,
+                    'nomor_jp'					=> $data->nomor_jp_karyawan_keluar,
+                    'nomor_jkn'					=> $data->nomor_jkn_karyawan_keluar
+                );
+            }
+        }
+        return $hasil;
     }
 
 

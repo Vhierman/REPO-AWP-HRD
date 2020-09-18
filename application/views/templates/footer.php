@@ -449,6 +449,8 @@
                     $('[name="jab"]').val(data.jabatan_id);
                     $('[name="pen"]').val(data.penempatan_id);
                     $('[name="nomor_npwp"]').val(data.nomor_npwp);
+                    $('[name="nomor_absen"]').val(data.nomor_absen);
+                    $('[name="golongan_darah"]').val(data.golongan_darah);
                     $('[name="email_karyawan"]').val(data.email_karyawan);
                     $('[name="nomor_handphone"]').val(data.nomor_handphone);
                     $('[name="tempat_lahir"]').val(data.tempat_lahir);
@@ -464,12 +466,71 @@
                     $('[name="kota"]').val(data.kota);
                     $('[name="provinsi"]').val(data.provinsi);
                     $('[name="kode_pos"]').val(data.kode_pos);
+                    $('[name="nomor_kartu_keluarga"]').val(data.nomor_kartu_keluarga);
+                    $('[name="status_nikah"]').val(data.status_nikah);
+                    $('[name="nama_ayah"]').val(data.nama_ayah);
+                    $('[name="nama_ibu"]').val(data.nama_ibu);
                     $('[name="nomor_jkn"]').val(data.nomor_jkn);
                     $('[name="nomor_jht"]').val(data.nomor_jht);
                     $('[name="nomor_jp"]').val(data.nomor_jp);
                     $('[name="nomor_rekening"]').val(data.nomor_rekening);
                     $('[name="tanggal_mulai_kerja"]').val(data.tanggal_mulai_kerja);
                     $('[name="status_kerja"]').val(data.status_kerja);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+
+<!-- Cari Data Karyawan Keluar pada form tambah karyawan berdasarkan NIk Karyawan Keluar -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#nik_karyawan').on('input', function() {
+
+            var nik_karyawan = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url('karyawan/get_datakaryawankeluarkaryawan') ?>",
+                dataType: "JSON",
+                data: {
+                    nik_karyawan: nik_karyawan
+                },
+                cache: false,
+                success: function(data) {
+                    $('[name="tanggal_mulai_kerja"]').val(data.tanggal_masuk_karyawan_keluar);
+                    $('[name="status_kerja"]').val(data.status_kerja_karyawan_keluar);
+                    $('[name="jabatan_id"]').val(data.jabatan_id);
+                    $('[name="penempatan_id"]').val(data.penempatan_id);
+                    $('[name="perusahaan_id"]').val(data.perusahaan_id);
+                    $('[name="nama_karyawan"]').val(data.nama_karyawan_keluar);
+                    $('[name="email_karyawan"]').val(data.email_karyawan_keluar);
+                    $('[name="nomor_absen"]').val(data.nomor_absen_karyawan_keluar);
+                    $('[name="nomor_npwp"]').val(data.nomor_npwp_karyawan_keluar);
+                    $('[name="tempat_lahir"]').val(data.tempat_lahir_karyawan_keluar);
+                    $('[name="tanggal_lahir"]').val(data.tanggal_lahir_karyawan_keluar);
+                    $('[name="agama"]').val(data.agama_karyawan_keluar);
+                    $('[name="jenis_kelamin"]').val(data.jenis_kelamin_karyawan_keluar);
+                    $('[name="pendidikan_terakhir"]').val(data.pendidikan_terakhir_karyawan_keluar);
+                    $('[name="nomor_handphone"]').val(data.nomor_handphone_karyawan_keluar);
+                    $('[name="golongan_darah"]').val(data.golongan_darah_karyawan_keluar);
+                    $('[name="alamat"]').val(data.alamat_karyawan_keluar);
+                    $('[name="rt"]').val(data.rt_karyawan_keluar);
+                    $('[name="rw"]').val(data.rw_karyawan_keluar);
+                    $('[name="provinsi"]').val(data.provinsi_karyawan_keluar);
+                    $('[name="kota"]').val(data.kota_karyawan_keluar);
+                    $('[name="kecamatan"]').val(data.kecamatan_karyawan_keluar);
+                    $('[name="kelurahan"]').val(data.kelurahan_karyawan_keluar);
+                    $('[name="kode_pos"]').val(data.kode_pos_karyawan_keluar);
+                    $('[name="nomor_rekening"]').val(data.nomor_rekening_karyawan_keluar);
+                    $('[name="nomor_kartu_keluarga"]').val(data.nomor_kartu_keluarga_karyawan_keluar);
+                    $('[name="status_nikah"]').val(data.status_nikah_karyawan_keluar);
+                    $('[name="nama_ayah"]').val(data.nama_ayah_karyawan_keluar);
+                    $('[name="nama_ibu"]').val(data.nama_ibu_karyawan_keluar);
+                    $('[name="nomor_jht"]').val(data.nomor_jht_karyawan_keluar);
+                    $('[name="nomor_jp"]').val(data.nomor_jp_karyawan_keluar);
+                    $('[name="nomor_jkn"]').val(data.nomor_jkn_karyawan_keluar);
                 }
             });
             return false;

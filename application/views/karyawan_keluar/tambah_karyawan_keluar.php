@@ -53,6 +53,20 @@
                     </div>
                 </div>
 
+				<div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="input">Nomor Absen</label>
+                        <input type="text" class="form-control" name="nomor_absen" readonly='readonly' placeholder="Penempatan">
+                        <input type="hidden" class="form-control" name="nomor_absen" readonly="readonly" placeholder="Nomor Absen">
+                        <small class="form-text text-danger"><?php echo form_error('nomor_absen'); ?></small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="input">Golongan Darah</label>
+                        <input type="text" class="form-control" name="golongan_darah" readonly="readonly" placeholder="Golongan Darah">
+                        <small class="form-text text-danger"><?php echo form_error('golongan_darah'); ?></small>
+                    </div>
+                </div>
+
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="input">Email Karyawan</label>
@@ -149,6 +163,32 @@
                         <label for="input">Kode Pos</label>
                         <input type="text" class="form-control" name="kode_pos" readonly='readonly' placeholder="Kode Pos">
                         <small class="form-text text-danger"><?php echo form_error('kode_pos'); ?></small>
+                    </div>
+                </div>
+
+				<div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="input">Nomor KK</label>
+                        <input type="text" class="form-control" name="nomor_kartu_keluarga" readonly='readonly' placeholder="Nomor KK">
+                        <small class="form-text text-danger"><?php echo form_error('nomor_kartu_keluarga'); ?></small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="input">Status Nikah</label>
+                        <input type="text" class="form-control" name="status_nikah" readonly="readonly" placeholder="Status Nikah">
+                        <small class="form-text text-danger"><?php echo form_error('status_nikah'); ?></small>
+                    </div>
+                </div>
+
+				<div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="input">Nama Ayah</label>
+                        <input type="text" class="form-control" name="nama_ayah" readonly='readonly' placeholder="Nama Ayah">
+                        <small class="form-text text-danger"><?php echo form_error('nama_ayah'); ?></small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="input">Nama Ibu</label>
+                        <input type="text" class="form-control" name="nama_ibu" readonly="readonly" placeholder="Nama Ibu">
+                        <small class="form-text text-danger"><?php echo form_error('nama_ibu'); ?></small>
                     </div>
                 </div>
 
