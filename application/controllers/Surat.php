@@ -2282,4 +2282,782 @@ class Surat extends CI_Controller
             }
         }
     }
+
+    //Menampilkan halaman awal cetak suratmagang
+    public function suratmagang()
+    {
+        //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+        $data['title'] = 'Data Surat Magang';
+        //Menyimpan session dari login
+        $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+        //menampilkan halaman Form Surat Magang
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('surat/cetak_surat_magang', $data);
+        $this->load->view('templates/footer');
+    }
+
+    //Menampilkan halaman awal cetaksuratmagang
+    public function cetaksuratmagang()
+    {
+        //Mengambil Session
+        $role_id = $this->session->userdata("role_id");
+        //Jika yang login HRD
+        if ($role_id == 1 || $role_id == 11) {
+
+            //Mengambil data dari session, yang sebelumnya sudah diinputkan dari dalam form login
+            $data['title'] = 'Cetak Surat PKWT Magang';
+            //Menyimpan session dari login
+            $data['user'] = $this->db->get_where('login', ['email' => $this->session->userdata('email')])->row_array();
+
+            //Mengambil data dari FORM input
+            $nik_karyawan_magang         =  $this->input->post('nik_karyawan_magang', true);
+            $nama_karyawan         =  $this->input->post('nama_karyawan', true);
+            $jabatan         =  $this->input->post('jabatan', true);
+            $penempatan         =  $this->input->post('penempatan', true);
+            $tempat_lahir         =  $this->input->post('tempat_lahir', true);
+            $tanggal_lahir         =  $this->input->post('tanggal_lahir', true);
+            $pendidikan_terakhir         =  $this->input->post('pendidikan_terakhir', true);
+            $jenis_kelamin         =  $this->input->post('jenis_kelamin', true);
+            $agama         =  $this->input->post('agama', true);
+            $alamat         =  $this->input->post('alamat', true);
+            $rt         =  $this->input->post('rt', true);
+            $rw         =  $this->input->post('rw', true);
+            $kelurahan         =  $this->input->post('kelurahan', true);
+            $kecamatan         =  $this->input->post('kecamatan', true);
+            $kota         =  $this->input->post('kota', true);
+            $provinsi         =  $this->input->post('provinsi', true);
+            $tanggal_akhir_magang         =  $this->input->post('tanggal_akhir_magang', true);
+            $tanggal_cetak_surat         =  $this->input->post('tanggal_cetak_surat', true);
+
+
+
+
+            //Mengambil 4 Digit NIK Terakhir Magang
+            $nikmagang      = substr($nik_karyawan_magang, 12);
+
+            //Mengambil data Tanggal Bulan Dan Tahun Sekarang
+            date_default_timezone_set("Asia/Jakarta");
+            $tahun      = date('Y');
+            $bulan      = date('m');
+            $tanggal    = date('d');
+
+            //Mengambil masing masing 2 digit tanggal, bulan, dan 4 digit tahun tanggal akhir magang
+            $tanggal_selesai_magang   = IndonesiaTgl($tanggal_akhir_magang);
+            $tanggalselesai           = substr($tanggal_selesai_magang, 0, -8);
+            $bulanselesai             = substr($tanggal_selesai_magang, 3, -5);
+            $tahunselesai             = substr($tanggal_selesai_magang, -4);
+
+            $pdf = new FPDF('P', 'mm', 'A4');
+            $pdf->setTopMargin(10);
+            $pdf->setLeftMargin(4);
+            $pdf->SetAutoPageBreak(true);
+            $pdf->AddPage();
+
+            $pdf->SetFont('Arial', 'BU', '12');
+            $pdf->Cell(190, 10, 'SURAT PERJANJIAN KERJA HARIAN LEPAS', 0, 0, 'C');
+            $pdf->Ln(5);
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(190, 10, 'No : ' . $nikmagang . '/ PK / HRD / ' . bulanromawi($bulan) . ' / ' . $tahun . '.', 0, 0, 'C');
+
+            $pdf->Ln(15);
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Yang bertanda tangan di bawah ini :', 0, 0, 'L');
+
+            $pdf->Ln(10);
+
+            $pdf->Cell(10);
+            $pdf->Cell(10, 7, '1. ', 0, 0, 'L');
+            $pdf->Cell(50, 7, 'Nama', 0, 0, 'L');
+            $pdf->Cell(5, 7, ' : ', 0, 0, 'C');
+            $pdf->Cell(115, 7, ' Rudiyanto', 0, 0, 'L');
+
+            $pdf->Ln();
+
+            $pdf->Cell(20);
+            $pdf->Cell(50, 7, 'Jabatan', 0, 0, 'L');
+            $pdf->Cell(5, 7, ' : ', 0, 0, 'C');
+            $pdf->Cell(115, 7, ' Manager HRD-GA PT Prima Komponen Indonesia', 0, 0, 'L');
+
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Dalam hal  ini  bertindak atas nama Manager HRD-GA PT Prima Komponen  Indonesia  yang', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'berkedudukan di Kawasan Industri Pergudangan Taman Tekno Blok F2 No.10-11, Kelurahan', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(120, 5, 'Setu, Kecamatan Setu, Tangerang Selatan. Dan selanjutnya disebut', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(50, 5, ' PIHAK  PERTAMA (I).', 0, 0, 'L');
+
+            $pdf->Ln(10);
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(10);
+            $pdf->Cell(10, 8, '2. ', 0, 0, 'L');
+            $pdf->Cell(50, 8, 'No.KTP/SIM', 0, 0, 'L');
+            $pdf->Cell(5, 8, ' : ', 0, 0, 'C');
+            $pdf->Cell(115, 8, ' ' . $nik_karyawan_magang, 0, 0, 'L');
+
+            $pdf->Ln();
+
+            $pdf->Cell(20);
+            $pdf->Cell(50, 8, 'Nama', 0, 0, 'L');
+            $pdf->Cell(5, 8, ' : ', 0, 0, 'C');
+            $pdf->Cell(115, 8, ' ' . $nama_karyawan, 0, 0, 'L');
+
+            $pdf->Ln();
+
+            $pdf->Cell(20);
+            $pdf->Cell(50, 8, 'Tempat,Tanggal Lahir', 0, 0, 'L');
+            $pdf->Cell(5, 8, ' : ', 0, 0, 'C');
+            $pdf->Cell(115, 8, ' ' . $tempat_lahir . ', ' . IndonesiaTgl($tanggal_lahir), 0, 0, 'L');
+
+            $pdf->Ln();
+
+            $pdf->Cell(20);
+            $pdf->Cell(50, 8, 'Pendidikan Terakhir', 0, 0, 'L');
+            $pdf->Cell(5, 8, ' : ', 0, 0, 'C');
+            $pdf->Cell(115, 8, ' ' . $pendidikan_terakhir, 0, 0, 'L');
+
+            $pdf->Ln();
+
+            $pdf->Cell(20);
+            $pdf->Cell(50, 8, 'Jenis Kelamin', 0, 0, 'L');
+            $pdf->Cell(5, 8, ' : ', 0, 0, 'C');
+            $pdf->Cell(115, 8, ' ' . $jenis_kelamin, 0, 0, 'L');
+
+            $pdf->Ln();
+
+            $pdf->Cell(20);
+            $pdf->Cell(50, 8, 'Agama', 0, 0, 'L');
+            $pdf->Cell(5, 8, ' : ', 0, 0, 'C');
+            $pdf->Cell(115, 8, ' ' . $agama, 0, 0, 'L');
+
+            $pdf->Ln();
+
+            $pdf->Cell(20);
+            $pdf->Cell(50, 8, 'Alamat', 0, 0, 'L');
+            $pdf->Cell(5, 8, ' : ', 0, 0, 'C');
+            $pdf->Cell(115, 6, ' ' . $alamat . ', ' . $rt . '/' . $rw . ', Kelurahan.' . $kelurahan, 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(75);
+            $pdf->Cell(115, 6, ' Kecamatan.' . $kecamatan . ', Kota.' . $kota . ', ' . $provinsi, 0, 0, 'L');
+
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(144, 8, 'Dalam  hal  ini  bertindak  untuk dan atas nama dari pribadi dan selanjutnya disebut', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(27, 8, '  PIHAK', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(30, 8, 'KEDUA (II).', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+
+            $pdf->Ln(5);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PASAL 1', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PERNYATAAN - PERNYATAAN', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 1', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(35, 6, 'PIHAK PERTAMA ', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(96, 6, ' telah   menyatakan   persetujuannya  untuk   menerima', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(30, 6, ' PIHAK  KEDUA', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 6, 'selaku pekerja harian lepas.', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 2', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(28, 6, 'PIHAK KEDUA ', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(96, 6, 'menyatakan kesediannya selaku pekerja harian lepas yang tunduk pada tata,', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(115, 6, 'tertib, peraturan, dan sistem kerja yang berlaku pada perusahaan', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(28, 6, 'PIHAK PERTAMA ', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PASAL 2', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'RUANG LINGKUP PEKERJAAN', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 1', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(57, 6, 'Pekerjaan yang harus dilakukan', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(28, 6, 'PIHAK KEDUA ', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(58, 6, 'selaku pekerja harian lepas pada', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(28, 6, 'PIHAK', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(21, 6, 'PERTAMA', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(16, 6, ' adalah ', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'BU', '11');
+            $pdf->Cell(60, 6, '' . $jabatan . ' / ' . $penempatan, 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 2', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(28, 6, 'PIHAK KEDUA ', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(96, 6, 'tidak diperkenankan mengerjakan pekerjaan lain selain yang disebutkan pada,', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(116, 6, 'ayat 1 tersebut di atas, kecuali atas persetujuan dan perintah dari', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(36, 6, ' PIHAK  PERTAMA ', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(10, 6, ' atau ', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(15, 6, 'atasan', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(36, 6, 'PIHAK KEDUA.', 0, 0, 'L');
+
+
+
+            $pdf->Ln(100);
+
+            $pdf->Ln(50);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, '', 0, 0, 'C');
+
+
+            $pdf->Ln(20);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PASAL 3', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'MASA BERLAKU PERJANJIAN KERJA', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 1', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 6, 'Perjanjian kerja ini berlaku untuk jangka waktu 21 hari(dua puluh satu hari), terhitung sejak tanggal', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(135, 6, 'penandatanganan surat perjanjian kerja ini dan akan berakhir pada tanggal : ', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'BU', '11');
+            $pdf->Cell(30, 6, ' ' . $tanggalselesai . ' ' . bulan($bulanselesai) . ' ' . $tahunselesai . '.', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 2', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(117, 6, 'Setelah berakhirnya jangka waktu tersebut. Hubungan kerja antara', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(35, 6, 'PIHAK PERTAMA.', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(15, 6, 'dengan', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(35, 6, 'PIHAK KEDUA', 0, 0, 'C');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(115, 6, 'menjadi putus dengan sendirinya tanpa perlu pemberitahuan dari', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(35, 6, 'PIHAK PERTAMA', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(10, 6, 'pada', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(35, 6, 'PIHAK KEDUA.', 0, 0, 'L');
+
+            $pdf->Ln(10);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PASAL 4', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'CARA KERJA', 0, 0, 'C');
+
+            $pdf->Ln(5);
+            $pdf->Cell(20);
+            $pdf->Cell(35, 6, 'PIHAK PERTAMA', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(95, 6, 'atau wakil perusahaan PT Prima Komponen Indonesia akan memberikan', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(70, 6, 'pengarahan perihal cara kerja sebelum', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(30, 6, 'PIHAK KEDUA', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(65, 6, 'memulai pekerjaannya.', 0, 0, 'L');
+
+            $pdf->Ln(10);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PASAL 5', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'JAM KERJA', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 1', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Berdasarkan peraturan ketenagakerjaan yang berlaku, jam kerja efektif perusahaan ditetapkan', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, '8 (delapan) jam perhari, 40 (empat puluh) jam perminggu, dengan jumlah hari kerja 5 (lima) hari', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'dalam seminggu.', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 2', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Jam masuk adalah jam 08:00 (delapan) pagi dan jam pulang adalah jam (17:00) (lima sore).', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 3', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '1.  Waktu istirahat pada hari Senin hingga Kamis ditetapkan selama 1 (satu) jam, yaitu', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '     pada pukul 12:00 (dua belas siang) hingga pukul 13:00 (satu siang).', 0, 0, 'L');
+
+            $pdf->Ln(10);
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '2.  Waktu istirahat pada hari Jumat ditetapkan selama 1,5 (satu koma lima) jam, yaitu', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '     pada pukul 11:30 (sebelas tiga puluh siang) hingga pukul 13:00 (satu siang).', 0, 0, 'L');
+
+            $pdf->Ln(10);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PASAL 6', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'UPAH DAN PEMBAYARAN', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 1', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(35, 5, 'PIHAK PERTAMA', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(57, 5, 'akan memberikan upah sebesar ', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(70, 5, 'Rp.198.490,- (seratus sembilan  puluh ', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(80, 5, 'delapan ribu empat ratus sembilan puluh) ', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(50, 5, 'rupiah setiap hari kehadiran', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(35, 5, 'PIHAK KEDUA.', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 2', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Pembayaran  upah  akan  dibayarkan kurang lebih  14  (empatbelas) hari  kerja setelah masa ', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'kontrak kerja berakhir.', 0, 0, 'L');
+
+
+            $pdf->Ln(100);
+
+            $pdf->Ln(50);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, '', 0, 0, 'C');
+
+
+            $pdf->Ln(20);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PASAL 7', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'LEMBUR', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 1', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(30, 6, 'PIHAK KEDUA', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(140, 6, 'diharuskan masuk kerja lembur jika tersedia pekerjaan yang harus segera', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(140, 6, 'diselesaikan atau bersifat mendesak (URGENT).', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 2', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(77, 6, 'Sebagai imbalan kerja lembur sesuai ayat 1,', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(33, 6, 'PIHAK PERTAMA ', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(28, 6, 'akan membayar', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(35, 6, ' PIHAK KEDUA', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(16, 6, 'sebesar', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(105, 6, 'Rp.24.094,- (dua puluh empat ribu sembilan puluh tujuh)', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(40, 6, 'rupiah setiap jam lembur.', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 3', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(150, 6, 'Pembayaran upah lembur akan di satukan dengan pembayaran upah yang akan diterima', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(30, 6, 'PIHAK KEDUA', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(105, 6, 'sesuai Pasal 6 ayat 2 perjanjian ini.', 0, 0, 'L');
+
+            $pdf->Ln(20);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PASAL 8', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'BERAKHIRNYA PERJANJIAN', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 1', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(80, 6, 'Setiap saat hubungan kerja dapat diakhiri jika', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(30, 6, 'PIHAK KEDUA', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(50, 6, 'melanggar tata tertib, peraturan,', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(85, 6, 'dan sistem kerja yang berlaku pada perusahaan', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(35, 6, 'PIHAK PERTAMA.', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 2', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(80, 6, 'Pelanggaran yang dimaksud pada ayat 1 tersebut diatas, adalah :', 0, 0, 'L');
+
+            $pdf->Ln(10);
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '1.   Tidak masuk kerja selama 1 (satu) hari kerja tanpa keterangan tertulis atau alasan sah', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '      yang dapat dibenarkan oleh atasan atau pihak perusahaan.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '2.   Melakukan tindak penipuan, pencurian, penggelapan, atau tindak-tindak melawan', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '      hukum lainnya.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '3.   Menyalahgunakan wewenang dan jabatan untuk kepentingan pribadi.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(125, 5, '4.   Melakukan perusakan dengan sengaja yang menimbulkan kerugian ', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(35, 5, 'PIHAK PERTAMA.', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(125, 5, '5.   Melakukan hal-hal lain karena kecerobohannya yang mengakibatkan', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(35, 5, 'PIHAK PERTAMA', 0, 0, 'L');
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '      mengalami kerugian.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '6.   Melakukan perjudian di tempat kerja.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '7.   Mabuk-mabukan atau mengkonsumsi narkotika dan obat-obatan terlarang di lingkungan', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '      kerja perusahaan.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '8.   Melakukan keributan atau keonaran yang mengganggu suasana kerja di lingkungan kerja', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '      perusahaan.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '9.   Melakukan perkelahian atau penganiayaan terhadap pekerja lain.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(29);
+            $pdf->Cell(160, 5, '10.  Menghasut para pekerja lain untuk melakukan mogok kerja.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(29);
+            $pdf->Cell(160, 5, '11.  Merokok ditempat kerja atau membawa rokok dan korek api dalam lingkungan kerja.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(29);
+            $pdf->Cell(160, 5, '12.  Masuk jam kerja tidak tepat waktu selama 2 (dua) kali.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(29);
+            $pdf->Cell(160, 5, '13.  Tidak menggunakan alat keselamatan kerja yang sudah ditetapkan.', 0, 0, 'L');
+
+            $pdf->Ln();
+            $pdf->Cell(29);
+            $pdf->Cell(160, 5, '14.  Tidak menggunakan alat keselamatan dalam berkendara baik berangkat maupun pulang', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(30);
+            $pdf->Cell(160, 5, '      kerja.', 0, 0, 'L');
+
+            $pdf->Ln(100);
+
+            $pdf->Ln(50);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, '', 0, 0, 'C');
+
+
+            $pdf->Ln(20);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PASAL 9', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'KEADAAN DARURAT (FORCE MAJEUR)', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Perjanjian kerja ini batal dengan sendirinya jika karena keadaan atau situasi yang memaksa,', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Seperti : Bencana Alam, Pemberontakan, Perang, Huru-hara, Kerusuhan, Peraturan Pemerintah', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'atau apapun.', 0, 0, 'L');
+
+            $pdf->Ln(10);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PASAL 10', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PENYELESAIAN PERSELISIHAN', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 1', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Apabila terjadi perselisihan antara kedua belah pihak, akan diselesaikan secara musyawarah ', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'untuk mencapai mufakat.', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln(10);
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Ayat 2', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Apabila dengan cara ayat 1 pasal ini tidak tercapai kata sepakat, maka kedua belah pihak sepakat', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'untuk menyelesaikan permasalahan tersebut dilakukan melalui prosedur hukum.', 0, 0, 'L');
+
+            $pdf->Ln(10);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PASAL 11', 0, 0, 'C');
+
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'PENUTUP', 0, 0, 'C');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Demikianlah perjanjian ini dibuat, disetujui, dan ditandatangani dalam rangkap dua, asli, dan ', 0, 0, 'L');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'tembusan bermaterai cukup dan berkekuatan hukum yang sama. Satu dipegang oleh', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Ln();
+            $pdf->Cell(20);
+            $pdf->Cell(35, 5, 'PIHAK PERTAMA', 0, 0, 'L');
+
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(35, 5, 'dan lainnya untuk', 0, 0, 'L');
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(35, 5, 'PIHAK KEDUA.', 0, 0, 'L');
+
+            $pdf->Ln(30);
+            $pdf->SetFont('Arial', '', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(170, 5, 'Tangerang Selatan, ' . $tanggal . ' ' . bulan($bulan) . ' ' . $tahun, 0, 0, 'C');
+
+            $pdf->Ln(10);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(50, 5, 'PIHAK PERTAMA', 0, 0, 'C');
+            $pdf->Cell(70, 5, '', 0, 0, 'C');
+            $pdf->Cell(50, 5, 'PIHAK KEDUA', 0, 0, 'C');
+
+            $pdf->Ln(40);
+            $pdf->SetFont('Arial', 'B', '11');
+            $pdf->Cell(20);
+            $pdf->Cell(50, 5, '( Rudiyanto )', 0, 0, 'C');
+            $pdf->Cell(70, 5, '', 0, 0, 'C');
+            $pdf->Cell(50, 5, '( ' . $nama_karyawan . ' )', 0, 0, 'C');
+
+            $pdf->Output();
+        }
+        //Jika Yang Login Bukan HRD
+        else {
+            $this->load->view('auth/blocked');
+        }
+    }
 }

@@ -335,6 +335,20 @@
         todayHighlight: true,
     });
 
+    $('#tanggal_akhir_magang').datepicker({
+        uiLibrary: 'bootstrap4',
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true,
+    });
+
+    $('#tanggal_cetak_surat').datepicker({
+        uiLibrary: 'bootstrap4',
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true,
+    });
+
 
     //Jquery Checkbox
     $('.form-check-input').on('click', function() {
